@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-Y:\Dev\Gym Passport\obj\Debug\net6.0-windows\
+Y:\Dev\Gym Passport\desktop\obj\Debug\net6.0-windows\
 Gym_Passport
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-Y:\Dev\Gym Passport\App.xaml
-11407045341
+Y:\Dev\Gym Passport\desktop\App.xaml
+3-1346822237
 
-51005357909
+7378602694
 194183970531
-MainWindow.xaml;
+LoginWindow.xaml;MainMenu.xaml;MainMenuOptions\Option01.xaml;
 
-False
+True
 

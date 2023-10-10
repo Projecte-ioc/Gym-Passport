@@ -1,0 +1,63 @@
+﻿<Window x:Class="Gym_Passport.MainMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gym_Passport"
+        mc:Ignorable="d"
+        Title="Gym Passport" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="8*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="2" Content="Gym Passport" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"></Label>
+            <Grid Grid.Column="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="IMAGEN" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="Iván Molina Rey" HorizontalAlignment="Center" VerticalContentAlignment="Center"></Label>
+                    <Label Grid.Row="1" Content="Administrador" HorizontalAlignment="Center" VerticalContentAlignment="Center"></Label>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Button x:Name="btn_option01" Grid.Row="0" Content="Opción 1" Click="btn_option01_Click"></Button>
+                <Button x:Name="btn_option02" Grid.Row="1" Content="Opción 2"></Button>
+                <Button x:Name="btn_option03" Grid.Row="2" Content="Opción 3"></Button>
+                <Button x:Name="btn_option04" Grid.Row="3" Content="Opción 4"></Button>
+                <Button x:Name="btn_option05" Grid.Row="4" Content="Opción 5"></Button>
+                <Button x:Name="btn_option06" Grid.Row="5" Content="Opción 6"></Button>
+            </Grid>
+            <Grid x:Name="optionUserControl" Grid.Column="1"></Grid>
+        </Grid>
+    </Grid>
+</Window>

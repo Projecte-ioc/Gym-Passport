@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "Y:\\Dev\\Gym Passport\\Gym Passport.csproj",
+      "projectUniqueName": "Y:\\Dev\\Gym Passport\\desktop\\Gym Passport.csproj",
       "projectName": "Gym Passport",
-      "projectPath": "Y:\\Dev\\Gym Passport\\Gym Passport.csproj",
+      "projectPath": "Y:\\Dev\\Gym Passport\\desktop\\Gym Passport.csproj",
       "packagesPath": "C:\\Users\\Dante\\.nuget\\packages\\",
-      "outputPath": "Y:\\Dev\\Gym Passport\\obj\\",
+      "outputPath": "Y:\\Dev\\Gym Passport\\desktop\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Dante\\AppData\\Roaming\\NuGet\\NuGet.Config",
