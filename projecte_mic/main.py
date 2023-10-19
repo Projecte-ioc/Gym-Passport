@@ -8,7 +8,7 @@ db_params = {
     'dbname': 'gympassportdb',
     'user': 'mic_ad',
     'password': 'Meri120290!',
-    'host': 'gympassportserver.postgres.database.azure.com',
+    'host': 'gympassportser.postgres.database.azure.com',
     'port': '5432',
 }
 
@@ -18,10 +18,18 @@ db_params = {
 def get_registros():
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM gimnasios")
+    cursor.execute("SELECT * FROM clientes")
     registros = cursor.fetchall()
     conn.close()
-    return jsonify(registros)
+
+    # Crear una respuesta JSON
+    response = jsonify(registros)
+
+    # Agregar un encabezado personalizado a la respuesta
+    response.headers[
+        'Ocp-Apim-Subscription-Key'] = '06c0a1a32f8e4d1b9f85c860fb7584ad'  # Reemplaza 'your_subscription_key' con tu valor real
+
+    return response
 
 
 # Ruta para crear un nuevo registro
@@ -30,7 +38,8 @@ def crear_registro():
     data = request.json
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO gimnasios (nombre, direccion, telefono, horario) VALUES (%s, %s, %s, %s)", (data['nombre'], data['direccion'], data['telefono'], data['horario']))
+    cursor.execute("INSERT INTO clientes (nombre, direccion, telefono, horario) VALUES (%s, %s, %s, %s)",
+                   (data['nombre'], data['direccion'], data['telefono'], data['horario']))
     conn.commit()
     conn.close()
     return "Registro creado", 201
