@@ -8,14 +8,13 @@ db_params = {
     'dbname': 'gympassportdb',
     'user': 'mic_ad',
     'password': 'Meri120290!',
-    'host': 'gympassportserv.postgres.database.azure.com',
+    'host': 'gympassportserver.postgres.database.azure.com',
     'port': '5432',
-    'sslmode': 'require'
 }
 
 
 # Ruta para obtener todos los registros
-@app.route('/api/registros', methods=['GET'])
+@app.route('/api/clientes', methods=['GET'])
 def get_registros():
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
@@ -26,7 +25,7 @@ def get_registros():
 
 
 # Ruta para crear un nuevo registro
-@app.route('/api/registros', methods=['POST'])
+@app.route('/api/clientes', methods=['POST'])
 def crear_registro():
     data = request.json
     conn = psycopg2.connect(**db_params)
