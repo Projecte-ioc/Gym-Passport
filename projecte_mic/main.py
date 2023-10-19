@@ -27,7 +27,7 @@ def get_registros():
 
     # Agregar un encabezado personalizado a la respuesta
     response.headers[
-        'Ocp-Apim-Subscription-Key'] = '06c0a1a32f8e4d1b9f85c860fb7584ad'  # Reemplaza 'your_subscription_key' con tu valor real
+        'Ocp-Apim-Subscription-Key'] = '5cf759260003414593738fede1e04298'
 
     return response
 
