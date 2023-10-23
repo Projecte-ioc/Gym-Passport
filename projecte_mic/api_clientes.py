@@ -30,17 +30,20 @@ def get_all_clientes():
 
 
 @app.route('/cliente', methods=['GET'])
-def get_clients_with_params():
+def get_clients_with_params(filter):
     connex, cursor = get_connection_to_db()
 
     filter_name = request.args.get('nombre')
     filter_id = request.args.get('id')
+    filter_user = request.args.get('usuario')
 
     query_sql = "SELECT * FROM clientes WHERE 1=1"
     if filter_id:
         query_sql += f"AND id = '{filter_id}'"
     if filter_name:
         query_sql += f"AND nombre = '{filter_name}'"
+    if filter_user:
+        query_sql += f"AND usuario = '{filter_user}'"
     cursor.execute(query_sql)
     registros = cursor.fetchall()
     connex.close()
@@ -51,7 +54,6 @@ def get_clients_with_params():
 
 @app.route('/addcliente', methods=['POST'])
 def add_client():
-
     nombre = request.args.get('nombre')
     permisos = request.args.get('permisos')
     usuario = request.args.get('usuario')
@@ -60,9 +62,8 @@ def add_client():
     if not nombre or not permisos or not usuario or not pswd_app:
         return "Faltan datos", 400
     connex, cursor = get_connection_to_db()
-    cursor.execute("SELECT COUNT(*) FROM clientes WHERE usuario = %s", (usuario))
-    count = cursor.fetchone()[0]
-    if count > 0:
+    result = get_clients_with_params(usuario)
+    if not result:
         connex.close()
         return "El usuario ya existe", 409
 
@@ -72,6 +73,7 @@ def add_client():
     connex.close()
 
     return "Registro creado", 201
+
 
 @app.route('/updatecliente', methods=['PUT'])
 def update_client():
@@ -128,16 +130,8 @@ def delete_client():
 
     connex, cursor = get_connection_to_db()
 
-    # Verificar si el usuario existe
-    cursor.execute("SELECT COUNT(*) FROM clientes WHERE usuario = %s", (usuario,))
-    count = cursor.fetchone()[0]
-
-    if count == 0:
-        connex.close()
-        return "El usuario no existe", 404  # Código de estado 404 Not Found
-
     # Realizar la eliminación en la base de datos
-    cursor.execute("DELETE FROM clientes WHERE usuario = %s", (usuario,))
+    cursor.execute("DELETE FROM clientes WHERE id = %s", (id,))
     connex.commit()
     connex.close()
 
