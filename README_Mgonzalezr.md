@@ -10,7 +10,6 @@ El **procedimiento** seguido a sido el **siguiente**:
 - he creado el usuario isard, ya que es el usuario de la máquina.
 - le he assignado el mismo password que el que tiene de acceso.
 - me he descargado el fichero de configuración de VPN de la máquina virtual.
-![descargar_archivo_vpn.png](..%2Fdescargar_archivo_vpn.png)
 - me he descargado en mi máquina [WireGuard](https://www.wireguard.com/install/)
 - le he importado el archivo de configuración de VPN
 - Compruebo que puedo visualizar el archivo index.html de Apache accediendo des de mi máquina local
@@ -18,19 +17,19 @@ El **procedimiento** seguido a sido el **siguiente**:
 - importo la API la ejecuto y hago pruebas des de Postman.
 
 ### GET ALL
-![get_all.png](..%2Fget_all.png)
+http://10.2.190.11:3000/clientes
 
 ### GET WITH FILTER
-![get_with_filter.png](..%2Fget_with_filter.png)
+http://10.2.190.11:3000/cliente?nombre=Meri
 
 ### INSERT INTO
-![insert_into.png](..%2Finsert_into.png)
+http://10.2.190.11:3000/addcliente?nombre=Paco&permisos=normal&usuario=pacopaco&pswd_app=pacopaco1
 
 ### UPDATE
-![update.png](..%2Fupdate.png)
+http://10.2.190.11:3000/updatecliente?nombre=Pablo&permisos=admin&usuario=pablopablito7&pswd_app=pablopablito23
 
 ### DELETE WHERE
-![delete_where.png](..%2Fdelete_where.png)
+http://10.2.190.11:3000/deletecliente?id=15
 
 MUCHAS GRACIAS.
 
