@@ -18,19 +18,7 @@ def get_connection_to_db():
     cursor = connex.cursor()
     return connex, cursor
 
-
-@app.route('/clientes', methods=['GET'])
-def get_all_clientes():
-    connex, cursor = get_connection_to_db()
-    cursor.execute('SELECT * FROM clientes')
-    registros = cursor.fetchall()
-    connex.close()
-    response = jsonify(registros)
-    return response
-
-
-@app.route('/cliente', methods=['GET'])
-def get_clients_with_params(filter):
+def get_clients_with_par(filter):
     connex, cursor = get_connection_to_db()
 
     filter_name = request.args.get('nombre')
@@ -48,8 +36,38 @@ def get_clients_with_params(filter):
     registros = cursor.fetchall()
     connex.close()
 
+    return registros
+
+@app.route('/clientes', methods=['GET'])
+def get_all_clientes():
+    connex, cursor = get_connection_to_db()
+    cursor.execute('SELECT * FROM clientes')
+    registros = cursor.fetchall()
+    connex.close()
     response = jsonify(registros)
     return response
+
+
+@app.route('/cliente', methods=['GET'])
+def get_clients_with_params():
+    connex, cursor = get_connection_to_db()
+
+    filter_name = request.args.get('nombre')
+    filter_id = request.args.get('id')
+    filter_user = request.args.get('usuario')
+
+    query_sql = "SELECT * FROM clientes WHERE 1=1"
+    if filter_id:
+        query_sql += f"AND id = '{filter_id}'"
+    if filter_name:
+        query_sql += f"AND nombre = '{filter_name}'"
+    if filter_user:
+        query_sql += f"AND usuario = '{filter_user}'"
+    cursor.execute(query_sql)
+    registros = cursor.fetchall()
+    connex.close()
+
+    return jsonify(registros)
 
 
 @app.route('/addcliente', methods=['POST'])
@@ -62,8 +80,8 @@ def add_client():
     if not nombre or not permisos or not usuario or not pswd_app:
         return "Faltan datos", 400
     connex, cursor = get_connection_to_db()
-    result = get_clients_with_params(usuario)
-    if not result:
+    result = get_clients_with_par(usuario)
+    if result:
         connex.close()
         return "El usuario ya existe", 409
 
