@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 Y:\Dev\Gym Passport\desktop\App.xaml
-3-1346822237
+8-1853725696
+1-1778830639
+22439949565
+206-2041703457
+CustomControls\BindablePasswordBox.xaml;Styles\ButtonStyles.xaml;Styles\UIColors.xaml;Views\ActivityView.xaml;Views\LoginView.xaml;Views\MainView.xaml;Views\ReservationView.xaml;Views\RoomView.xaml;
 
-7378602694
-194183970531
-LoginWindow.xaml;MainMenu.xaml;MainMenuOptions\Option01.xaml;
-
-True
+False
 
