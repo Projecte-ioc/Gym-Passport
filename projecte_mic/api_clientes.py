@@ -18,6 +18,7 @@ def get_connection_to_db():
     cursor = connex.cursor()
     return connex, cursor
 
+
 def get_clients_with_par(filter):
     connex, cursor = get_connection_to_db()
 
@@ -37,6 +38,7 @@ def get_clients_with_par(filter):
     connex.close()
 
     return registros
+
 
 @app.route('/clientes', methods=['GET'])
 def get_all_clientes():
@@ -147,13 +149,17 @@ def delete_client():
         return "Falta el identificador del usuario", 400
 
     connex, cursor = get_connection_to_db()
+    respuesta = get_clients_with_par(id)
 
-    # Realizar la eliminación en la base de datos
-    cursor.execute("DELETE FROM clientes WHERE id = %s", (id,))
-    connex.commit()
-    connex.close()
+    if respuesta:
+        # Realizar la eliminación en la base de datos
+        cursor.execute("DELETE FROM clientes WHERE id = %s", (id,))
+        connex.commit()
+        connex.close()
+        return "Registro eliminado", 200  # Código de estado 200 OK
 
-    return "Registro eliminado", 200  # Código de estado 200 OK
+    else:
+        return "No existe ese registro", 404
 
 
 if __name__ == '__main__':
