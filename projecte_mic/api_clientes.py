@@ -28,26 +28,35 @@ def get_clients_with_par(filter):
 
     query_sql = "SELECT * FROM clientes WHERE 1=1"
     if filter_id:
-        query_sql += f"AND id = '{filter_id}'"
+        query_sql += f" AND id = '{filter_id}'"
     if filter_name:
-        query_sql += f"AND nombre = '{filter_name}'"
+        query_sql += f" AND nombre = '{filter_name}'"
     if filter_user:
-        query_sql += f"AND usuario = '{filter_user}'"
+        query_sql += f" AND usuario = '{filter_user}'"
     cursor.execute(query_sql)
-    registros = cursor.fetchall()
+    records = cursor.fetchall()
     connex.close()
 
-    return registros
+    return records
+
+# DEVUELVE LOS VALORES EN JSON EN FORMATO LLAVE - VALOR
+def format_records(records, column_names):
+    formatted_records = []
+    for record in records:
+        formatted_record = {column_names[i]: record[i] for i in range(len(column_names))}
+        formatted_records.append(formatted_record)
+    return formatted_records
 
 
 @app.route('/clientes', methods=['GET'])
 def get_all_clientes():
     connex, cursor = get_connection_to_db()
     cursor.execute('SELECT * FROM clientes')
-    registros = cursor.fetchall()
+    records = cursor.fetchall()
+    column_names = [desc[0] for desc in cursor.description]
     connex.close()
-    response = jsonify(registros)
-    return response
+    formatted_records = format_records(records, column_names)
+    return jsonify(formatted_records)
 
 
 @app.route('/cliente', methods=['GET'])
@@ -60,16 +69,17 @@ def get_clients_with_params():
 
     query_sql = "SELECT * FROM clientes WHERE 1=1"
     if filter_id:
-        query_sql += f"AND id = '{filter_id}'"
+        query_sql += f" AND id = '{filter_id}'"
     if filter_name:
-        query_sql += f"AND nombre = '{filter_name}'"
+        query_sql += f" AND nombre = '{filter_name}'"
     if filter_user:
-        query_sql += f"AND usuario = '{filter_user}'"
+        query_sql += f" AND usuario = '{filter_user}'"
     cursor.execute(query_sql)
-    registros = cursor.fetchall()
+    records = cursor.fetchall()
+    column_names = [desc[0] for desc in cursor.description]
     connex.close()
-
-    return jsonify(registros)
+    formatted_records = format_records(records, column_names)
+    return jsonify(formatted_records)
 
 
 @app.route('/addcliente', methods=['POST'])
@@ -162,5 +172,8 @@ def delete_client():
         return "No existe ese registro", 404
 
 
+# Resto del código (sin cambios)
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3000)
+
