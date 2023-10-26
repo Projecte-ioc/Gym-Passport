@@ -1,26 +1,15 @@
 from typing import Any
 
 from flask import Flask, request, jsonify
-import psycopg2
+
+
+import utils
 
 app = Flask(__name__)
-db_params = {
-    'dbname': 'gympassportdb',
-    'user': 'isard',
-    'password': 'pirineus',
-    'host': '127.0.0.1',
-    'port': '5432'
-}
-
-
-def get_connection_to_db():
-    connex = psycopg2.connect(**db_params)
-    cursor = connex.cursor()
-    return connex, cursor
-
+db = utils.Connexion()
 
 def get_clients_with_par(filter):
-    connex, cursor = get_connection_to_db()
+    connex, cursor = db.get_connection_to_db()
 
     filter_name = request.args.get('nombre')
     filter_id = request.args.get('id')
@@ -39,6 +28,7 @@ def get_clients_with_par(filter):
 
     return records
 
+
 # DEVUELVE LOS VALORES EN JSON EN FORMATO LLAVE - VALOR
 def format_records(records, column_names):
     formatted_records = []
@@ -50,7 +40,7 @@ def format_records(records, column_names):
 
 @app.route('/clientes', methods=['GET'])
 def get_all_clientes():
-    connex, cursor = get_connection_to_db()
+    connex, cursor = db.get_connection_to_db()
     cursor.execute('SELECT * FROM clientes')
     records = cursor.fetchall()
     column_names = [desc[0] for desc in cursor.description]
@@ -61,7 +51,7 @@ def get_all_clientes():
 
 @app.route('/cliente', methods=['GET'])
 def get_clients_with_params():
-    connex, cursor = get_connection_to_db()
+    connex, cursor = db.get_connection_to_db()
 
     filter_name = request.args.get('nombre')
     filter_id = request.args.get('id')
@@ -91,7 +81,7 @@ def add_client():
 
     if not nombre or not permisos or not usuario or not pswd_app:
         return "Faltan datos", 400
-    connex, cursor = get_connection_to_db()
+    connex, cursor = db.get_connection_to_db()
     result = get_clients_with_par(usuario)
     if result:
         connex.close()
@@ -115,7 +105,7 @@ def update_client():
     if not usuario or (not nuevo_nombre and not nuevos_permisos and not nuevo_password):
         return "Faltan datos requeridos", 400
 
-    connex, cursor = get_connection_to_db()
+    connex, cursor = db.get_connection_to_db()
 
     # Verificar si el usuario existe
     cursor.execute("SELECT COUNT(*) FROM clientes WHERE usuario = %s", (usuario,))
@@ -158,7 +148,7 @@ def delete_client():
     if not id:
         return "Falta el identificador del usuario", 400
 
-    connex, cursor = get_connection_to_db()
+    connex, cursor = db.get_connection_to_db()
     respuesta = get_clients_with_par(id)
 
     if respuesta:
@@ -176,4 +166,3 @@ def delete_client():
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3000)
-
