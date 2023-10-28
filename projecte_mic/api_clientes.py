@@ -41,7 +41,7 @@ def format_records(records, column_names):
 @app.route('/clientes', methods=['GET'])
 def get_all_clientes():
     connex, cursor = db.get_connection_to_db()
-    cursor.execute('SELECT * FROM clientes')
+    cursor.execute('SELECT * FROM users_data')
     records = cursor.fetchall()
     column_names = [desc[0] for desc in cursor.description]
     connex.close()
