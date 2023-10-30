@@ -23,3 +23,12 @@ class Connexion:
         connex = psycopg2.connect(**self.get_connection_values())
         cursor = connex.cursor()
         return connex, cursor
+
+    def get_elements_filtered(self, filter, table, what_filter, selector):
+        connex, cursor = self.get_connection_to_db()
+        query_sql = f"SELECT {selector} FROM {table} WHERE {what_filter} = %s"
+
+        cursor.execute(query_sql, (filter,))
+        records = cursor.fetchone()[0]
+        connex.close()
+        return records

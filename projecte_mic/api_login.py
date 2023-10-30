@@ -16,19 +16,6 @@ db = utils.Connexion()
 app.config['SECRET_KEY'] = db.SK
 
 
-def get_elements_filtered(filter, table, what_filter, selector):
-    connex, cursor = db.get_connection_to_db()
-    query_sql = f"SELECT {selector} FROM {table} WHERE {what_filter} = %s"
-
-    cursor.execute(query_sql, (filter,))
-    records = cursor.fetchone()
-    connex.close()
-
-    print(records)
-
-    return records
-
-
 # Ruta para el registro de usuarios
 @app.route('/register', methods=['POST'])
 def register():
@@ -38,17 +25,13 @@ def register():
         name = item['name']
         rol = item['rol_user']
         user = item['user_name']
-        print(str(len(user)))
         pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
         gym_name_jsn = item['gym_name'].replace(" ", "-")
-        print(type(gym_name_jsn))
-        gym = get_elements_filtered(gym_name_jsn, "gym", "name", "id")
-        print(type(gym[0]))
-        print(str(len(pswd)))
+        gym = db.get_elements_filtered(gym_name_jsn, "gym", "name", "id")
         try:
             cursor.execute("INSERT INTO users_data (name, rol_user, pswd_app, gym_id, user_name) VALUES ("
                            "%s, %s, %s, %s, %s)", (name,
-                                                   rol, pswd, gym[0], user
+                                                   rol, pswd, gym, user
                                                    ))
             connection.commit()
             return jsonify({'message': 'Usuario registrado correctamente'})
@@ -62,32 +45,38 @@ def register():
 # Ruta para la autenticación
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
+    data = request.get_json(force=True)
     print(type(data))
     connection, cursor = db.get_connection_to_db()
-    for item in data:
-        user = item["user_name"]
-        pswd = item["pswd_app"]
+    if isinstance(data, dict):
+        user = data.get("user_name")
+        pswd = data.get("pswd_app")
+    else:
+        for item in data:
+            user = item["user_name"]
+            pswd = item["pswd_app"]
 
-        try:
-            cursor.execute("SELECT name, pswd_app, rol_user, gym_id FROM users_data WHERE user_name = %s", (user,))
-            row = cursor.fetchone()
+    if user or pswd:
+        return jsonify({'message': 'Revisa que los campos no esten vacíos'}), 404
 
+    try:
+        cursor.execute("SELECT name, pswd_app, rol_user, gym_id FROM users_data WHERE user_name = %s", (user,))
+        row = cursor.fetchone()
+        if row is not None:
             name = row[0]
             rol_user = row[2]
             gym_id = row[3]
-            # todo hacer que almacene el nombre y no el ID.
+            gym_name = db.get_elements_filtered(gym_id, "gym", "id", "name").replace("-", " ")
             if row and check_password_hash(row[1], pswd):
-                token = jwt.encode({'user_name': user, 'rol_user': rol_user, "gym_id": gym_id, "name": name},
+                token = jwt.encode({'user_name': user, 'rol_user': rol_user, "gym_name": gym_name, "name": name},
                                    app.config['SECRET_KEY'], algorithm='HS256')
                 return jsonify({'token': token})
-            return jsonify({'message': 'Credenciales inválidas'}), 401
-        except psycopg2.Error as e:
-            print(e)
-            return jsonify({'message': f'Error en la autenticación {e}'}), 500
-        finally:
-            cursor.close()
-            connection.close()
+        return jsonify({'message': 'Credenciales inválidas'}), 401
+    except psycopg2.Error as e:
+        return jsonify({'message': f'Error en la autenticación {e}'}), 500
+    finally:
+        cursor.close()
+        connection.close()
 
 
 if __name__ == '__main__':
