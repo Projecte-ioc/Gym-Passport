@@ -4,3 +4,6 @@ import utils
 app = Flask(__name__)
 db = utils.Connexion()
 
+
+def provando_cosas():
+    pass
