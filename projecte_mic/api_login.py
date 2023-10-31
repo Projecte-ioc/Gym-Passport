@@ -20,7 +20,6 @@ app.config['SECRET_KEY'] = db.SK
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json(force=True)
-    print(type(data))
     connection, cursor = db.get_connection_to_db()
     if isinstance(data, dict):
         user = data.get("user_name")
@@ -40,7 +39,7 @@ def login():
             name = row[0]
             rol_user = row[2]
             gym_id = row[3]
-            gym_name = db.get_elements_filtered(gym_id, "gym", "id", "name").replace("-", " ")
+            gym_name = db.get_elements_filtered(gym_id, "gym", "id", "name")[0][0].replace("-", " ")
             if row and check_password_hash(row[1], pswd):
                 token = jwt.encode({'user_name': user, 'rol_user': rol_user, "gym_name": gym_name, "name": name},
                                    app.config['SECRET_KEY'], algorithm='HS256')

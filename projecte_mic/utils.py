@@ -31,7 +31,7 @@ class Connexion:
         query_sql = f"SELECT {selector} FROM {table} WHERE {what_filter} = %s"
 
         cursor.execute(query_sql, (filter,))
-        records = cursor.fetchone()[0]
+        records = cursor.fetchall()
         connex.close()
         return records
 
