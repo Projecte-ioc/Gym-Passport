@@ -3,7 +3,7 @@ import json
 import jwt
 import psycopg2
 from flask import Flask, request, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 import flask_wtf
 import utils
 
@@ -14,32 +14,6 @@ db = utils.Connexion()
 
 # Clave secreta para JWT
 app.config['SECRET_KEY'] = db.SK
-
-
-# Ruta para el registro de usuarios
-@app.route('/register', methods=['POST'])
-def register():
-    connection, cursor = db.get_connection_to_db()
-    data = request.get_json()
-    for item in data:
-        name = item['name']
-        rol = item['rol_user']
-        user = item['user_name']
-        pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
-        gym_name_jsn = item['gym_name'].replace(" ", "-")
-        gym = db.get_elements_filtered(gym_name_jsn, "gym", "name", "id")
-        try:
-            cursor.execute("INSERT INTO users_data (name, rol_user, pswd_app, gym_id, user_name) VALUES ("
-                           "%s, %s, %s, %s, %s)", (name,
-                                                   rol, pswd, gym, user
-                                                   ))
-            connection.commit()
-            return jsonify({'message': 'Usuario registrado correctamente'})
-        except psycopg2.Error as e:
-            return jsonify({'message': f'Error al registrar el usuario {e}'}), 500
-        finally:
-            cursor.close()
-            connection.close()
 
 
 # Ruta para la autenticación
@@ -56,7 +30,7 @@ def login():
             user = item["user_name"]
             pswd = item["pswd_app"]
 
-    if user or pswd:
+    if not user or not pswd:
         return jsonify({'message': 'Revisa que los campos no esten vacíos'}), 404
 
     try:

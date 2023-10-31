@@ -1,4 +1,6 @@
+import jwt
 import psycopg2
+from flask import jsonify
 
 
 class Connexion:
@@ -32,3 +34,8 @@ class Connexion:
         records = cursor.fetchone()[0]
         connex.close()
         return records
+
+    def get_elements_of_token(self, token):
+        print(type(token))
+        payload = jwt.decode(token, self.SK, algorithms=['HS256'])
+        return jsonify(payload)
