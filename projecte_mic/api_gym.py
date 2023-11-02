@@ -1,3 +1,4 @@
+import jwt
 import psycopg2
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash
@@ -30,6 +31,37 @@ def validate_rol_user(token):
     id = db.get_elements_filtered(gym_name.replace(' ', '-'), "gym", "name", "id")
 
     return rol_user, id[0][0], user_name
+
+@app.route('/profile_info', methods=['GET'])
+def select_a_user_info_and_gym():
+    connection, cursor = db.get_connection_to_db()
+    token = request.headers.get('Authorization')
+    rol, id, user_name = validate_rol_user(token)
+    if rol == 'admin':
+        query = """
+        SELECT users_data.name as user_name, users_data.rol_user, gym.name as gym_name, gym.address, gym.phone_number, gym.schedule
+        FROM users_data
+        JOIN gym ON users_data.gym_id = gym.id
+        WHERE users_data.user_name = %s
+        """
+        cursor.execute(query, (user_name,))
+        results = cursor.fetchone()
+        connection.close()
+
+        if results:
+            column_names = [desc[0] for desc in cursor.description]
+            formatted_record = dict(zip(column_names, results))
+            # todo no devuelve token, fijar error.
+            token_ad = jwt.encode(formatted_record,
+                               app.config['SECRET_KEY'], algorithm='HS256')
+            return jsonify({'ad-token': f'{token_ad}'})
+        else:
+            return jsonify({'error': 'No se encontraron registros para el usuario'})
+
+    else:
+
+        return jsonify({'nl-token': f'{token}'})
+
 
 
 @app.route('/consultar_clientes_gym', methods=['GET'])
