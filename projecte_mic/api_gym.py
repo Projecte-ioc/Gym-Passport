@@ -1,5 +1,3 @@
-import flask
-import jwt
 import psycopg2
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash
@@ -10,7 +8,7 @@ app = Flask(__name__)
 db = utils.Connexion()
 
 
-def register(id, name, rol, user, pswd, cursor, connection):
+def register(id, name, rol, user, pswd, cursor):
     user_name_exists = db.get_elements_filtered(user, "users_data", "user_name", '*')
     if not user_name_exists:
         try:
@@ -67,7 +65,7 @@ def insert_individual_client():
                 user = item['user_name']
                 pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
         if rol_user == 'admin':
-            register(id, name, rol, user, pswd, cursor, connection)
+            register(id, name, rol, user, pswd, cursor)
 
             connection.commit()
             cursor.close()
@@ -95,7 +93,7 @@ def insert_diferents_clients():
                 rol = item['rol_user']
                 user = item['user_name']
                 pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
-                register(id, name, rol, user, pswd, cursor, connection)
+                register(id, name, rol, user, pswd, cursor)
                 connection.commit()
             return jsonify({'message': 'Usuario registrado correctamente'}), 200
         except psycopg2.Error as e:
@@ -179,7 +177,33 @@ def update_client_data():
         connection.close()
 
 
-# todo delete
+@app.route('/delete_client', methods=['DELETE'])
+def delete_user():
+    """
+    :returns message of state endpoint connection
+    En este caso, se tiene que pasar el 'user_name' del cliente.
+    http://10.2.190.11:2000/delete_user?user_name=sonia33usr
+    """
+    user = request.args.get('user_name')
+    token = request.headers.get('Authorization')
+    rol_user, id, user_name = validate_rol_user(token)
+    if not user:
+        return "Falta el nombre de usuario", 400
+    if rol_user == 'admin':
+        connex, cursor = db.get_connection_to_db()
+        respuesta = db.get_elements_filtered(user, "users_data", "user_name", "id")
+        if respuesta:
+            # Realizar la eliminación en la base de datos
+            cursor.execute("DELETE FROM users_data WHERE user_name = %s AND gym_id = %s", (user, id))
+            connex.commit()
+            connex.close()
+            return jsonify({'message': 'Registro eliminado'}), 200  # Código de estado 200 OK
+
+        else:
+            return jsonify({'message': 'No existe ese registro'}), 404
+    else:
+        return jsonify({'message': 'No se ha podido llevar a cabo por falta de permisos'}), 401
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=2000)
