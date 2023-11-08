@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gym_Passport.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,11 +47,6 @@ namespace Gym_Passport.View
             if (this.WindowState == WindowState.Normal)
                 this.WindowState = WindowState.Maximized;
             else this.WindowState = WindowState.Normal;
-        }
-
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using FontAwesome.Sharp;
+﻿using System.Windows.Input;
 using Gym_Passport.Models;
-using Gym_Passport.Repositories;
 
 namespace Gym_Passport.ViewModels
 {
@@ -18,9 +9,8 @@ namespace Gym_Passport.ViewModels
         private UserAccountModel _currentUserAccount;
         private ViewModelBase _currentChildView;
         private string _caption;
-        private IconChar _icon;
-
-        private IUserRepository userRepository;
+        private string _displayWelcomeMessage;
+        private string _displayUserRole;
 
         //Propiedades
         public UserAccountModel CurrentUserAccount 
@@ -62,17 +52,28 @@ namespace Gym_Passport.ViewModels
                 OnPropertyChanged(nameof(Caption));
             }
         }
-        public IconChar Icon 
+
+        public string DisplayWelcomeMessage
         {
             get
             {
-                return _icon;
+                return _displayWelcomeMessage;
             }
-
             set
             {
-                _icon = value;
-                OnPropertyChanged(nameof(Icon));
+                _displayWelcomeMessage = value;
+            }
+        }
+
+        public string DisplayUserRole
+        {
+            get
+            {
+                return _displayUserRole;
+            }
+            set
+            {
+                _displayUserRole = value;
             }
         }
 
@@ -81,10 +82,21 @@ namespace Gym_Passport.ViewModels
         public ICommand ShowReservationViewCommand { get; }
         public ICommand ShowRoomViewCommand { get; }
 
-        public MainViewModel()
+        public MainViewModel(UserAccountModel currentAccount)
         {
-            userRepository = new UserRepository();
-            CurrentUserAccount = new UserAccountModel();
+            CurrentUserAccount = currentAccount;
+
+            if (CurrentUserAccount.Role.Equals("normal"))
+            {
+                DisplayUserRole = "Usuari corrent";
+            }
+
+            if (CurrentUserAccount.Role.Equals("admin"))
+            {
+                DisplayUserRole = "Administrador";
+            }
+
+            _displayWelcomeMessage = $"Benvingut a Gym Passport, {CurrentUserAccount.Name}";
 
             //Inicialización de comandos
             ShowActivityViewCommand = new ViewModelCommand(ExecuteShowActivityViewCommand);
@@ -92,9 +104,7 @@ namespace Gym_Passport.ViewModels
             ShowRoomViewCommand = new ViewModelCommand(ExecuteShowRoomViewCommand);
 
             //Vista por defecto
-
             ExecuteShowActivityViewCommand(null);
-            LoadCurrentUserData();
         }
 
         /// <summary>
@@ -125,31 +135,6 @@ namespace Gym_Passport.ViewModels
         {
             CurrentChildView = new RoomViewModel();
             Caption = "Espais";
-        }
-
-        /// <summary>
-        /// Método que actualiza los datos de la cuenta logueada (CurrentUserAccount)
-        /// </summary>
-        private void LoadCurrentUserData()
-        {
-            var user = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
-            if(user != null)
-            {
-                CurrentUserAccount.Username = user.Username;
-                CurrentUserAccount.DisplayName = $"Benvingut/da {user.Name}";
-                if(user.Role == "admin")
-                {
-                    CurrentUserAccount.Role = "Administrador";
-                }
-                if (user.Role == "user")
-                {
-                    CurrentUserAccount.Role = "Usuari";
-                }
-            } 
-            else
-            {
-                CurrentUserAccount.DisplayName = "Usuari invàlid. No s'ha pogut iniciar sessió.";
-            }
         }
     }
 }

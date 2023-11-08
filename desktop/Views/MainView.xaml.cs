@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Runtime;
 using System.Windows.Interop;
+using Gym_Passport.Models;
 
 namespace Gym_Passport.Views
 {

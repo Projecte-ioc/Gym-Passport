@@ -1,15 +1,9 @@
 ﻿using Gym_Passport.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security;
-using System.Security.RightsManagement;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Gym_Passport.Repositories;
-using System.Security.Principal;
-using System.Threading;
+using Gym_Passport.Commands;
+using Gym_Passport.Services;
 
 namespace Gym_Passport.ViewModels
 {
@@ -20,8 +14,7 @@ namespace Gym_Passport.ViewModels
         private SecureString _password;
         private string _errorMessage;
         private bool _isViewVisible = true;
-
-        private IUserRepository userRepository;
+        private UserAccountModel _currentAccount;
 
         //Propiedades
         public string Username
@@ -77,48 +70,39 @@ namespace Gym_Passport.ViewModels
                 OnPropertyChanged(nameof(IsViewVisible));
             }
         }
+        public UserAccountModel CurrentAccount
+        {
+            get
+            {
+                return _currentAccount;
+            }
+            set
+            {
+                _currentAccount = value;
+                OnPropertyChanged(nameof(CurrentAccount));
+            }
+        }
 
         //-> Comandos
-        public ICommand LoginCommand {  get; }
+        public ICommand LoginCommand { get; }
 
         //Constructor
         public LoginViewModel()
         {
-            userRepository = new UserRepository();
-            LoginCommand = new ViewModelCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
-        }
-        /// <summary>
-        /// Comando que comprueba si se puede lanzar el comando ExecuteLoginCommand dependiendo de si 
-        /// tanto el usuario como la contraseña son correctos, o no lo son.
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns>true si usuario y contraseña son correctos, false si no lo son.</returns>
-        private bool CanExecuteLoginCommand(object obj)
-        {
-            bool validData;
-            if (string.IsNullOrWhiteSpace(Username) || Username.Length < 3 ||
-                Password == null || Password.Length < 3)
-                validData = false;
-            else
-                 validData = true;
-            return validData;
+            LoginCommand = new AsyncRelayCommand(Login);
         }
 
-        /// <summary>
-        /// Comando que comprueba si el usuario introducido está en la base de datos.
-        /// </summary>
-        /// <param name="obj"></param>
-        private void ExecuteLoginCommand(object obj)
+        private async Task<UserAccountModel> Login()
         {
-            var isValidUser = userRepository.AuthenticateUser(new System.Net.NetworkCredential(Username, Password));
-            if(isValidUser)
+            CurrentAccount = await new AuthenticationService().Login(Username, Password);
+            if(CurrentAccount != null)
             {
-                Thread.CurrentPrincipal = new GenericPrincipal(
-                    new GenericIdentity(Username), null);
                 IsViewVisible = false;
+                return CurrentAccount;
             } else
             {
-                ErrorMessage = "* Nombre de usuario o contraseña inválido/a.";
+                ErrorMessage = "* Nom d'usuari o contrasenya invàlid/a.";
+                return null;
             }
         }
     }
