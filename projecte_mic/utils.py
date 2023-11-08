@@ -36,7 +36,6 @@ class Connexion:
         return records
 
     def get_elements_of_token(self, token):
-        print(type(token))
         payload = jwt.decode(token, self.SK, algorithms=['HS256'])
         return jsonify(payload)
 

@@ -51,9 +51,9 @@ def select_a_user_info_and_gym():
         if results:
             column_names = [desc[0] for desc in cursor.description]
             formatted_record = dict(zip(column_names, results))
-            # todo no devuelve token, fijar error.
+            print(type(jsonify(formatted_record).get_json()))
             token_ad = jwt.encode(formatted_record,
-                               app.config['SECRET_KEY'], algorithm='HS256')
+                               db.SK, algorithm='HS256')
             return jsonify({'ad-token': f'{token_ad}'})
         else:
             return jsonify({'error': 'No se encontraron registros para el usuario'})
