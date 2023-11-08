@@ -16,7 +16,8 @@ def register(userObj, cursor):
         try:
             cursor.execute("INSERT INTO users_data (name, rol_user, pswd_app, gym_id, user_name) VALUES ("
                            "%s, %s, %s, %s, %s)", (userObj.get_name(),
-                                                   userObj.get_rol_user(), userObj.get_pswd_app(), userObj.get_gym_id(), userObj.get_user_name()
+                                                   userObj.get_rol_user(), userObj.get_pswd_app(), userObj.get_gym_id(),
+                                                   userObj.get_user_name(), userObj.set_log(0)
                                                    ))
         except psycopg2.Error as e:
             print(e)
@@ -24,20 +25,13 @@ def register(userObj, cursor):
     return 'Usuario ya existe'
 
 
-def validate_rol_user(token):
-    data = db.get_elements_of_token(token).get_json(force=True)
-    rol_user = data.get('rol_user')
-    gym_name = data.get('gym_name')
-    user_name = data.get('user_name')
-    id = db.get_elements_filtered(gym_name.replace(' ', '-'), "gym", "name", "id")
 
-    return rol_user, id[0][0], user_name
 
 @app.route('/profile_info', methods=['GET'])
 def select_a_user_info_and_gym():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol, id, user_name = validate_rol_user(token)
+    rol, id, user_name = db.validate_rol_user(token)
     if rol == 'admin':
         query = """
         SELECT users_data.name as user_name, users_data.rol_user, gym.name as gym_name, gym.address, gym.phone_number, gym.schedule
@@ -69,7 +63,7 @@ def select_a_user_info_and_gym():
 def select_all_clients_gym():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, _ = validate_rol_user(token)
+    rol_user, id, _ = db.validate_rol_user(token)
     if rol_user == "admin":
         clients_of_my_gym = f"SELECT * FROM users_data WHERE gym_id = {id}"
         cursor.execute(clients_of_my_gym)
@@ -83,7 +77,7 @@ def select_all_clients_gym():
 def insert_individual_client():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, _ = validate_rol_user(token)
+    rol_user, id, _ = db.validate_rol_user(token)
     data = request.get_json(force=True)
     try:
         if isinstance(data, dict):
@@ -118,7 +112,7 @@ def insert_individual_client():
 def insert_diferents_clients():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, _ = validate_rol_user(token)
+    rol_user, id, _ = db.validate_rol_user(token)
     data = request.get_json(force=True)
     if rol_user == 'admin':
         try:
@@ -154,7 +148,7 @@ def update_client_data():
     """
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, user_name = validate_rol_user(token)
+    rol_user, id, user_name = db.validate_rol_user(token)
     data = request.get_json(force=True)
     try:
         if isinstance(data, dict):
@@ -223,7 +217,7 @@ def delete_user():
     """
     user = request.args.get('user_name')
     token = request.headers.get('Authorization')
-    rol_user, id, user_name = validate_rol_user(token)
+    rol_user, id, user_name = db.validate_rol_user(token)
     if not user:
         return "Falta el nombre de usuario", 400
     if rol_user == 'admin':

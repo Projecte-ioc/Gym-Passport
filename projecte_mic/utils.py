@@ -11,6 +11,15 @@ class Connexion:
     DATABASE = 'gympassportdb'
     SK = 'PROBANDOprobando'
 
+    def validate_rol_user(self, token):
+        data = self.get_elements_of_token(token).get_json(force=True)
+        rol_user = data.get('rol_user')
+        gym_name = data.get('gym_name')
+        user_name = data.get('user_name')
+        id = self.get_elements_filtered(gym_name.replace(' ', '-'), "gym", "name", "id")
+
+        return rol_user, id[0][0], user_name
+
     def get_connection_values(self):
         db_params = {
             'dbname': self.DATABASE,

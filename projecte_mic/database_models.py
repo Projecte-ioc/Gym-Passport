@@ -1,12 +1,13 @@
 # Classe que representa l'entitat User
 class User:
-    def __init__(self, id: int, name: str, user_name: str, pswd_app: str, rol_user: str, gym_id: int):
+    def __init__(self, id: int, name: str, user_name: str, pswd_app: str, rol_user: str, gym_id: int, log: int):
         self.__id = id
         self.__name = name
         self.__rol_user = rol_user
         self.__pswd_app = pswd_app
         self.__gym_id = gym_id
         self.__user_name = user_name
+        self.__log = log
 
     # GETTERS
     def get_id(self):
@@ -27,6 +28,9 @@ class User:
     def get_gym_id(self):
         return self.__gym_id
 
+    def get_log(self):
+        return self.__log
+
     # SETTERS
     def set_name(self, new_name):
         self.__name = new_name
@@ -43,6 +47,9 @@ class User:
     def set_gym_id(self, new_gym_id):
         self.__gym_id = new_gym_id
 
+    def set_log(self, new_log):
+        self.__log = new_log
+
 
 # Classe que representa l'entitat Gym
 class Gym:
@@ -52,7 +59,6 @@ class Gym:
         self.__address = address
         self.__phone_number = phone_number
         self.__schedule = schedule
-
 
     # GETTERS
     def get_id(self):
@@ -69,8 +75,6 @@ class Gym:
 
     def get_schedule(self):
         return self.__schedule
-
-
 
     # SETTERS
     def set_name(self, new_name):
@@ -100,7 +104,6 @@ class GymEvent:
         self.__user_id = user_id
         self.__gym_id = gym_id
         self.__done = done
-
 
     # GETTERS
     def get_id(self):
@@ -132,8 +135,6 @@ class GymEvent:
 
     def get_done(self):
         return self.__done
-
-
 
     # SETTERS
     def set_name(self, new_name):
@@ -168,7 +169,6 @@ class Activity:
         self.__qty_got_it = qty_got_it
         self.__schedule = schedule
 
-
     # GETTERS
     def get_id(self):
         return self.__id
@@ -187,7 +187,6 @@ class Activity:
 
     def get_schedule(self):
         return self.__schedule
-
 
     # SETTERS
     def set_name__(self, new_name):
