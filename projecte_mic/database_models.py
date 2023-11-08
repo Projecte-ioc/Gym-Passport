@@ -1,13 +1,12 @@
 # Classe que representa l'entitat User
 class User:
-    def __init__(self, id: int, name: str, user_name: str, pswd_app: str, rol_user: str, gym_id: int, table_name: str):
+    def __init__(self, id: int, name: str, user_name: str, pswd_app: str, rol_user: str, gym_id: int):
         self.__id = id
         self.__name = name
-        self.__user_name = user_name
-        self.__pswd_app = pswd_app
         self.__rol_user = rol_user
+        self.__pswd_app = pswd_app
         self.__gym_id = gym_id
-        self.__table_name = table_name
+        self.__user_name = user_name
 
     # GETTERS
     def get_id(self):
@@ -28,9 +27,6 @@ class User:
     def get_gym_id(self):
         return self.__gym_id
 
-    def get_table_name(self):
-        return self.__table_name
-
     # SETTERS
     def set_name(self, new_name):
         self.__name = new_name
@@ -50,13 +46,13 @@ class User:
 
 # Classe que representa l'entitat Gym
 class Gym:
-    def __init__(self, id: int, name: str, address: str, phone_number: str, schedule: list, table_name: str):
+    def __init__(self, id: int, name: str, address: str, phone_number: str, schedule: list):
         self.__id = id
         self.__name = name
         self.__address = address
         self.__phone_number = phone_number
         self.__schedule = schedule
-        self.__table_name = table_name
+
 
     # GETTERS
     def get_id(self):
@@ -74,8 +70,7 @@ class Gym:
     def get_schedule(self):
         return self.__schedule
 
-    def get_table_name(self):
-        return self.__table_name
+
 
     # SETTERS
     def set_name(self, new_name):
@@ -94,8 +89,7 @@ class Gym:
 # Classe que representa l'entitat GymEvent
 class GymEvent:
     def __init__(self, id: int, name: str, whereisit: str, schedule: list, qty_max_attendes: int, qty_got_it: int,
-                 rating: int, user_id: int, gym_id: int, done: bool,
-                 table_name: str):
+                 rating: int, user_id: int, gym_id: int, done: bool):
         self.__id = id
         self.__name = name
         self.__whereisit = whereisit
@@ -106,7 +100,7 @@ class GymEvent:
         self.__user_id = user_id
         self.__gym_id = gym_id
         self.__done = done
-        self.__table_name = table_name
+
 
     # GETTERS
     def get_id(self):
@@ -139,8 +133,7 @@ class GymEvent:
     def get_done(self):
         return self.__done
 
-    def get_table_name(self):
-        return self.__table_name
+
 
     # SETTERS
     def set_name(self, new_name):
@@ -167,14 +160,14 @@ class GymEvent:
 
 # Classe que representa l'entitat Activity
 class Activity:
-    def __init__(self, id, id_gym, name, qty_max_attendes, qty_got_it, schedule, table_name):
+    def __init__(self, id, id_gym, name, qty_max_attendes, qty_got_it, schedule):
         self.__id = id
         self.__id_gym = id_gym
         self.__name = name
         self.__qty_max_attendes = qty_max_attendes
         self.__qty_got_it = qty_got_it
         self.__schedule = schedule
-        self.__table_name = table_name
+
 
     # GETTERS
     def get_id(self):
@@ -195,8 +188,6 @@ class Activity:
     def get_schedule(self):
         return self.__schedule
 
-    def get_table_name(self):
-        return self.__table_name
 
     # SETTERS
     def set_name__(self, new_name):

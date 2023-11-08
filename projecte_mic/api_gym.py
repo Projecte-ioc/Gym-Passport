@@ -3,19 +3,20 @@ import psycopg2
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash
 
+import database_models
 import utils
 
 app = Flask(__name__)
 db = utils.Connexion()
 
 
-def register(id, name, rol, user, pswd, cursor):
-    user_name_exists = db.get_elements_filtered(user, "users_data", "user_name", '*')
+def register(userObj, cursor):
+    user_name_exists = db.get_elements_filtered(userObj.get_user_name(), "users_data", "user_name", '*')
     if not user_name_exists:
         try:
             cursor.execute("INSERT INTO users_data (name, rol_user, pswd_app, gym_id, user_name) VALUES ("
-                           "%s, %s, %s, %s, %s)", (name,
-                                                   rol, pswd, id, user
+                           "%s, %s, %s, %s, %s)", (userObj.get_name(),
+                                                   userObj.get_rol_user(), userObj.get_pswd_app(), userObj.get_gym_id(), userObj.get_user_name()
                                                    ))
         except psycopg2.Error as e:
             print(e)
@@ -97,7 +98,8 @@ def insert_individual_client():
                 user = item['user_name']
                 pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
         if rol_user == 'admin':
-            register(id, name, rol, user, pswd, cursor)
+            user = database_models.User(id=_, name=name, rol_user=rol,pswd_app=pswd,gym_id=id,user_name=user)
+            register(user, cursor)
 
             connection.commit()
             cursor.close()
@@ -121,11 +123,14 @@ def insert_diferents_clients():
     if rol_user == 'admin':
         try:
             for item in data:
+                # obtiene del json
                 name = item['name']
                 rol = item['rol_user']
                 user = item['user_name']
                 pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
-                register(id, name, rol, user, pswd, cursor)
+                # crea un nuevo objeto del tipo usuario
+                user = database_models.User(id=_, name=name, rol_user=rol, pswd_app=pswd, gym_id=id, user_name=user)
+                register(user, cursor)
                 connection.commit()
             return jsonify({'message': 'Usuario registrado correctamente'}), 200
         except psycopg2.Error as e:
@@ -177,7 +182,7 @@ def update_client_data():
             count = cursor.fetchone()[0]
             if count == 0:
                 connection.close()
-                return "Faltan datos requeridos", 404
+                return "No existe este usuario", 404
             # Realizar la actualización en la base de datos
             update_query = "UPDATE users_data SET"
             update_values = []
