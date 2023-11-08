@@ -1,11 +1,9 @@
-import json
-
 import jwt
 import psycopg2
 from flask import Flask, request, jsonify
 from werkzeug.security import check_password_hash
-import flask_wtf
 import utils
+from projecte_mic import database_models
 
 app = Flask(__name__)
 
@@ -17,8 +15,48 @@ app.config['SECRET_KEY'] = db.SK
 
 
 # Ruta para la autenticación
+def get_user_by_user_name(user_name, pswd):
+    connection, cursor = db.get_connection_to_db()
+
+    try:
+        cursor.execute("SELECT * FROM users_data WHERE user_name = %s", (user_name,))
+        row = cursor.fetchone()
+        if row and check_password_hash(row[2], pswd):
+            return database_models.User(*row)
+    except psycopg2.Error as e:
+        print(f"Error: {e}")
+    finally:
+        cursor.close()
+        connection.close()
+
+    return None
+
+
 @app.route('/login', methods=['POST'])
 def login():
+    data = request.get_json(force=True)
+    if isinstance(data, dict):
+        user_name = data.get("user_name")
+        pswd = data.get("pswd_app")
+    else:
+        for item in data:
+            user_name = item["user_name"]
+            pswd = item["pswd_app"]
+
+    if not user_name or not pswd:
+        return jsonify({'message': 'Revisa que los campos no esten vacíos'}), 404
+    user = get_user_by_user_name(user_name, pswd)
+    if user:
+        token = jwt.encode({
+            'user_name': user.get_user_name(),
+            'rol_user': user.get_rol_user(),
+            'gym_name': db.get_elements_filtered(user.get_gym_id(), "gym", "id", "name")[0][0].replace("-", " "),
+            'name': user.get_name()
+        }, app.config['SECRET_KEY'], algorithm='HS256')
+        return jsonify({'token': token})
+    else:
+        return jsonify({'message': 'Credenciales inválidas'}), 401
+    '''
     data = request.get_json(force=True)
     connection, cursor = db.get_connection_to_db()
     if isinstance(data, dict):
@@ -50,6 +88,7 @@ def login():
     finally:
         cursor.close()
         connection.close()
+    '''
 
 
 if __name__ == '__main__':
