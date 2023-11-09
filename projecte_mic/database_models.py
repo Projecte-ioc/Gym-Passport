@@ -49,6 +49,7 @@ class User:
 
     def set_log(self, new_log):
         self.__log = new_log
+        return self.__log
 
 
 # Classe que representa l'entitat Gym

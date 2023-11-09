@@ -13,6 +13,7 @@ class Connexion:
 
     def validate_rol_user(self, token):
         data = self.get_elements_of_token(token).get_json(force=True)
+        print(data)
         rol_user = data.get('rol_user')
         gym_name = data.get('gym_name')
         user_name = data.get('user_name')

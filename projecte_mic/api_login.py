@@ -50,15 +50,16 @@ def login():
     user = get_user_by_user_name(user_name, pswd)
     if user:
         token = jwt.encode({
-            'user_name': user.get_name(),
+            'user_name': user.get_user_name(),
             'rol_user': user.get_rol_user(),
             'gym_name': db.get_elements_filtered(user.get_gym_id(), "gym", "id", "name")[0][0].replace("-", " "),
             'name': user.get_name()
         }, app.config['SECRET_KEY'], algorithm='HS256')
         if token:
             new_log = user.set_log(1)
-            cursor.execute(f"UPDATE users_data SET log = {new_log} WHERE user_name = {user_name}")
-            connection.commit().close()
+            cursor.execute(f"UPDATE users_data SET log = {new_log} WHERE user_name = '{user.get_user_name()}'")
+            connection.commit()
+            connection.close()
 
         return jsonify({'token': token})
     else:
@@ -68,15 +69,27 @@ def login():
 @app.route('/logout', methods=['PATCH'])
 def logout():
     connection, cursor = db.get_connection_to_db()
-    token = request.headers.get()
+    token = request.headers.get('Authorization')
     _, _, user_name = db.validate_rol_user(token)
+
     cursor.execute("SELECT * FROM users_data WHERE user_name = %s", (user_name,))
     row = cursor.fetchone()
+
     if row:
-        user = User(id=row[0], name=row[1], user_name=row[2], pswd_app=row[3], rol_user=row[4],gym_id=row[5], log=row[6])
-    new_log = user.set_log(0)
-    cursor.execute(f"UPDATE users_data SET log = {new_log} WHERE user_name = {user_name}")
-    connection.commit().close()
+        # Crear el objeto User utilizando los valores recuperados de la base de datos
+        user = User(id=row[0], name=row[1], rol_user=row[2], pswd_app=row[3], gym_id=row[4], user_name=row[5], log=row[6])
+
+        # Establecer el log en 0
+        new_log = user.set_log(0)
+
+        # Actualizar el valor de log en la base de datos
+        cursor.execute(f"UPDATE users_data SET log = {new_log} WHERE user_name = '{user_name}'")
+        connection.commit()
+        connection.close()
+        return jsonify({'message': 'User logged out successfully'})
+    else:
+        return jsonify({'message': 'User not found or invalid credentials'}), 404
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4000)

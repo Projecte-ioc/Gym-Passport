@@ -14,10 +14,10 @@ def register(userObj, cursor):
     user_name_exists = db.get_elements_filtered(userObj.get_user_name(), "users_data", "user_name", '*')
     if not user_name_exists:
         try:
-            cursor.execute("INSERT INTO users_data (name, rol_user, pswd_app, gym_id, user_name) VALUES ("
-                           "%s, %s, %s, %s, %s)", (userObj.get_name(),
+            cursor.execute("INSERT INTO users_data (name, rol_user, pswd_app, gym_id, user_name, log) VALUES ("
+                           "%s, %s, %s, %s, %s, %s)", (userObj.get_name(),
                                                    userObj.get_rol_user(), userObj.get_pswd_app(), userObj.get_gym_id(),
-                                                   userObj.get_user_name(), userObj.set_log(0)
+                                                   userObj.get_user_name(), userObj.get_log()
                                                    ))
         except psycopg2.Error as e:
             print(e)
@@ -92,7 +92,7 @@ def insert_individual_client():
                 user = item['user_name']
                 pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
         if rol_user == 'admin':
-            user = database_models.User(id=_, name=name, rol_user=rol,pswd_app=pswd,gym_id=id,user_name=user)
+            user = database_models.User(id=_, name=name, rol_user=rol,pswd_app=pswd,gym_id=id,user_name=user, log=0)
             register(user, cursor)
 
             connection.commit()
