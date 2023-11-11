@@ -1,15 +1,12 @@
 import jwt
 import psycopg2
 from flask import jsonify
+from dotenv import load_dotenv
+import os
 
 
 class Connexion:
-    USER = 'isard'
-    PASSWORD = 'pirineus'
-    HOST = '127.0.0.1'
-    PORT = 5432
-    DATABASE = 'gympassportdb'
-    SK = 'PROBANDOprobando'
+    load_dotenv()
 
     def validate_rol_user(self, token):
         data = self.get_elements_of_token(token).get_json(force=True)
@@ -23,11 +20,11 @@ class Connexion:
 
     def get_connection_values(self):
         db_params = {
-            'dbname': self.DATABASE,
-            'user': self.USER,
-            'password': self.PASSWORD,
-            'host': self.HOST,
-            'port': self.PORT
+            'dbname': os.getenv("DATABASE"),
+            'user': os.getenv("USER"),
+            'password': os.getenv("PASSWORD"),
+            'host': os.getenv("HOST"),
+            'port': os.getenv("PORT")
         }
         return db_params
 
@@ -46,7 +43,7 @@ class Connexion:
         return records
 
     def get_elements_of_token(self, token):
-        payload = jwt.decode(token, self.SK, algorithms=['HS256'])
+        payload = jwt.decode(token, os.getenv("SK"), algorithms=['HS256'])
         return jsonify(payload)
 
     def format_records(self, records, column_names):

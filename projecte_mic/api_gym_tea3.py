@@ -1,14 +1,15 @@
+import os
+from dotenv import load_dotenv
 import jwt
 import psycopg2
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash
-
-import database_models
-import utils
+from database_models_tea2 import User
+from utils_tea_2 import Connexion
 
 app = Flask(__name__)
-db = utils.Connexion()
-
+db = Connexion()
+load_dotenv()
 
 def register(userObj, cursor):
     user_name_exists = db.get_elements_filtered(userObj.get_user_name(), "users_data", "user_name", '*')
@@ -16,15 +17,14 @@ def register(userObj, cursor):
         try:
             cursor.execute("INSERT INTO users_data (name, rol_user, pswd_app, gym_id, user_name, log) VALUES ("
                            "%s, %s, %s, %s, %s, %s)", (userObj.get_name(),
-                                                   userObj.get_rol_user(), userObj.get_pswd_app(), userObj.get_gym_id(),
-                                                   userObj.get_user_name(), userObj.get_log()
-                                                   ))
+                                                       userObj.get_rol_user(), userObj.get_pswd_app(),
+                                                       userObj.get_gym_id(),
+                                                       userObj.get_user_name(), userObj.get_log()
+                                                       ))
         except psycopg2.Error as e:
             print(e)
 
     return 'Usuario ya existe'
-
-
 
 
 @app.route('/profile_info', methods=['GET'])
@@ -48,7 +48,7 @@ def select_a_user_info_and_gym():
             formatted_record = dict(zip(column_names, results))
             print(type(jsonify(formatted_record).get_json()))
             token_ad = jwt.encode(formatted_record,
-                               db.SK, algorithm='HS256')
+                                  os.getenv("SK"), algorithm='HS256')
             return jsonify({'ad-token': f'{token_ad}'})
         else:
             return jsonify({'error': 'No se encontraron registros para el usuario'})
@@ -56,7 +56,6 @@ def select_a_user_info_and_gym():
     else:
 
         return jsonify({'nl-token': f'{token}'})
-
 
 
 @app.route('/consultar_clientes_gym', methods=['GET'])
@@ -92,7 +91,7 @@ def insert_individual_client():
                 user = item['user_name']
                 pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
         if rol_user == 'admin':
-            user = database_models.User(id=_, name=name, rol_user=rol,pswd_app=pswd,gym_id=id,user_name=user, log=0)
+            user = User(id=_, name=name, rol_user=rol, pswd_app=pswd, gym_id=id, user_name=user, log=0)
             register(user, cursor)
 
             connection.commit()
@@ -123,7 +122,7 @@ def insert_diferents_clients():
                 user = item['user_name']
                 pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
                 # crea un nuevo objeto del tipo usuario
-                user = database_models.User(id=_, name=name, rol_user=rol, pswd_app=pswd, gym_id=id, user_name=user)
+                user = User(id=_, name=name, rol_user=rol, pswd_app=pswd, gym_id=id, user_name=user)
                 register(user, cursor)
                 connection.commit()
             return jsonify({'message': 'Usuario registrado correctamente'}), 200

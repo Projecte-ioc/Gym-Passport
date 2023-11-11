@@ -1,17 +1,21 @@
+import os
 import jwt
 import psycopg2
 from flask import Flask, request, jsonify
 from werkzeug.security import check_password_hash
-import utils
-from database_models import User
+from utils_tea_2 import Connexion
+from database_models_tea2 import User
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
+load_dotenv()
+
 # Conexión a la base de datos PostgreSQL
-db = utils.Connexion()
+db = Connexion()
 
 # Clave secreta para JWT
-app.config['SECRET_KEY'] = db.SK
+app.config['SECRET_KEY'] = os.getenv("SK")
 
 
 # Ruta para la autenticación
@@ -86,9 +90,9 @@ def logout():
         cursor.execute(f"UPDATE users_data SET log = {new_log} WHERE user_name = '{user_name}'")
         connection.commit()
         connection.close()
-        return jsonify({'message': 'User logged out successfully'})
+        return jsonify({'message': 'Cerrada la sessión correctamente.'}), 201
     else:
-        return jsonify({'message': 'User not found or invalid credentials'}), 404
+        return jsonify({'message': 'Usuario no encontrado o token inválido.'}), 404
 
 
 if __name__ == '__main__':
