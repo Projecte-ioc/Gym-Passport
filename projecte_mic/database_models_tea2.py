@@ -34,18 +34,19 @@ class User:
     # SETTERS
     def set_name(self, new_name):
         self.__name = new_name
+        return self.__name
 
     def set_user_name(self, new_user_name):
         self.__user_name = new_user_name
+        return self.__user_name
 
     def set_pswd_app(self, new_pswd_app):
         self.__pswd_app = new_pswd_app
+        return self.__pswd_app
 
     def set_rol_user(self, new_rol_user):
         self.__rol_user = new_rol_user
-
-    def set_gym_id(self, new_gym_id):
-        self.__gym_id = new_gym_id
+        return self.__rol_user
 
     def set_log(self, new_log):
         self.__log = new_log
