@@ -93,7 +93,7 @@ class Gym:
 
 # Classe que representa l'entitat GymEvent
 class GymEvent:
-    def __init__(self, id: int, name: str, whereisit: str, schedule: list, qty_max_attendes: int, qty_got_it: int,
+    def __init__(self, id: int, name: str, whereisit: str, schedule: str, qty_max_attendes: int, qty_got_it: int,
                  rating: int, user_id: int, gym_id: int, done: bool):
         self.__id = id
         self.__name = name
@@ -162,7 +162,7 @@ class GymEvent:
 
 # Classe que representa l'entitat Activity
 class Activity:
-    def __init__(self, id, id_gym, name, qty_max_attendes, qty_got_it, schedule):
+    def __init__(self, id: int, id_gym: int, name: str, qty_max_attendes: int, qty_got_it: int, schedule: list[str]):
         self.__id = id
         self.__id_gym = id_gym
         self.__name = name

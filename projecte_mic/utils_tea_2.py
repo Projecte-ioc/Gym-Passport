@@ -8,7 +8,7 @@ import os
 class Connexion:
     load_dotenv()
 
-    def validate_rol_user(self, token):
+    def validate_rol_user(self, token: str):
         data = self.get_elements_of_token(token).get_json(force=True)
         print(data)
         rol_user = data.get('rol_user')
