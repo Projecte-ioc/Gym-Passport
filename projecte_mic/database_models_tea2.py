@@ -81,15 +81,19 @@ class Gym:
     # SETTERS
     def set_name(self, new_name):
         self.__name = new_name
+        return self.__name
 
     def set_addres(self, new_address):
         self.__address = new_address
+        return self.__address
 
     def set_phone_number(self, new_phone_number):
         self.__phone_number = new_phone_number
+        return self.__phone_number
 
     def set_schedule(self, new_schedule):
         self.__schedule = new_schedule
+        return self.__schedule
 
 
 # Classe que representa l'entitat GymEvent
@@ -141,24 +145,31 @@ class GymEvent:
     # SETTERS
     def set_name(self, new_name):
         self.__name = new_name
+        return self.__name
 
     def set_whereisit(self, new_whereisit):
         self.__name = new_whereisit
+        return self.__whereisit
 
     def set_schedule(self, new_schedule):
         self.__schedule = new_schedule
+        return self.__schedule
 
     def set_qty_max_attendes(self, new_qty_max_attendes):
         self.__qty_max_attendes = new_qty_max_attendes
+        return self.__qty_max_attendes
 
     def set_qty_got_it(self, new_qty_got_it):
         self.__qty_got_it = new_qty_got_it
+        return self.__qty_got_it
 
     def set_rating(self, new_rating):
         self.__rating = new_rating
+        return self.__rating
 
     def set_done(self, new_done):
         self.__done = new_done
+        return self.__done
 
 
 # Classe que representa l'entitat Activity
@@ -193,12 +204,16 @@ class Activity:
     # SETTERS
     def set_name__(self, new_name):
         self.__name = new_name
+        return self.__name
 
     def set_qty_max_attendes(self, new_max):
         self.__qty_max_attendes = new_max
+        return self.__qty_max_attendes
 
     def set_qty_got_it(self, new_qty):
         self.__qty_got_it = new_qty
+        return self.__qty_got_it
 
     def set_schedule(self, new_schedule):
         self.__schedule = new_schedule
+        return self.__schedule
