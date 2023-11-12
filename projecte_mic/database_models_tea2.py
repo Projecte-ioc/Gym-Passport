@@ -32,7 +32,7 @@ class User:
         return self.__log
 
     # SETTERS
-    def set_name(self, new_name):
+    def set_name(self, new_name: str) -> str:
         self.__name = new_name
         return self.__name
 

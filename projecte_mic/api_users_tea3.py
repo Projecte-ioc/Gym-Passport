@@ -138,8 +138,8 @@ def update_client_data():
     data = request.get_json(force=True)
     try:
         if isinstance(data, dict):
-            new_name = data.get('name')
-            new_rol = data.get('rol_user')
+            new_name = User.set_name(data.get('name'))
+            new_rol = User.set_rol_user(data.get('rol_user'))
             user = data.get('user_name')
             if len(data.get('pswd_app')) < 20:
                 new_pswd = generate_password_hash(data.get('pswd_app'), method='pbkdf2', salt_length=16)
