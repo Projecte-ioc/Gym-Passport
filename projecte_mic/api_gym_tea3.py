@@ -4,12 +4,13 @@ import jwt
 import psycopg2
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash
-from database_models_tea2 import User
+from database_models_tea2 import User,Gym
 from utils_tea_2 import Connexion
 
 app = Flask(__name__)
 db = Connexion()
 load_dotenv()
+
 
 def register(userObj, cursor):
     user_name_exists = db.get_elements_filtered(userObj.get_user_name(), "users_data", "user_name", '*')
@@ -233,6 +234,52 @@ def delete_user():
             return jsonify({'message': 'No existe ese registro'}), 404
     else:
         return jsonify({'message': 'No se ha podido llevar a cabo por falta de permisos'}), 401
+
+
+@app.route('/update_gym', methods=['PATCH'])
+def update_gym_data():
+    '''
+    ESTRUCTURA JSON amb les dades a actualitzar, sino estan es perque es va quedar que no es poden modificar:
+    {
+        address: ,
+        phone_number: ,
+        schedule: ,
+    }
+    '''
+    data = request.get_json(force=True)
+    token = request.headers.get('Authorization')
+    rol_user, id, user_name = db.validate_rol_user(token)
+    connection, cursor = db.get_connection_to_db()
+    if rol_user == 'admin':
+        name = db.get_elements_filtered(filter=id, table="gym", what_filter="id", selector="name")
+        new_address = data.get('address')
+        new_phone_number = data.get('phone_number')
+        new_schedule = []
+        for item in data.get('schedule'):
+            new_schedule.append(item)
+        update_query = "UPDATE gym SET "
+        update_values = []
+        if new_address:
+            update_query += " address = %s,"
+            update_values.append(new_address)
+
+        if new_phone_number:
+            update_query += " phone_number = %s,"
+            update_values.append(new_phone_number)
+
+        if new_schedule:
+            update_query += " schedule = %s,"
+            update_values.append(new_schedule)
+
+        update_query = update_query.rstrip(',') + " WHERE name = %s"
+        update_values.append(name)
+
+        cursor.execute(update_query, tuple(update_values))
+        connection.commit()
+        connection.close()
+        return jsonify({'message': 'Datos actualizados correctamente'}), 200
+    else:
+        return jsonify({'message': 'No es poden actualitzar les dades per falta de permisos'}), 401
 
 
 if __name__ == '__main__':
