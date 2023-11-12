@@ -32,7 +32,7 @@ def register(userObj, cursor):
 def select_a_user_info_and_gym():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol, id, user_name = db.validate_rol_user(token)
+    rol, id, user_name, _ = db.validate_rol_user(token)
     if rol == 'admin':
         query = """
         SELECT users_data.name as user_name, users_data.rol_user, gym.name as gym_name, gym.address, gym.phone_number, gym.schedule
@@ -63,7 +63,7 @@ def select_a_user_info_and_gym():
 def select_all_clients_gym():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, _ = db.validate_rol_user(token)
+    rol_user, id, _, _ = db.validate_rol_user(token)
     if rol_user == "admin":
         clients_of_my_gym = f"SELECT * FROM users_data WHERE gym_id = {id}"
         cursor.execute(clients_of_my_gym)
@@ -77,7 +77,7 @@ def select_all_clients_gym():
 def insert_individual_client():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, _ = db.validate_rol_user(token)
+    rol_user, id, _, _ = db.validate_rol_user(token)
     data = request.get_json(force=True)
     try:
         if isinstance(data, dict):
@@ -112,7 +112,7 @@ def insert_individual_client():
 def insert_diferents_clients():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, _ = db.validate_rol_user(token)
+    rol_user, id, _, _ = db.validate_rol_user(token)
     data = request.get_json(force=True)
     if rol_user == 'admin':
         try:
@@ -148,7 +148,7 @@ def update_client_data():
     """
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, user_name = db.validate_rol_user(token)
+    rol_user, id, user_name, _ = db.validate_rol_user(token)
     data = request.get_json(force=True)
     try:
         if isinstance(data, dict):
@@ -217,7 +217,7 @@ def delete_user():
     """
     user = request.args.get('user_name')
     token = request.headers.get('Authorization')
-    rol_user, id, user_name = db.validate_rol_user(token)
+    rol_user, id, user_name, _ = db.validate_rol_user(token)
     if not user:
         return "Falta el nombre de usuario", 400
     if rol_user == 'admin':
@@ -248,10 +248,10 @@ def update_gym_data():
     '''
     data = request.get_json(force=True)
     token = request.headers.get('Authorization')
-    rol_user, id, user_name = db.validate_rol_user(token)
+    rol_user, id, user_name, gym_name = db.validate_rol_user(token)
     connection, cursor = db.get_connection_to_db()
     if rol_user == 'admin':
-        name = db.get_elements_filtered(filter=id, table="gym", what_filter="id", selector="name")
+        name = gym_name.replace(' ', '-')
         new_address = data.get('address')
         new_phone_number = data.get('phone_number')
         new_schedule = []

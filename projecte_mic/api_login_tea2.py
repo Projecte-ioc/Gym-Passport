@@ -74,7 +74,7 @@ def login():
 def logout():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    _, _, user_name = db.validate_rol_user(token)
+    _, _, user_name, _ = db.validate_rol_user(token)
 
     cursor.execute("SELECT * FROM users_data WHERE user_name = %s", (user_name,))
     row = cursor.fetchone()

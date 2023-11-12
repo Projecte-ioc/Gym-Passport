@@ -16,7 +16,7 @@ class Connexion:
         user_name = data.get('user_name')
         id = self.get_elements_filtered(gym_name.replace(' ', '-'), "gym", "name", "id")
 
-        return rol_user, id[0][0], user_name
+        return rol_user, id[0][0], user_name, gym_name
 
     def get_connection_values(self):
         db_params = {
