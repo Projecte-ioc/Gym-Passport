@@ -1,5 +1,7 @@
 # Classe que representa l'entitat User
 class User:
+    __table_name__ = "users_data"
+
     def __init__(self, id: int, name: str, user_name: str, pswd_app: str, rol_user: str, gym_id: int, log: int):
         self.__id = id
         self.__name = name
@@ -55,6 +57,8 @@ class User:
 
 # Classe que representa l'entitat Gym
 class Gym:
+    __table_name__ = "gym"
+
     def __init__(self, id: int, name: str, address: str, phone_number: str, schedule: list):
         self.__id = id
         self.__name = name
@@ -98,6 +102,8 @@ class Gym:
 
 # Classe que representa l'entitat GymEvent
 class GymEvent:
+    __table_name__ = "gym_events"
+
     def __init__(self, id: int, name: str, whereisit: str, schedule: str, qty_max_attendes: int, qty_got_it: int,
                  rating: int, user_id: int, gym_id: int, done: bool):
         self.__id = id
@@ -174,6 +180,8 @@ class GymEvent:
 
 # Classe que representa l'entitat Activity
 class Activity:
+    __table_name__ = "activities"
+
     def __init__(self, id: int, id_gym: int, name: str, qty_max_attendes: int, qty_got_it: int, schedule: list[str]):
         self.__id = id
         self.__id_gym = id_gym

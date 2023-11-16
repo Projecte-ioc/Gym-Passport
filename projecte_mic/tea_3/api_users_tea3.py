@@ -13,7 +13,12 @@ load_dotenv()
 
 
 def register(userObj, cursor):
-    user_name_exists = db.get_elements_filtered(userObj.get_user_name(), "users_data", "user_name", '*')
+    '''
+    params: userObjet, cursor
+    return: missatge en cas de que el usuari ja existeixi
+    funció que s'encarrega d'afegir un nou usuari dins de la taula users_data
+    '''
+    user_name_exists = db.get_elements_filtered(userObj.get_user_name(), userObj.__table_name__, "user_name", '*')
     if not user_name_exists:
         try:
             cursor.execute("INSERT INTO users_data (name, rol_user, pswd_app, gym_id, user_name, log) VALUES ("

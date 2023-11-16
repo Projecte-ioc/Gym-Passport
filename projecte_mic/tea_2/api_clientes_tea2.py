@@ -4,10 +4,10 @@ from ..tea_2.utils_tea_2 import Connexion
 
 app = Flask(__name__)
 db = Connexion()
+
 '''
 API PARA PODER PROBAR YO QUE LOS DATOS SE ACTUALIZAN EN LA TABLA users_data.
 '''
-
 
 def get_clients_with_par(filter):
     connex, cursor = db.get_connection_to_db()
@@ -52,11 +52,16 @@ def get_all_clientes():
 
 @app.route('/cliente', methods=['GET'])
 def get_clients_with_params():
+    '''
+    EndPoint que retorna les dades de un client segons els paramentres que li passem.
+    Exemple d'ús:
+        http://http://10.2.190.11:5000/cliente?name=Meritxell
+    '''
     connex, cursor = db.get_connection_to_db()
 
-    filter_name = request.args.get('nombre')
+    filter_name = request.args.get('name')
     filter_id = request.args.get('id')
-    filter_user = request.args.get('usuario')
+    filter_user = request.args.get('user_name')
 
     query_sql = "SELECT * FROM users_data WHERE 1=1"
     if filter_id:
@@ -74,4 +79,4 @@ def get_clients_with_params():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=1000)
+    app.run(host="0.0.0.0", port=5000)
