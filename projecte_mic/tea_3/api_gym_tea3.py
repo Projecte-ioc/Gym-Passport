@@ -1,6 +1,6 @@
 
 from flask import Flask, request, jsonify
-from utils_tea_2 import Connexion
+from projecte_mic.tea_2.utils_tea_2 import Connexion
 
 app = Flask(__name__)
 db = Connexion()

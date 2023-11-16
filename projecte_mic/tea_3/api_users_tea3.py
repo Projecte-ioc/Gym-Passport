@@ -4,8 +4,8 @@ import jwt
 import psycopg2
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash
-from database_models_tea2 import User, Gym
-from utils_tea_2 import Connexion
+from ..tea_2.database_models_tea2 import User
+from ..tea_2.utils_tea_2 import Connexion
 
 app = Flask(__name__)
 db = Connexion()
