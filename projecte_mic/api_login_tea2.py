@@ -4,7 +4,7 @@ import psycopg2
 from flask import Flask, request, jsonify
 from werkzeug.security import check_password_hash
 from utils_tea_2 import Connexion
-from database_models_tea2 import User
+from database_models_tea2 import User, Gym
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -23,7 +23,7 @@ def get_user_by_user_name(user_name, pswd):
     connection, cursor = db.get_connection_to_db()
 
     try:
-        cursor.execute("SELECT * FROM users_data WHERE user_name = %s", (user_name,))
+        cursor.execute(f"SELECT * FROM {User.__table_name__} WHERE user_name = %s", (user_name,))
         row = cursor.fetchone()
         if row and check_password_hash(row[3], pswd):
             return User(id=row[0], name=row[1], rol_user=row[2], pswd_app=row[3], gym_id=row[4], user_name=row[5],
@@ -56,12 +56,12 @@ def login():
         token = jwt.encode({
             'user_name': user.get_user_name(),
             'rol_user': user.get_rol_user(),
-            'gym_name': db.get_elements_filtered(user.get_gym_id(), "gym", "id", "name")[0][0].replace("-", " "),
+            'gym_name': db.get_elements_filtered(user.get_gym_id(), Gym.__table_name__, "id", "name")[0][0].replace("-", " "),
             'name': user.get_name()
         }, app.config['SECRET_KEY'], algorithm='HS256')
         if token:
             new_log = user.set_log(1)
-            cursor.execute(f"UPDATE users_data SET log = {new_log} WHERE user_name = '{user.get_user_name()}'")
+            cursor.execute(f"UPDATE {User.__table_name__} SET log = {new_log} WHERE user_name = '{user.get_user_name()}'")
             connection.commit()
             connection.close()
 
@@ -76,7 +76,7 @@ def logout():
     token = request.headers.get('Authorization')
     _, _, user_name, _ = db.validate_rol_user(token)
 
-    cursor.execute("SELECT * FROM users_data WHERE user_name = %s", (user_name,))
+    cursor.execute(f"SELECT * FROM {User.__table_name__} WHERE user_name = %s", (user_name,))
     row = cursor.fetchone()
 
     if row:
@@ -87,7 +87,7 @@ def logout():
         new_log = user.set_log(0)
 
         # Actualizar el valor de log en la base de datos
-        cursor.execute(f"UPDATE users_data SET log = {new_log} WHERE user_name = '{user_name}'")
+        cursor.execute(f"UPDATE {User.__table_name__} SET log = {new_log} WHERE user_name = '{user_name}'")
         connection.commit()
         connection.close()
         return jsonify({'message': 'Cerrada la sessión correctamente.'}), 201
@@ -96,4 +96,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=4000)
+    app.run (host='0.0.0.0', port=4000)
