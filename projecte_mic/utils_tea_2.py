@@ -46,9 +46,3 @@ class Connexion:
         payload = jwt.decode(token, os.getenv("SK"), algorithms=['HS256'])
         return jsonify(payload)
 
-    def format_records(self, records, column_names):
-        formatted_records = []
-        for record in records:
-            formatted_record = {column_names[i]: record[i] for i in range(len(column_names))}
-            formatted_records.append(formatted_record)
-        return formatted_records

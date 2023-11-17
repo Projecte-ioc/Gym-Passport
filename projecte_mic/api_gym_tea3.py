@@ -17,8 +17,7 @@ def select_all_clients_gym():
         clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = {id}"
         cursor.execute(clients_of_my_gym)
         results = cursor.fetchall()
-        keys = ['id', 'name', 'role', 'password', 'gym_id', 'user_name', 'log']
-        results_dict = [dict(zip(keys, row)) for row in results]
+        results_dict = [dict(zip(User.__keys_user__, row)) for row in results]
         connection.close()
         return jsonify(results_dict)
     return jsonify({'message': 'No tens permisos per a consultar aquestes dades'}), 401

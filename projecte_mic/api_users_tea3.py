@@ -52,7 +52,6 @@ def select_a_user_info_and_gym():
         if results:
             column_names = [desc[0] for desc in cursor.description]
             formatted_record = dict(zip(column_names, results))
-            print(type(jsonify(formatted_record).get_json()))
             token_ad = jwt.encode(formatted_record,
                                   os.getenv("SK"), algorithm='HS256')
             return jsonify({'ad-token': f'{token_ad}'}),200
