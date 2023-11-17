@@ -1,5 +1,7 @@
 
 from flask import Flask, request, jsonify
+
+from projecte_mic.database_models_tea2 import User, Gym
 from utils_tea_2 import Connexion
 
 app = Flask(__name__)
@@ -12,7 +14,7 @@ def select_all_clients_gym():
     token = request.headers.get('Authorization')
     rol_user, id, _, _ = db.validate_rol_user(token)
     if rol_user == "admin":
-        clients_of_my_gym = f"SELECT * FROM users_data WHERE gym_id = {id}"
+        clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = {id}"
         cursor.execute(clients_of_my_gym)
         results = cursor.fetchall()
         connection.close()
@@ -41,7 +43,7 @@ def update_gym_data():
         new_schedule = []
         for item in data.get('schedule'):
             new_schedule.append(item)
-        update_query = "UPDATE gym SET "
+        update_query = f"UPDATE {Gym.__table_name__} SET "
         update_values = []
         if new_address:
             update_query += " address = %s,"

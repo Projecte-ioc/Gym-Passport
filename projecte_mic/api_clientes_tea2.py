@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 
+from projecte_mic.database_models_tea2 import User
 from utils_tea_2 import Connexion
 
 app = Flask(__name__)
@@ -16,7 +17,7 @@ def get_clients_with_par(filter):
     filter_id = request.args.get('id')
     filter_user = request.args.get('usuario')
 
-    query_sql = "SELECT * FROM clientes WHERE 1=1"
+    query_sql = f"SELECT * FROM {User.__table_name__} WHERE 1=1"
     if filter_id:
         query_sql += f" AND id = '{filter_id}'"
     if filter_name:
@@ -42,7 +43,7 @@ def format_records(records, column_names):
 @app.route('/clientes', methods=['GET'])
 def get_all_clientes():
     connex, cursor = db.get_connection_to_db()
-    cursor.execute('SELECT * FROM users_data')
+    cursor.execute(f'SELECT * FROM {User.__table_name__}')
     records = cursor.fetchall()
     column_names = [desc[0] for desc in cursor.description]
     connex.close()
@@ -63,7 +64,7 @@ def get_clients_with_params():
     filter_id = request.args.get('id')
     filter_user = request.args.get('user_name')
 
-    query_sql = "SELECT * FROM users_data WHERE 1=1"
+    query_sql = f"SELECT * FROM {User.__table_name__} WHERE 1=1"
     if filter_id:
         query_sql += f" AND id = '{filter_id}'"
     if filter_name:
