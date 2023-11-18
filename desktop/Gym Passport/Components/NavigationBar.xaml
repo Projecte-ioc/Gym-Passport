@@ -1,0 +1,109 @@
+﻿<UserControl
+    x:Class="Gym_Passport.Components.NavigationBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Gym_Passport.Components"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+    </UserControl.Resources>
+
+    <StackPanel>
+        <RadioButton
+            Command="{Binding ShowProfileViewCommand}"
+            IsChecked="True"
+            Style="{StaticResource menuButton}"
+            Tag="{StaticResource color1}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="30,0,0,0"
+                    Style="{StaticResource menuButtonText}"
+                    Text="Perfil" />
+            </StackPanel>
+        </RadioButton>
+
+        <RadioButton
+            Command="{Binding ShowUsersViewCommand}"
+            Style="{StaticResource menuButton}"
+            Tag="{StaticResource color1}">
+            <!--<RadioButton.Visibility>
+                <Binding Converter="{StaticResource BooleanToVisibility}"
+                         Mode="TwoWay"
+                         Path="IsRoomButtonVisible" />
+            </RadioButton.Visibility>-->
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="30,0,0,0"
+                    Style="{StaticResource menuButtonText}"
+                    Text="Clients" />
+            </StackPanel>
+
+        </RadioButton>
+
+        <RadioButton
+            Command="{Binding ShowActiviesViewCommand}"
+            Style="{StaticResource menuButton}"
+            Tag="{StaticResource color1}">
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="30,0,0,0"
+                    Style="{StaticResource menuButtonText}"
+                    Text="Activitats" />
+            </StackPanel>
+
+        </RadioButton>
+
+        <RadioButton
+            Command="{Binding ShowGymEventsViewCommand}"
+            Style="{StaticResource menuButton}"
+            Tag="{StaticResource color1}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="30,0,0,0"
+                    Style="{StaticResource menuButtonText}"
+                    Text="Esdeveniments" />
+            </StackPanel>
+        </RadioButton>
+
+        <RadioButton
+            Command="{Binding ShowReservationsViewCommand}"
+            Style="{StaticResource menuButton}"
+            Tag="{StaticResource color1}">
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="30,0,0,0"
+                    Style="{StaticResource menuButtonText}"
+                    Text="Reserves" />
+            </StackPanel>
+        </RadioButton>
+
+        <RadioButton
+            Command="{Binding ShowRoomsViewCommand}"
+            Style="{StaticResource menuButton}"
+            Tag="{StaticResource color1}">
+            <!--<RadioButton.Visibility>
+                <Binding
+                    Converter="{StaticResource BooleanToVisibility}"
+                    Mode="TwoWay"
+                    Path="IsRoomButtonVisible" />
+            </RadioButton.Visibility>-->
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="30,0,0,0"
+                    Style="{StaticResource menuButtonText}"
+                    Text="Espais" />
+            </StackPanel>
+
+        </RadioButton>
+
+    </StackPanel>
+</UserControl>
