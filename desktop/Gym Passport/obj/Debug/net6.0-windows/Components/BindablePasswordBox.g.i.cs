@@ -61,7 +61,7 @@ namespace Gym_Passport.Components {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Gym Passport;component/components/bindablepasswordbox.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Gym Passport;V1.0.0.0;component/components/bindablepasswordbox.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Components\BindablePasswordBox.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

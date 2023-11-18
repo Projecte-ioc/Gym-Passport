@@ -10,6 +10,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/UIColors.xaml" />
                 <ResourceDictionary Source="/Styles/ButtonStyles.xaml" />
+                <!--  LAS SIGUIENTES LÍNEAS ACTIVAN MATERIAL DESIGN  -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+                <!--  FIN DE LAS LÍNEAS QUE ACTIVAN MATERIAL DESIGN  -->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

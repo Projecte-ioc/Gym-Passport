@@ -23,7 +23,8 @@
         <!--  Menu de navegación  -->
         <Border
             Grid.Column="0"
-            Background="DarkSlateBlue" CornerRadius="0, 0, 0, 10">
+            Background="DarkSlateBlue"
+            CornerRadius="0, 0, 0, 10">
 
             <StackPanel>
 
@@ -108,11 +109,19 @@
 
                 </Grid>
 
-                <!--  Contenido de la sección  -->
-                <ContentControl
+                <Border
                     Grid.Row="2"
-                    Margin="25"
-                    Content="{Binding ContentViewModel}" />
+                    Margin="20"
+                    Background="White"
+                    CornerRadius="10,10,10,10">
+
+                    <!--  Contenido de la sección  -->
+                    <ContentControl
+                        Grid.Row="2"
+                        Margin="25"
+                        Content="{Binding ContentViewModel}" />
+
+                </Border>
 
             </Grid>
 

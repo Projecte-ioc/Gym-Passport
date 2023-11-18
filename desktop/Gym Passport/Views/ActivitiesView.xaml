@@ -59,8 +59,11 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Nom" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Nom d'usuari" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Rol" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Tipus" />
+                    <GridViewColumn
+                        Width="140"
+                        DisplayMemberBinding="{Binding Name}"
+                        Header="Entrenador" />
                 </GridView>
             </ListView.View>
         </ListView>
