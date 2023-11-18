@@ -19,7 +19,7 @@ def select_all_clients_gym():
         results = cursor.fetchall()
         results_dict = [dict(zip(User.__keys_user__, row)) for row in results]
         connection.close()
-        return jsonify(results_dict)
+        return jsonify(results_dict), 200
     return jsonify({'message': 'No tens permisos per a consultar aquestes dades'}), 401
 
 
