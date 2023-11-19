@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 
-from projecte_mic.database_models_tea2 import User
+from database_models_tea2 import User
 from utils_tea_2 import Connexion
 
 app = Flask(__name__)

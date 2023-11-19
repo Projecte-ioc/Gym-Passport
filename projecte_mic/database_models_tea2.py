@@ -13,45 +13,50 @@ class User:
         self.__log = log
 
     # GETTERS
-    def get_id(self):
+    @property
+    def id(self):
         return self.__id
 
-    def get_name(self):
+    @property
+    def name(self):
         return self.__name
 
-    def get_user_name(self):
+    @property
+    def user_name(self):
         return self.__user_name
 
-    def get_pswd_app(self):
+    @property
+    def pswd_app(self):
         return self.__pswd_app
 
-    def get_rol_user(self):
+    @property
+    def rol_user(self):
         return self.__rol_user
 
-    def get_gym_id(self):
+    @property
+    def gym_id(self):
         return self.__gym_id
 
-    def get_log(self):
+    @property
+    def log(self):
         return self.__log
 
     # SETTERS
-    def set_name(self, new_name: str) -> str:
+    @name.setter
+    def name(self, new_name: str) -> str:
         self.__name = new_name
         return self.__name
 
-    def set_user_name(self, new_user_name):
-        self.__user_name = new_user_name
-        return self.__user_name
-
-    def set_pswd_app(self, new_pswd_app):
+    @pswd_app.setter
+    def pswd_app(self, new_pswd_app):
         self.__pswd_app = new_pswd_app
         return self.__pswd_app
-
-    def set_rol_user(self, new_rol_user):
+    @rol_user.setter
+    def rol_user(self, new_rol_user):
         self.__rol_user = new_rol_user
         return self.__rol_user
-
-    def set_log(self, new_log):
+    @log.setter
+    def log(self, new_log):
         self.__log = new_log
         return self.__log
 
@@ -106,7 +111,7 @@ class Gym:
 class GymEvent:
     __table_name__ = "gym_events"
     __keys_events__ = ['id', 'name', 'whereisit', 'schedule', 'qty_max_attendes', 'qty_got_it', 'rating', 'user_id',
-                     'gym_id', 'done']
+                       'gym_id', 'done']
 
     def __init__(self, id: int, name: str, whereisit: str, schedule: str, qty_max_attendes: int, qty_got_it: int,
                  rating: int, user_id: int, gym_id: int, done: bool):
