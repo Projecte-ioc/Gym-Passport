@@ -110,8 +110,8 @@ class Gym:
 # Classe que representa l'entitat GymEvent
 class GymEvent:
     __table_name__ = "gym_events"
-    __keys_events__ = ['id', 'name', 'whereisit', 'schedule', 'qty_max_attendes', 'qty_got_it', 'rating', 'user_id',
-                       'gym_id', 'done']
+
+    __keys_events__ = ['id', 'name', 'whereisit', 'schedule', 'qty_max_attendes', 'qty_got_it', 'user_id', 'gym_id', 'done','date', 'hour']
 
     def __init__(self, id: int, name: str, whereisit: str, schedule: str, qty_max_attendes: int, qty_got_it: int,
                  rating: int, user_id: int, gym_id: int, done: bool):

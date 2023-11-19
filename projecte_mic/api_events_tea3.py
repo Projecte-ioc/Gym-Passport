@@ -7,9 +7,9 @@ app = Flask(__name__)
 db = Connexion()
 
 
-#  __keys_events__ = ['id', 'name', 'whereisit', 'schedule', 'qty_max_attendes', 'qty_got_it', 'rating', 'user_id',
-#                      'gym_id', 'done']
-
+#  __keys_events__ = ['id', 'name', 'whereisit', 'schedule', 'qty_max_attendes', 'qty_got_it', 'user_id',
+#                      'gym_id', 'done','date', 'hour']
+# TODO revisar error 'unhasable type: list'
 @app.route('/obtener_eventos')
 def get_all_events():
     token = request.headers.get('Authorization')
@@ -17,8 +17,9 @@ def get_all_events():
     results = db.get_elements_filtered(id, GymEvent.__table_name__, 'gym_id', '*')
     if results:
         print(type(results))
-        results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
-        return jsonify({results_dict}), 200
+        # results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
+        print(str(results))
+        return jsonify({results}), 200
     else:
         return jsonify({'message': 'No es possible recuperar les dades'}), 404
 
