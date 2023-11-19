@@ -14,24 +14,13 @@ db = Connexion()
 def get_all_events():
     token = request.headers.get('Authorization')
     rol_user, id, user_name, gym_name = db.validate_rol_user(token)
-    if rol_user == 'admin':
-        results = db.get_elements_filtered(id, GymEvent.__table_name__, 'gym_id', '*')
-        if results:
-            print(type(results))
-            results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
-            return jsonify({results_dict}), 200
-        else:
-            return jsonify({'message': 'No es possible recuperar les dades'}), 404
-    elif rol_user == 'normal':
-        user_id = db.get_elements_filtered(user_name, User.__table_name__, "user_name", "id")[0][0]
-        results = db.get_elements_filtered(user_id, GymEvent.__table_name__, "user_id", "*")
-        if results:
-            results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
-            return jsonify({results_dict}), 200
-        else:
-            return jsonify({'message': 'No es possible recuperar les dades'}), 404
+    results = db.get_elements_filtered(id, GymEvent.__table_name__, 'gym_id', '*')
+    if results:
+        print(type(results))
+        results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
+        return jsonify({results_dict}), 200
     else:
-        return jsonify({'message': 'No tens permisos per fer la gestió'}), 401
+        return jsonify({'message': 'No es possible recuperar les dades'}), 404
 
 
 if __name__ == '__main__':
