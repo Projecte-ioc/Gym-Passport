@@ -39,24 +39,25 @@ def update_gym_data():
     connection, cursor = db.get_connection_to_db()
     if rol_user == 'admin':
         name = gym_name.replace(' ', '-')
-        new_address = data.get('address')
-        new_phone_number = data.get('phone_number')
+        Gym.address = data.get('address')
+        Gym.phone_number = data.get('phone_number')
         new_schedule = []
         for item in data.get('schedule'):
             new_schedule.append(item)
         update_query = f"UPDATE {Gym.__table_name__} SET "
         update_values = []
-        if new_address:
+        if Gym.address:
             update_query += " address = %s,"
-            update_values.append(new_address)
+            update_values.append(Gym.address)
 
-        if new_phone_number:
+        if Gym.phone_number:
             update_query += " phone_number = %s,"
-            update_values.append(new_phone_number)
+            update_values.append(Gym.phone_number)
 
         if new_schedule:
             update_query += " schedule = %s,"
-            update_values.append(new_schedule)
+            Gym.schedule = new_schedule
+            update_values.append(Gym.schedule)
 
         update_query = update_query.rstrip(',') + " WHERE name = %s"
         update_values.append(name)
