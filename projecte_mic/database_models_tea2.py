@@ -117,26 +117,26 @@ class Gym:
         self.__schedule = new_schedule
         return self.__schedule
 
-
+#TODO MODIFICAR ESTA CLASSE, LAS COLUMNAS NO ESTAN BIEN.
 # Classe que representa l'entitat GymEvent
 class GymEvent:
     __table_name__ = "gym_events"
 
-    __keys_events__ = ['id', 'name', 'whereisit', 'schedule', 'qty_max_attendes', 'qty_got_it', 'user_id', 'gym_id',
+    __keys_events__ = ['id', 'name', 'whereisit', 'qty_max_attendes', 'qty_got_it', 'user_id', 'gym_id',
                        'done', 'date', 'hour']
 
-    def __init__(self, id: int, name: str, whereisit: str, schedule: str, qty_max_attendes: int, qty_got_it: int,
-                 rating: int, user_id: int, gym_id: int, done: bool):
+    def __init__(self, id: int, name: str, whereisit: str, qty_max_attendes: int, qty_got_it: int
+                 , user_id: int, gym_id: int, done: bool, date, hour):
         self.__id = id
         self.__name = name
         self.__whereisit = whereisit
-        self.__schedule = schedule
         self.__qty_max_attendes = qty_max_attendes
         self.__qty_got_it = qty_got_it
-        self.__rating = rating
         self.__user_id = user_id
         self.__gym_id = gym_id
         self.__done = done
+        self.__date = date
+        self.__hour = hour
 
     # GETTERS
     @property
@@ -152,20 +152,12 @@ class GymEvent:
         return self.__whereisit
 
     @property
-    def schedule(self):
-        return self.__schedule
-
-    @property
     def qty_max_attendes(self):
         return self.__qty_max_attendes
 
     @property
     def qty_got_it(self):
         return self.__qty_got_it
-
-    @property
-    def rating(self):
-        return self.__rating
 
     @property
     def user_id(self):
@@ -179,6 +171,14 @@ class GymEvent:
     def done(self):
         return self.__done
 
+    @property
+    def date(self):
+        return self.__date
+
+    @property
+    def hour(self):
+        return self.__hour
+
     # SETTERS
     @name.setter
     def name(self, new_name):
@@ -190,11 +190,6 @@ class GymEvent:
         self.__name = new_whereisit
         return self.__whereisit
 
-    @schedule.setter
-    def schedule(self, new_schedule):
-        self.__schedule = new_schedule
-        return self.schedule
-
     @qty_max_attendes.setter
     def qty_max_attendes(self, new_qty_max_attendes):
         self.__qty_max_attendes = new_qty_max_attendes
@@ -205,15 +200,20 @@ class GymEvent:
         self.__qty_got_it = new_qty_got_it
         return self.__qty_got_it
 
-    @rating.setter
-    def rating(self, new_rating):
-        self.__rating = new_rating
-        return self.__rating
-
     @done.setter
     def done(self, new_done):
         self.__done = new_done
         return self.__done
+
+    @date.setter
+    def date(self, new_date):
+        self.__date = new_date
+        return self.__date
+
+    @hour.setter
+    def hour(self, new_hour):
+        self.__hour = new_hour
+        return self.__hour
 
 
 # Classe que representa l'entitat Activity
