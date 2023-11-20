@@ -117,7 +117,7 @@ class Gym:
         self.__schedule = new_schedule
         return self.__schedule
 
-#TODO MODIFICAR ESTA CLASSE, LAS COLUMNAS NO ESTAN BIEN.
+
 # Classe que representa l'entitat GymEvent
 class GymEvent:
     __table_name__ = "gym_events"
@@ -204,6 +204,16 @@ class GymEvent:
     def done(self, new_done):
         self.__done = new_done
         return self.__done
+
+    @user_id.setter
+    def user_id(self, new_user_id):
+        self.__user_id = new_user_id
+        return self.__user_id
+
+    @gym_id.setter
+    def gym_id(self, new_gym_id):
+        self.__gym_id = new_gym_id
+        return self.__gym_id
 
     @date.setter
     def date(self, new_date):
