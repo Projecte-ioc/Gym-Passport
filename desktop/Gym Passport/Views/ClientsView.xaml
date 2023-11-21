@@ -70,7 +70,7 @@
                 Margin="10,0,0,0"
                 Padding="10,5"
                 VerticalAlignment="Center"
-                Command="{Binding UpdateUserListCommand}"
+                Command="{Binding GetAllClientsCommand}"
                 Content="Actualitzar llista" />
 
         </StackPanel>

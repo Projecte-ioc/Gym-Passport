@@ -1,5 +1,6 @@
 ﻿using Gym_Passport.Commands;
 using Gym_Passport.Models;
+using Gym_Passport.Services;
 using Gym_Passport.State.Accounts;
 using Gym_Passport.ViewModels;
 using GymPassportPruebasAPI.Services.ClientServices;
@@ -11,40 +12,28 @@ namespace Gym_Passport_Navigation.Commands
 {
     public class AddClientCommand : AsyncCommandBase
     {
-        private readonly ClientsViewModel _clientsViewModel;
+        private readonly AddClientViewModel _addClientViewModel;
         private readonly IAccountStore _accountStore;
         private readonly IClientService _clientService;
+        private readonly INavigationService _navigationService;
 
-        public AddClientCommand(ClientsViewModel clientsViewModel, IAccountStore accountStore, IClientService clientService)
+        public AddClientCommand(AddClientViewModel addClientViewModel, IAccountStore accountStore, IClientService clientService, INavigationService navigationService)
         {
-            _clientsViewModel = clientsViewModel;
+            _addClientViewModel = addClientViewModel;
             _accountStore = accountStore;
             _clientService = clientService;
+            _navigationService = navigationService;
         }
 
         public override async Task ExecuteAsync(object parameter)
         {
-            if(_clientsViewModel.CurrentClient != null)
+            await _clientService.InsertClient(_accountStore.CurrentAccount.Token, new
             {
-                //await _clientService.InsertClient(_accountStore.CurrentAccount.Token, new Client
-                //{
-                //    Name = _clientsViewModel.CurrentClient.Name,
-                //    Password = _clientsViewModel.CurrentClient.Password,
-                //    Role = _clientsViewModel.Roles_SelectedValue,
-                //    Username = _clientsViewModel.CurrentClient.Username
-                //});
-
-                MessageBox.Show(
-                    _clientsViewModel.CurrentClient.Username + "\n" +
-                    _clientsViewModel.CurrentClient.Name + "\n" +
-                    _clientsViewModel.Roles_SelectedValue + "\n" +
-                    _clientsViewModel.CurrentClient.Password
-                    );
-            }
-            else
-            {
-                MessageBox.Show("El CurrentClient es null.");
-            }
+                name = _addClientViewModel.Name,
+                pswd_app = _addClientViewModel.Password,
+                rol_user = _addClientViewModel.Role,
+                user_name = _addClientViewModel.Username
+            });
         }
     }
 }

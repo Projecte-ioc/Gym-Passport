@@ -36,25 +36,22 @@
                     materialDesign:HintAssist.Hint="Nom d'usuari"
                     materialDesign:TextFieldAssist.HasClearButton="False"
                     FontSize="16"
-                    IsEnabled="{Binding IsEnabled}"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding CurrentClient.Username}" />
+                    Text="{Binding Username}" />
                 <TextBox
                     Width="200"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="Nom"
                     materialDesign:TextFieldAssist.HasClearButton="False"
                     FontSize="16"
-                    IsEnabled="{Binding IsEnabled}"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding CurrentClient.Name}" />
+                    Text="{Binding Name}" />
                 <ComboBox
                     Width="200"
                     materialDesign:HintAssist.Hint="Rol"
                     FontSize="16"
-                    IsEnabled="{Binding IsEnabled}"
                     ItemsSource="{Binding Roles}"
-                    SelectedValue="{Binding Path=Roles_SelectedValue}"
+                    SelectedItem="{Binding Role}"
                     Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
                 <TextBox
                     Width="200"
@@ -64,7 +61,7 @@
                     FontSize="16"
                     IsEnabled="{Binding IsEnabled}"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding CurrentClient.Password}" />
+                    Text="{Binding Password}" />
             </StackPanel>
             <StackPanel
                 Grid.Row="1"

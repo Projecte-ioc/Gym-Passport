@@ -1,6 +1,9 @@
 ﻿using Gym_Passport.Commands;
 using Gym_Passport.Services;
-using Gym_Passport.Stores;
+using Gym_Passport.State.Accounts;
+using Gym_Passport_Navigation.Commands;
+using GymPassportPruebasAPI.Services.ClientServices;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Gym_Passport.ViewModels
@@ -49,12 +52,46 @@ namespace Gym_Passport.ViewModels
 			}
 		}
 
+		private ObservableCollection<string> _roles;
+		public ObservableCollection<string> Roles
+		{
+			get
+			{
+				return _roles;
+			}
+			set
+			{
+                _roles = value;
+				OnPropertyChanged(nameof(Roles));
+			}
+		}
+
+		private string _password;
+		public string Password
+		{
+			get
+			{
+				return _password;
+			}
+			set
+			{
+				_password = value;
+				OnPropertyChanged(nameof(Password));
+			}
+		}
+
 		public ICommand SubmitCommand { get; }
 		public ICommand CancelCommand { get; }
 
-        public AddClientViewModel(UsersStore peopleStore, INavigationService closeNavigationService)
+        public AddClientViewModel(INavigationService closeNavigationService, IAccountStore accountStore, IClientService clientService)
         {
-			SubmitCommand = new AddUserCommand(this, peopleStore, closeNavigationService);
+            Roles = new ObservableCollection<string>
+            {
+                "normal",
+                "admin"
+            };
+
+			SubmitCommand = new AddClientCommand(this, accountStore, clientService, closeNavigationService);
             CancelCommand = new NavigateCommand(closeNavigationService);
         }
     }

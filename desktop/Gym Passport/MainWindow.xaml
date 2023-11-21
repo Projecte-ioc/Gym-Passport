@@ -51,6 +51,10 @@
                     <views:AddClientView />
                 </DataTemplate>
 
+                <!--<DataTemplate DataType="{x:Type viewModels:DeleteClientViewModel}">
+                    <views:DeleteClientView />
+                </DataTemplate>-->
+
                 <DataTemplate DataType="{x:Type viewModels:ActivitiesViewModel}">
                     <views:ActivitiesView />
                 </DataTemplate>

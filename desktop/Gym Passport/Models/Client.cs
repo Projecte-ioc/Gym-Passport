@@ -17,17 +17,17 @@ namespace Gym_Passport.Models
         [JsonProperty("pswd_app")]
         public string Password { get; set; }
 
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
-
         public override string ToString()
         {
             return
                 $"Name:\t  {Name}\n" +
                 $"Username: {Username}\n" +
                 $"Role:\t  {Role}\n";
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

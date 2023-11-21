@@ -6,6 +6,7 @@ using Gym_Passport.State.Authenticators;
 using Gym_Passport.Stores;
 using Gym_Passport.ViewModels;
 using Gym_Passport.Views;
+using Gym_Passport_Navigation.ViewModels;
 using GymPassportPruebasAPI.Services.ClientServices;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -54,11 +55,18 @@ namespace Gym_Passport
                 s.GetRequiredService<IAccountStore>(),
                 s.GetRequiredService<IGymService>(),
                 s.GetRequiredService<IClientService>(),
-                CreateAddClientNavigationService(s)));
+                CreateAddClientNavigationService(s),
+                CreateDeleteClientNavigationService(s)));
 
             services.AddTransient<AddClientViewModel>(s => new AddClientViewModel(
-                s.GetRequiredService<UsersStore>(),
-                s.GetRequiredService<CloseModalNavigationService>()));
+                s.GetRequiredService<CloseModalNavigationService>(),
+                s.GetRequiredService<IAccountStore>(),
+                s.GetRequiredService<IClientService>()));
+
+            services.AddTransient<DeleteClientViewModel>(s => new DeleteClientViewModel(
+                s.GetRequiredService<CloseModalNavigationService>(),
+                s.GetRequiredService<IAccountStore>(),
+                s.GetRequiredService<IClientService>()));
 
             services.AddTransient<ActivitiesViewModel>(s => new ActivitiesViewModel(
                 s.GetRequiredService<UsersStore>()));
@@ -112,6 +120,13 @@ namespace Gym_Passport
             return new ModalNavigationService<AddClientViewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),
                 () => serviceProvider.GetRequiredService<AddClientViewModel>());
+        }
+
+        private INavigationService CreateDeleteClientNavigationService(IServiceProvider serviceProvider)
+        {
+            return new ModalNavigationService<DeleteClientViewModel>(
+                serviceProvider.GetRequiredService<ModalNavigationStore>(),
+                () => serviceProvider.GetRequiredService<DeleteClientViewModel>());
         }
 
         private INavigationService CreateProfileNavigationService(IServiceProvider serviceProvider)
