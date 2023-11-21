@@ -10,76 +10,79 @@
     d:DesignWidth="300"
     mc:Ignorable="d">
     <StackPanel Grid.Row="1" Grid.Column="1">
-        <materialDesign:Card
+        <Grid
+            MinWidth="280"
             MinHeight="370"
             Margin="5,15,15,15"
-            Padding="10,5,10,0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="260" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
-                    <TextBlock
-                        Margin="10,10,10,20"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Text="Dades del nou client"
-                        TextAlignment="Center" />
-                    <TextBox
-                        Width="200"
-                        VerticalAlignment="Center"
-                        materialDesign:HintAssist.Hint="Nom d'usuari"
-                        materialDesign:TextFieldAssist.HasClearButton="False"
-                        FontSize="16"
-                        IsEnabled="{Binding IsEnabled}"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                        Text="{Binding CurrentClient.Username}" />
-                    <TextBox
-                        Width="200"
-                        VerticalAlignment="Center"
-                        materialDesign:HintAssist.Hint="Nom"
-                        materialDesign:TextFieldAssist.HasClearButton="False"
-                        FontSize="16"
-                        IsEnabled="{Binding IsEnabled}"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                        Text="{Binding CurrentClient.Name}" />
-                    <ComboBox
-                        Width="200"
-                        materialDesign:HintAssist.Hint="Rol"
-                        FontSize="16"
-                        IsEnabled="{Binding IsEnabled}"
-                        ItemsSource="{Binding Roles}"
-                        SelectedValue="{Binding Path=Roles_SelectedValue}"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
-                    <TextBox
-                        Width="200"
-                        VerticalAlignment="Center"
-                        materialDesign:HintAssist.Hint="Contrasenya"
-                        materialDesign:TextFieldAssist.HasClearButton="False"
-                        FontSize="16"
-                        IsEnabled="{Binding IsEnabled}"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                        Text="{Binding CurrentClient.Password}" />
-                </StackPanel>
-                <StackPanel
-                    Grid.Row="1"
-                    Margin="0,20,0,0"
-                    HorizontalAlignment="Center"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="260" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <StackPanel
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <TextBlock
+                    Margin="10,10,10,20"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="Dades del nou client"
+                    TextAlignment="Center" />
+                <TextBox
+                    Width="200"
                     VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <Button
-                        Width="105"
-                        Margin="10"
-                        Command="{Binding SubmitCommand}"
-                        Content="AFEGIR" />
-                    <Button
-                        Width="105"
-                        Margin="10"
-                        Command="{Binding CancelCommand}"
-                        Content="CANCELAR" />
-                </StackPanel>
-            </Grid>
-        </materialDesign:Card>
+                    materialDesign:HintAssist.Hint="Nom d'usuari"
+                    materialDesign:TextFieldAssist.HasClearButton="False"
+                    FontSize="16"
+                    IsEnabled="{Binding IsEnabled}"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    Text="{Binding CurrentClient.Username}" />
+                <TextBox
+                    Width="200"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Nom"
+                    materialDesign:TextFieldAssist.HasClearButton="False"
+                    FontSize="16"
+                    IsEnabled="{Binding IsEnabled}"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    Text="{Binding CurrentClient.Name}" />
+                <ComboBox
+                    Width="200"
+                    materialDesign:HintAssist.Hint="Rol"
+                    FontSize="16"
+                    IsEnabled="{Binding IsEnabled}"
+                    ItemsSource="{Binding Roles}"
+                    SelectedValue="{Binding Path=Roles_SelectedValue}"
+                    Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+                <TextBox
+                    Width="200"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Contrasenya"
+                    materialDesign:TextFieldAssist.HasClearButton="False"
+                    FontSize="16"
+                    IsEnabled="{Binding IsEnabled}"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    Text="{Binding CurrentClient.Password}" />
+            </StackPanel>
+            <StackPanel
+                Grid.Row="1"
+                Margin="0,20,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Width="105"
+                    Margin="10"
+                    Command="{Binding SubmitCommand}"
+                    Content="AFEGIR" />
+                <Button
+                    Width="105"
+                    Margin="10"
+                    Command="{Binding CancelCommand}"
+                    Content="CANCELAR" />
+            </StackPanel>
+        </Grid>
     </StackPanel>
 </UserControl>

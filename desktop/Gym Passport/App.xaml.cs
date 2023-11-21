@@ -53,7 +53,12 @@ namespace Gym_Passport
             services.AddTransient<ClientsViewModel>(s => new ClientsViewModel(
                 s.GetRequiredService<IAccountStore>(),
                 s.GetRequiredService<IGymService>(),
-                s.GetRequiredService<IClientService>()));
+                s.GetRequiredService<IClientService>(),
+                CreateAddClientNavigationService(s)));
+
+            services.AddTransient<AddClientViewModel>(s => new AddClientViewModel(
+                s.GetRequiredService<UsersStore>(),
+                s.GetRequiredService<CloseModalNavigationService>()));
 
             services.AddTransient<ActivitiesViewModel>(s => new ActivitiesViewModel(
                 s.GetRequiredService<UsersStore>()));
@@ -66,11 +71,6 @@ namespace Gym_Passport
 
             services.AddTransient<RoomsViewModel>(s => new RoomsViewModel(
                 s.GetRequiredService<UsersStore>()));
-
-            services.AddTransient<AddClientViewModel>(s => new AddClientViewModel(
-                s.GetRequiredService<UsersStore>(),
-                s.GetRequiredService<CloseModalNavigationService>()
-                ));
 
             services.AddSingleton<NavigationBarViewModel>(CreateNavigationBarViewModel);
             services.AddSingleton<MainViewModel>();
@@ -106,7 +106,8 @@ namespace Gym_Passport
             };
         }
 
-        private INavigationService CreateAddUserNavigationService(IServiceProvider serviceProvider)
+        // Crea un INavigationService para poder navegar a AddClientView
+        private INavigationService CreateAddClientNavigationService(IServiceProvider serviceProvider)
         {
             return new ModalNavigationService<AddClientViewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),

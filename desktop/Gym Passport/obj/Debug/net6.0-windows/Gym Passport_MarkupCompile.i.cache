@@ -16,5 +16,5 @@ Y:\Dev\Gym Passport\desktop\Gym Passport\App.xaml
 218-882822054
 Components\BindablePasswordBox.xaml;Components\Layout.xaml;Components\NavigationBar.xaml;MainWindow.xaml;Styles\ButtonStyles.xaml;Styles\UIColors.xaml;Views\ActivitiesView.xaml;Views\AddClientView.xaml;Views\ClientsView.xaml;Views\GymEventsView.xaml;Views\LoginView.xaml;Views\ProfileView.xaml;Views\ReservationsView.xaml;Views\RoomsView.xaml;
 
-False
+True
 

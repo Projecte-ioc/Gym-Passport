@@ -26,51 +26,49 @@
     WindowStyle="None"
     mc:Ignorable="d">
 
-    <Window.Resources>
-
-        <DataTemplate DataType="{x:Type viewModels:LayoutViewModel}">
-            <components:Layout />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModels:ProfileViewModel}">
-            <views:ProfileView />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModels:ClientsViewModel}">
-            <views:ClientsView />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModels:AddClientViewModel}">
-            <views:AddClientView />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModels:ActivitiesViewModel}">
-            <views:ActivitiesView />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModels:GymEventsViewModel}">
-            <views:GymEventsView />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModels:ReservationsViewModel}">
-            <views:ReservationsView />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModels:RoomsViewModel}">
-            <views:RoomsView />
-        </DataTemplate>
-
-    </Window.Resources>
-
     <Border
         Grid.Column="0"
         Background="SlateBlue"
         CornerRadius="10,10,10,10">
 
-        <!--<custom:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
-            <ContentControl Content="{Binding CurrentModalViewModel}" />
-        </custom:Modal>-->
         <Grid>
+
+            <Grid.Resources>
+
+                <DataTemplate DataType="{x:Type viewModels:LayoutViewModel}">
+                    <components:Layout />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:ProfileViewModel}">
+                    <views:ProfileView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:ClientsViewModel}">
+                    <views:ClientsView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:AddClientViewModel}">
+                    <views:AddClientView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:ActivitiesViewModel}">
+                    <views:ActivitiesView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:GymEventsViewModel}">
+                    <views:GymEventsView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:ReservationsViewModel}">
+                    <views:ReservationsView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:RoomsViewModel}">
+                    <views:RoomsView />
+                </DataTemplate>
+
+            </Grid.Resources>
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="25" />
                 <RowDefinition Height="*" />
@@ -130,7 +128,12 @@
 
             </Grid>
             <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" />
-
+            <custom:Modal
+                Grid.RowSpan="2"
+                Panel.ZIndex="100"
+                IsOpen="{Binding IsModalOpen}">
+                <ContentControl Content="{Binding CurrentModalViewModel}" />
+            </custom:Modal>
         </Grid>
     </Border>
 </Window>

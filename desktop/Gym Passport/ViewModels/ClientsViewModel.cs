@@ -1,5 +1,6 @@
 ﻿using Gym_Passport.Commands;
 using Gym_Passport.Models;
+using Gym_Passport.Services;
 using Gym_Passport.Services.GymServices;
 using Gym_Passport.State.Accounts;
 using Gym_Passport_Navigation.Commands;
@@ -98,8 +99,9 @@ namespace Gym_Passport.ViewModels
         public ICommand AddClientCommand { get; }
         public ICommand UpdateClientCommand { get; }
         public ICommand DeleteClientCommand { get; }
+        public ICommand ShowAddClientViewCommand { get; }
 
-        public ClientsViewModel(IAccountStore accountStore, IGymService gymService, IClientService clientService)
+        public ClientsViewModel(IAccountStore accountStore, IGymService gymService, IClientService clientService, INavigationService addClientNavigationService)
         {
             btnToggleModificationText = "Desbloquejar modificació";
             IsEnabled = false;
@@ -107,9 +109,10 @@ namespace Gym_Passport.ViewModels
             EnableClientModificationCommand = new EnableClientModificationCommand(this);
             GetAllClientsCommand = new GetAllClientsCommand(this, gymService, accountStore);
             GetClientCommand = new GetClientCommand(this);
-            AddClientCommand = new AddClientCommand(this, accountStore, clientService);
+            //AddClientCommand = new AddClientCommand(this, accountStore, clientService);
             //UpdateClientCommand = new UpdateClientCommand(this);
             //DeleteClientCommand = new DeleteClientCommand(this);
+            ShowAddClientViewCommand = new NavigateCommand(addClientNavigationService);
         }
     }
 }
