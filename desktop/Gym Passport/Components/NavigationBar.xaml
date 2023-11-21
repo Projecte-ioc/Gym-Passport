@@ -31,11 +31,12 @@
             Command="{Binding ShowUsersViewCommand}"
             Style="{StaticResource menuButton}"
             Tag="{StaticResource color1}">
-            <!--<RadioButton.Visibility>
-                <Binding Converter="{StaticResource BooleanToVisibility}"
-                         Mode="TwoWay"
-                         Path="IsRoomButtonVisible" />
-            </RadioButton.Visibility>-->
+            <RadioButton.Visibility>
+                <Binding
+                    Converter="{StaticResource BooleanToVisibility}"
+                    Mode="TwoWay"
+                    Path="AreAdminButtonsVisible" />
+            </RadioButton.Visibility>
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock
@@ -89,12 +90,12 @@
             Command="{Binding ShowRoomsViewCommand}"
             Style="{StaticResource menuButton}"
             Tag="{StaticResource color1}">
-            <!--<RadioButton.Visibility>
+            <RadioButton.Visibility>
                 <Binding
                     Converter="{StaticResource BooleanToVisibility}"
                     Mode="TwoWay"
-                    Path="IsRoomButtonVisible" />
-            </RadioButton.Visibility>-->
+                    Path="AreAdminButtonsVisible" />
+            </RadioButton.Visibility>
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock

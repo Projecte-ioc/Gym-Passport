@@ -29,7 +29,8 @@ namespace Gym_Passport.Services.GymServices
                 HttpResponseMessage httpResponseMessage = await HttpClient.GetAsync(URL);
 
                 string json = await httpResponseMessage.Content.ReadAsStringAsync();
-                ObservableCollection<Client> clients = JsonConvert.DeserializeObject<ObservableCollection<Client>>(json);
+
+                ObservableCollection<Client>  clients = JsonConvert.DeserializeObject<ObservableCollection<Client>>(json);
 
                 return clients;
             }

@@ -2,15 +2,13 @@
 using Gym_Passport.Models;
 using Gym_Passport.Services.ProfileServices;
 using Gym_Passport.State.Accounts;
-using System.Threading.Tasks;
+using Gym_Passport_Navigation.Commands;
 using System.Windows.Input;
 
 namespace Gym_Passport.ViewModels
 {
     public class ProfileViewModel : ViewModelBase
     {
-        private readonly IAccountStore _accountStore;
-        private readonly IProfileService _profileService;
         private UserProfile _userProfile;
         public UserProfile UserProfile
         {
@@ -25,20 +23,45 @@ namespace Gym_Passport.ViewModels
             }
         }
 
+        private string _btnToggleModificationText;
+        public string btnToggleModificationText
+        {
+            get
+            {
+                return _btnToggleModificationText;
+            }
+            set
+            {
+                _btnToggleModificationText = value;
+                OnPropertyChanged(nameof(btnToggleModificationText));
+            }
+        }
+
+        private bool _isEnabled;
+        public bool IsEnabled
+        {
+            get
+            {
+                return _isEnabled;
+            }
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged(nameof(IsEnabled));
+            }
+        }
+
         public ICommand GetUserProfileCommand { get; }
+        public ICommand EnableProfileModificationCommand { get; }
 
         public ProfileViewModel(IAccountStore accountStore, IProfileService profileService)
         {
-            _accountStore = accountStore;
-            _profileService = profileService;
-            GetUserProfileCommand = new GetProfileCommand(this, profileService, accountStore);
-            //GetUserProfileAsync().Wait();
-            GetUserProfileCommand.Execute(null);
-        }
+            btnToggleModificationText = "Desbloquejar modificació";
+            IsEnabled = false;
 
-        //public async Task GetUserProfileAsync() 
-        //{
-        //    _userProfile = await _profileService.GetAllProfileInfo(_accountStore.CurrentAccount.Token);
-        //}
+            GetUserProfileCommand = new GetProfileCommand(this, profileService, accountStore);
+            GetUserProfileCommand.Execute(null);
+            EnableProfileModificationCommand = new EnableProfileModificationCommand(this);
+        }
     }
 }

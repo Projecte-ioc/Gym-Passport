@@ -1,6 +1,4 @@
-﻿using Gym_Passport.ViewModels;
-
-namespace Gym_Passport.Services
+﻿namespace Gym_Passport.Services
 {
     public interface INavigationService
     {

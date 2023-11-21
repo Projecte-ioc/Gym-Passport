@@ -1,7 +1,5 @@
 ﻿using Gym_Passport.Commands;
 using Gym_Passport.Models;
-using Gym_Passport.Services.GymServices;
-using Gym_Passport.State.Accounts;
 using Gym_Passport.ViewModels;
 
 namespace Gym_Passport_Navigation.Commands
@@ -17,7 +15,12 @@ namespace Gym_Passport_Navigation.Commands
 
         public override void Execute(object? parameter)
         {
-            _clientsViewModel.CurrentClient = (Client)parameter;
+            //_clientsViewModel.CurrentClient = (Client)parameter;
+            if(parameter != null)
+            {
+                Client client = (Client)parameter;
+                _clientsViewModel.CurrentClient = (Client)client.Clone();
+            }
         }
     }
 }

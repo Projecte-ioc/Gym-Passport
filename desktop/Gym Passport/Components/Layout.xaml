@@ -91,17 +91,15 @@
                         Orientation="Horizontal">
 
                         <TextBlock
-                            Margin="0,0,20,0"
+                            Margin="10,0,20,0"
                             VerticalAlignment="Center"
-                            FontFamily="Montserrat"
-                            FontSize="14"
+                            FontSize="16"
                             Foreground="{StaticResource titleColor2}"
                             Text="{Binding DisplayWelcomeMessage}" />
 
                         <TextBlock
                             VerticalAlignment="Center"
-                            FontFamily="Montserrat"
-                            FontSize="14"
+                            FontSize="16"
                             Foreground="{StaticResource titleColor2}"
                             Text="{Binding DisplayUserRole}" />
 

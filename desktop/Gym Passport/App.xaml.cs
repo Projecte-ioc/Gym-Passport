@@ -6,6 +6,7 @@ using Gym_Passport.State.Authenticators;
 using Gym_Passport.Stores;
 using Gym_Passport.ViewModels;
 using Gym_Passport.Views;
+using GymPassportPruebasAPI.Services.ClientServices;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Security.Cryptography.Xml;
@@ -36,6 +37,7 @@ namespace Gym_Passport
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IProfileService, ProfileService>();
             services.AddSingleton<IGymService, GymService>();
+            services.AddSingleton<IClientService, ClientService>();
 
             services.AddSingleton<CloseModalNavigationService>();
 
@@ -50,7 +52,8 @@ namespace Gym_Passport
 
             services.AddTransient<ClientsViewModel>(s => new ClientsViewModel(
                 s.GetRequiredService<IAccountStore>(),
-                s.GetRequiredService<IGymService>()));
+                s.GetRequiredService<IGymService>(),
+                s.GetRequiredService<IClientService>()));
 
             services.AddTransient<ActivitiesViewModel>(s => new ActivitiesViewModel(
                 s.GetRequiredService<UsersStore>()));
@@ -84,37 +87,6 @@ namespace Gym_Passport
 
             _serviceProvider = services.BuildServiceProvider();
         }
-
-        //private LoginViewModel CreateLoginViewModel(IServiceProvider serviceProvider)
-        //{
-        //    CompositeNavigationService navigationService = new CompositeNavigationService(
-        //        serviceProvider.GetRequiredService<CloseModalNavigationService>(),
-        //        CreateProfileNavigationService(serviceProvider));
-
-        //    return new LoginViewModel(
-        //        serviceProvider.GetRequiredService<AccountStore>(),
-        //        navigationService);
-        //}
-
-        //protected override void OnStartup(StartupEventArgs e)
-        //{
-        //    var loginView = new LoginView();
-        //    loginView.Show();
-        //    loginView.IsVisibleChanged += (s, ev) =>
-        //    {
-        //        if (loginView.IsVisible == false && loginView.IsLoaded)
-        //        {
-        //            INavigationService initialNavigationService = _serviceProvider.GetRequiredService<INavigationService>();
-        //            initialNavigationService.Navigate();
-
-        //            MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-        //            MainWindow.Show();
-        //            loginView.Close();
-        //        }
-        //    };
-
-        //    base.OnStartup(e);
-        //}
 
         protected void ApplicationStart(object sender, StartupEventArgs e)
         {
@@ -150,7 +122,7 @@ namespace Gym_Passport
                 () => serviceProvider.GetRequiredService<NavigationBarViewModel>());
         }
 
-        private INavigationService CreateUsersNavigationService(IServiceProvider serviceProvider)
+        private INavigationService CreateClientsNavigationService(IServiceProvider serviceProvider)
         {
             return new LayoutNavigationService<ClientsViewModel>(
                 serviceProvider.GetRequiredService<IAccountStore>(),
@@ -199,7 +171,7 @@ namespace Gym_Passport
         {
             return new NavigationBarViewModel(serviceProvider.GetRequiredService<IAccountStore>(),
                             CreateProfileNavigationService(serviceProvider),
-                            CreateUsersNavigationService(serviceProvider),
+                            CreateClientsNavigationService(serviceProvider),
                             CreateActivitiesNavigationService(serviceProvider),
                             CreateGymEventsNavigationService(serviceProvider),
                             CreateReservationsNavigationService(serviceProvider),

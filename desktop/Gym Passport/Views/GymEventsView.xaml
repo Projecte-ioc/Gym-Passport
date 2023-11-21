@@ -18,30 +18,9 @@
         <TextBlock
             Grid.Row="0"
             FontSize="28"
-            Text="Events del gimnàs" />
+            Text="Esdeveniments del gimnàs" />
 
         <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
-
-            <Button
-                Margin="10,0,0,0"
-                Padding="10,5"
-                VerticalAlignment="Center"
-                Command="{Binding DeleteUserCommand}"
-                Content="Eliminar event" />
-
-            <Button
-                Margin="10,0,0,0"
-                Padding="10,5"
-                VerticalAlignment="Center"
-                Command="{Binding ModifyUserCommand}"
-                Content="Modificar event" />
-
-            <Button
-                Margin="10,0,0,0"
-                Padding="10,5"
-                VerticalAlignment="Center"
-                Command="{Binding AddUserCommand}"
-                Content="Afegir event" />
 
             <Button
                 Margin="10,0,0,0"

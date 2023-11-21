@@ -5,20 +5,16 @@
     xmlns:components="clr-namespace:Gym_Passport.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Gym_Passport.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
+    d:DesignHeight="530"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
@@ -30,75 +26,89 @@
             FontSize="30"
             Text="Perfil" />
 
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="0,20,0,0"
-            FontSize="20"
-            Text="Nombre de usuario:" />
-
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="10,20,0,0"
-            FontSize="20"
-            Text="{Binding UserProfile.Username}" />
-
-        <TextBlock
-            Grid.Row="2"
-            Grid.Column="0"
-            Margin="0,20,0,0"
-            FontSize="20"
-            Text="Rol:" />
-
-        <TextBlock
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="10,20,0,0"
-            FontSize="20"
-            Text="{Binding UserProfile.UserRole}" />
-
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="0"
-            Margin="0,20,0,0"
-            FontSize="20"
-            Text="Nombre del gimnasio:" />
-
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="10,20,0,0"
-            FontSize="20"
-            Text="{Binding UserProfile.GymName}" />
-
-        <TextBlock
-            Grid.Row="4"
-            Grid.Column="0"
-            Margin="0,20,0,0"
-            FontSize="20"
-            Text="Adreça del gimnàs:" />
-
-        <TextBlock
-            Grid.Row="4"
-            Grid.Column="1"
-            Margin="10,20,0,0"
-            FontSize="20"
-            Text="{Binding UserProfile.GymAddress}" />
-
-        <TextBlock
-            Grid.Row="5"
-            Grid.Column="0"
-            Margin="0,20,0,0"
-            FontSize="20"
-            Text="Telèfon del gimnàs:" />
-
-        <TextBlock
-            Grid.Row="5"
-            Grid.Column="1"
-            Margin="10,20,0,0"
-            FontSize="20"
-            Text="{Binding UserProfile.GymPhoneNumber}" />
-
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <materialDesign:Card
+                MinHeight="476"
+                Margin="5,15,15,15"
+                Padding="10,5,10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <TextBlock
+                            Margin="10"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="Dades usuari"
+                            TextAlignment="Center" />
+                        <TextBox
+                            Width="200"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Nom d'usuari"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            FontSize="16"
+                            IsEnabled="{Binding IsEnabled}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding UserProfile.Username}" />
+                        <TextBox
+                            Width="200"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Rol"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            FontSize="16"
+                            IsEnabled="{Binding IsEnabled}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding UserProfile.UserRole}" />
+                        <TextBox
+                            Width="200"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Nom del gimnàs"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            FontSize="16"
+                            IsEnabled="{Binding IsEnabled}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding UserProfile.GymName}" />
+                        <TextBox
+                            Width="200"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Adreça del gimnàs"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            FontSize="16"
+                            IsEnabled="{Binding IsEnabled}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding UserProfile.GymAddress}" />
+                        <TextBox
+                            Width="200"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Telèfon del gimnàs"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            FontSize="16"
+                            IsEnabled="{Binding IsEnabled}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding UserProfile.GymPhoneNumber}" />
+                        <Button
+                            x:Name="btnToggleModification"
+                            Width="191"
+                            Margin="0,50,0,10"
+                            Command="{Binding EnableProfileModificationCommand}"
+                            Content="{Binding btnToggleModificationText}" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Row="1"
+                        Margin="0,0,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="191"
+                            Margin="10"
+                            Command="{Binding AddClientCommand}"
+                            Content="GUARDAR CAMBIOS" />
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
+        </StackPanel>
     </Grid>
 </UserControl>

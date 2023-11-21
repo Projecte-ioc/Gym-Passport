@@ -1,5 +1,4 @@
 ﻿using Gym_Passport.Stores;
-using System;
 
 namespace Gym_Passport.Services
 {

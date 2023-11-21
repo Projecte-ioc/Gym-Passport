@@ -9,17 +9,17 @@ namespace Gym_Passport.ViewModels
     {
         private readonly IAccountStore _accountStore;
 
-        private bool _isRoomButtonVisible = false;
-        public bool IsRoomButtonVisible
+        private bool _areAdminButtonsVisible = false;
+        public bool AreAdminButtonsVisible
         {
             get
             {
-                return _isRoomButtonVisible;
+                return _areAdminButtonsVisible;
             }
             set
             {
-                _isRoomButtonVisible = value;
-                OnPropertyChanged(nameof(IsRoomButtonVisible));
+                _areAdminButtonsVisible = value;
+                OnPropertyChanged(nameof(AreAdminButtonsVisible));
             }
         }
 
@@ -42,7 +42,7 @@ namespace Gym_Passport.ViewModels
             _accountStore = accountStore;
 
             if(accountStore.CurrentAccount.Role == "admin") {
-                IsRoomButtonVisible = true;
+                AreAdminButtonsVisible = true;
             }
 
             ShowProfileViewCommand = new NavigateCommand(accountNavigationService);

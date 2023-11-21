@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:Gym_Passport.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="600"
+    d:DesignHeight="530"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
@@ -23,37 +23,48 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
-        <TextBlock
-            Grid.Row="0"
-            FontSize="28"
-            Text="Clients del gimnàs" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
 
         <StackPanel
             Grid.Row="0"
+            Grid.Column="0"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="0,0,20,0"
+                FontSize="28"
+                Text="Clients del gimnàs" />
+
+            <Button
+                Margin="10,0,0,0"
+                Padding="10,5"
+                VerticalAlignment="Center"
+                Command="{Binding ShowAddClientView}"
+                Content="Afegir client" />
+
+            <Button
+                Margin="10,0,0,0"
+                Padding="10,5"
+                VerticalAlignment="Center"
+                Command="{Binding ShowDeleteClientView}"
+                Content="Esborrar client" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="1"
             FlowDirection="RightToLeft"
             Orientation="Horizontal">
 
             <Button
-                Margin="10,0,0,0"
-                Padding="10,5"
-                VerticalAlignment="Center"
-                Command="{Binding DeleteUserCommand}"
-                Content="Eliminar client" />
-
-            <Button
-                Margin="10,0,0,0"
-                Padding="10,5"
-                VerticalAlignment="Center"
-                Command="{Binding ModifyUserCommand}"
-                Content="Modificar client" />
-
-            <Button
-                Margin="10,0,0,0"
-                Padding="10,5"
-                VerticalAlignment="Center"
-                Command="{Binding AddUserCommand}"
-                Content="Afegir client" />
+                x:Name="btnToggleModification"
+                Width="195"
+                Margin="15,0,0,0"
+                d:Content="Desbloquejar modificació"
+                Command="{Binding EnableClientModificationCommand}"
+                Content="{Binding btnToggleModificationText}" />
 
             <Button
                 Margin="10,0,0,0"
@@ -64,7 +75,7 @@
 
         </StackPanel>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -77,6 +88,7 @@
                 <materialDesign:Card MinHeight="476" Margin="0,15,5,15">
                     <ListView
                         x:Name="clientListView"
+                        Width="709"
                         MaxHeight="500"
                         ItemsSource="{Binding Clients}">
 
@@ -110,7 +122,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0">
                             <TextBlock
-                                Margin="10"
+                                Margin="10,10,10,20"
                                 FontSize="20"
                                 FontWeight="Bold"
                                 Text="Dades client"
@@ -118,29 +130,38 @@
                             <TextBox
                                 Width="200"
                                 VerticalAlignment="Center"
-                                materialDesign:HintAssist.Hint="Nom"
-                                materialDesign:TextFieldAssist.HasClearButton="True"
+                                materialDesign:HintAssist.Hint="Nom d'usuari"
+                                materialDesign:TextFieldAssist.HasClearButton="False"
                                 FontSize="16"
-                                IsEnabled="{Binding EditarHabilitado}"
+                                IsEnabled="{Binding IsEnabled}"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding CurrentClient.Name}" />
+                                Text="{Binding CurrentClient.Username}" />
                             <TextBox
                                 Width="200"
                                 VerticalAlignment="Center"
-                                materialDesign:HintAssist.Hint="Nom d'usuari"
-                                materialDesign:TextFieldAssist.HasClearButton="True"
+                                materialDesign:HintAssist.Hint="Nom"
+                                materialDesign:TextFieldAssist.HasClearButton="False"
                                 FontSize="16"
-                                IsEnabled="{Binding EditarHabilitado}"
+                                IsEnabled="{Binding IsEnabled}"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Text="{Binding CurrentClient.Username}" />
+                                Text="{Binding CurrentClient.Name}" />
                             <ComboBox
                                 Width="200"
                                 materialDesign:HintAssist.Hint="Rol"
                                 FontSize="16"
-                                IsEnabled="{Binding EditarHabilitado}"
+                                IsEnabled="{Binding IsEnabled}"
                                 ItemsSource="{Binding Roles}"
                                 SelectedValue="{Binding Path=Roles_SelectedValue}"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+                            <TextBox
+                                Width="200"
+                                VerticalAlignment="Center"
+                                materialDesign:HintAssist.Hint="Contrasenya"
+                                materialDesign:TextFieldAssist.HasClearButton="False"
+                                FontSize="16"
+                                IsEnabled="{Binding IsEnabled}"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Text="{Binding CurrentClient.Password}" />
                         </StackPanel>
                         <StackPanel
                             Grid.Row="1"
@@ -149,23 +170,10 @@
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
                             <Button
-                                Width="100"
+                                Width="auto"
                                 Margin="10"
-                                Command="{Binding StudentCommand}"
-                                CommandParameter="editarHabilitado"
-                                Content="EDITAR" />
-                            <Button
-                                Width="100"
-                                Margin="10"
-                                Command="{Binding StudentCommand}"
-                                CommandParameter="guardarEstudiante"
-                                Content="GUARDAR" />
-                            <Button
-                                Width="100"
-                                Margin="10"
-                                Command="{Binding StudentCommand}"
-                                CommandParameter="borrarEstudiante"
-                                Content="BORRAR" />
+                                Command="{Binding UpdateClientCommand}"
+                                Content="Modificar" />
                         </StackPanel>
                     </Grid>
                 </materialDesign:Card>
