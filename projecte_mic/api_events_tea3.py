@@ -39,6 +39,12 @@ def get_filtered_events():
         return jsonify({'message': 'Error al recuperar les dades solicitades'}), 404
 
 
+@app.route('/events_with_filters', methods=['POST'])
+def get_events_some_filters():
+    # TODO cogerá el nombre de las llaves del body, que seràn las mismos datos que los nombres de cada columna.
+    pass
+
+
 @app.route('/insertar_evento', methods=['POST'])
 def insert_event():
     '''
@@ -77,7 +83,7 @@ def insert_event():
             GymEvent.name = item['name']
             GymEvent.qty_got_it = 0
             GymEvent.qty_max_attendes = item['qty_max_attendes']
-            user_id  = db.get_elements_filtered(user_name, User.__table_name__, 'user_name', 'id')
+            user_id = db.get_elements_filtered(user_name, User.__table_name__, 'user_name', 'id')
             GymEvent.user_id = user_id[0][0]
             GymEvent.whereisit = item['whereisit']
     try:
@@ -99,6 +105,40 @@ def insert_event():
     finally:
         cursor.close()
         connection.close()
+
+
+@app.route('/reserva_evento', methods=['PATCH'])
+def got_it_place():
+    event_id = request.args.get()
+    token = request.headers.get()
+    rol_user, id, user_name, gym_name = db.validate_rol_user(token)
+    qty_got_it_now = db.get_elements_filtered(event_id, GymEvent.__table_name__, "id", GymEvent.__keys_events__[4])
+    qty_max = db.get_elements_filtered(event_id, GymEvent.__table_name__, "id", GymEvent.__keys_events__[3])
+    GymEvent.qty_got_it = qty_got_it_now + 1
+    if qty_max[0][0] == qty_got_it_now[0][0]:
+        return jsonify({'message': 'No queden places disponibles'}), 401
+    connection, cursor = db.get_connection_to_db()
+    update_query = f"UPDATE {GymEvent.__table_name__} SET qty_got_it = %s"
+    cursor.execute(update_query, (GymEvent.qty_got_it,))
+    # TODO CREAR TABLA PARA TENER EL LISTADO DE CADA UNO DE LOS USUARIOS APUNTADOS PARA CADA EVENTO, CADA VEZ QUE SE
+    # APUNTE SE ACTULIZARÁ EN ESA TABLA TAMBIÉN
+    return jsonify({'message': 'Has reservat plaça correctament!'})
+
+
+@app.route('/eliminar_reserva_evento', methods=['PATCH'])
+def delete_reservation():
+    """
+    Modifica el contador de got_it en la tabla eventos y elimina el registro de la tabla donde se muestra el listado.
+    """
+    pass
+
+
+@app.route('/modificar_evento', methods=['PATCH'])
+def update_event():
+    """
+    OBTENEMOS POR ID DEL EVENTO, POR LO TANTO TIENE QUE IR EN EL BODY, COMO PRIMER VALOR EL ID Y LOS DATOS A MODIFICAR.
+    """
+    pass
 
 
 if __name__ == '__main__':
