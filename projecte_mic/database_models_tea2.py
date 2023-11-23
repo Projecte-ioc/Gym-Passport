@@ -1,7 +1,7 @@
 # Classe que representa l'entitat User
 class User:
     __table_name__ = "users_data"
-    __keys_user__ = ['id', 'name', 'role', 'password', 'gym_id', 'user_name', 'log']
+    __keys_user__ = ['id', 'name', 'role_user', 'password', 'gym_id', 'user_name', 'log']
 
     def __init__(self, id: int, name: str, user_name: str, pswd_app: str, rol_user: str, gym_id: int, log: int):
         self.__id = id

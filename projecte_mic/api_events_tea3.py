@@ -35,6 +35,8 @@ def get_filtered_events():
         results = db.get_elements_filtered(id_user[0][0], GymEvent.__table_name__, 'user_id', '*')
         results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
         return jsonify(results_dict), 200
+    else:
+        return jsonify({'message': 'Error al recuperar les dades solicitades'}), 404
 
 
 @app.route('/insertar_evento', methods=['POST'])
