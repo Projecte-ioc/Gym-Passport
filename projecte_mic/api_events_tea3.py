@@ -1,7 +1,7 @@
 import psycopg2
 from flask import Flask, request, jsonify
 
-from database_models_tea2 import User, GymEvent
+from database_models_tea2 import User, GymEvent, List_user_events
 from utils_tea_2 import Connexion
 
 app = Flask(__name__)
@@ -9,7 +9,39 @@ db = Connexion()
 
 
 #  __keys_events__ = ['id', 'name', 'whereisit', 'qty_max_attendes', 'qty_got_it', 'user_id',
-#                      'gym_id', 'done','date', 'hour']
+#                      'gym_id', 'done','date', 'hour', 'minute', 'duration']
+
+# __key_list_events__=['id_gym', 'id_user', 'id_event', 'rating_event']
+def insert_simple(id_gym, id_user, id_event, connection, cursor):
+    List_user_events.id_gym = id_gym
+    List_user_events.id_user = id_user
+    List_user_events.id_event = id_event
+    List_user_events.rating_event = 0
+    try:
+        cursor.execute(
+            f"INSERT INTO {List_user_events.__table_name__} (id_gym, id_user, id_event, rating_event) VALUES ("
+            "%s, %s, %s, %s)", (List_user_events.id_gym,
+                                List_user_events.id_user, List_user_events.id_event, List_user_events.rating_event
+                                ))
+        connection.commit()
+    except psycopg2.Error:
+        print(psycopg2.Error)
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def delete_simple(id_event, cursor, connection):
+    try:
+        cursor.execute(
+            f"DELETE FROM {List_user_events.__table_name__} WHERE id_event = %s", (id_event,))
+        connection.commit()
+    except psycopg2.Error as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
 
 
 @app.route('/obtener_eventos', methods=['GET'])
@@ -53,6 +85,8 @@ def insert_event():
         'date':'',
         'done': false,
         'hour': 10,
+        'minute':15,
+        'duration':45,
         'name': "",
         'qty_max_attendes':20,
         'whereisit': ""
@@ -68,6 +102,8 @@ def insert_event():
         GymEvent.done = data.get('done')
         GymEvent.gym_id = id
         GymEvent.hour = data.get('hour')
+        GymEvent.minute = data.get('minute')
+        GymEvent.duration = data.get('duration')
         GymEvent.name = data.get('name')
         GymEvent.qty_got_it = 0
         GymEvent.qty_max_attendes = data.get('qty_max_attendes')
@@ -80,6 +116,8 @@ def insert_event():
             GymEvent.done = item['done']
             GymEvent.gym_id = id
             GymEvent.hour = item['hour']
+            GymEvent.minute = item['minute']
+            GymEvent.duration = item['duration']
             GymEvent.name = item['name']
             GymEvent.qty_got_it = 0
             GymEvent.qty_max_attendes = item['qty_max_attendes']
@@ -89,14 +127,15 @@ def insert_event():
     try:
         cursor.execute(
             f"INSERT INTO {GymEvent.__table_name__} (name, whereisit, qty_max_attendes, qty_got_it, user_id, gym_id, "
-            f"done, date, hour) VALUES ("
-            "%s, %s, %s, %s, %s, %s, %s, %s, %s)", (GymEvent.name,
-                                                    GymEvent.whereisit, GymEvent.qty_max_attendes,
-                                                    GymEvent.qty_got_it,
-                                                    GymEvent.user_id, GymEvent.gym_id,
-                                                    GymEvent.done, GymEvent.date,
-                                                    GymEvent.hour
-                                                    ))
+            f"done, date, hour, minute, duration) VALUES ("
+            "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (GymEvent.name,
+                                                            GymEvent.whereisit, GymEvent.qty_max_attendes,
+                                                            GymEvent.qty_got_it,
+                                                            GymEvent.user_id, GymEvent.gym_id,
+                                                            GymEvent.done, GymEvent.date,
+                                                            GymEvent.hour, GymEvent.minute,
+                                                            GymEvent.duration
+                                                            ))
         connection.commit()
         return jsonify({'message': 'Esdeveniment enregistrat correctament'}), 201
     except psycopg2.Error as e:
@@ -118,10 +157,11 @@ def got_it_place():
     if qty_max[0][0] == qty_got_it_now[0][0]:
         return jsonify({'message': 'No queden places disponibles'}), 401
     connection, cursor = db.get_connection_to_db()
-    update_query = f"UPDATE {GymEvent.__table_name__} SET qty_got_it = %s"
-    cursor.execute(update_query, (GymEvent.qty_got_it,))
-    # TODO CREAR TABLA PARA TENER EL LISTADO DE CADA UNO DE LOS USUARIOS APUNTADOS PARA CADA EVENTO, CADA VEZ QUE SE
-    # APUNTE SE ACTULIZARÁ EN ESA TABLA TAMBIÉN
+    update_query = f"UPDATE {GymEvent.__table_name__} SET qty_got_it = %s WHERE id = %s"
+    cursor.execute(update_query, (GymEvent.qty_got_it, event_id))
+    user_id = db.get_elements_filtered(user_name, User.__table_name__, "user_name", "id")
+    user_id_exact = user_id[0][0]
+    insert_simple(id_gym=id, id_user=user_id_exact, id_event=event_id, connection=connection, cursor=cursor)
     return jsonify({'message': 'Has reservat plaça correctament!'})
 
 

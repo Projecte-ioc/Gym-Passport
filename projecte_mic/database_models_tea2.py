@@ -1,4 +1,7 @@
 # Classe que representa l'entitat User
+from datetime import datetime
+
+
 class User:
     __table_name__ = "users_data"
     __keys_user__ = ['id', 'name', 'role_user', 'password', 'gym_id', 'user_name', 'log']
@@ -123,10 +126,10 @@ class GymEvent:
     __table_name__ = "gym_events"
 
     __keys_events__ = ['id', 'name', 'whereisit', 'qty_max_attendes', 'qty_got_it', 'user_id', 'gym_id',
-                       'done', 'date', 'hour']
+                       'done', 'date', 'hour', 'minute']
 
     def __init__(self, id: int, name: str, whereisit: str, qty_max_attendes: int, qty_got_it: int
-                 , user_id: int, gym_id: int, done: bool, date, hour):
+                 , user_id: int, gym_id: int, done: bool, date: str, hour: int, minute: int, duration: int):
         self.__id = id
         self.__name = name
         self.__whereisit = whereisit
@@ -137,6 +140,8 @@ class GymEvent:
         self.__done = done
         self.__date = date
         self.__hour = hour
+        self.__minute = minute
+        self.__duration = duration
 
     # GETTERS
     @property
@@ -178,6 +183,14 @@ class GymEvent:
     @property
     def hour(self):
         return self.__hour
+
+    @property
+    def minute(self):
+        return self.__minute
+
+    @property
+    def duration(self):
+        return self.__duration
 
     # SETTERS
     @name.setter
@@ -225,19 +238,33 @@ class GymEvent:
         self.__hour = new_hour
         return self.__hour
 
+    @minute.setter
+    def minute(self, new_minute):
+        self.__minute = new_minute
+        return self.__minute
+
+    @duration.setter
+    def duration(self, new_duration):
+        self.__duration = new_duration
+        return self.__duration
+
 
 # Classe que representa l'entitat Activity
 class Activity:
     __table_name__ = "activities"
-    __keys_user__ = ['id', 'gym_id', 'name', 'qty_max_attendes', 'qty_got_it', 'schedule']
+    __keys_activity__ = ['id', 'gym_id', 'name', 'qty_max_attendes', 'qty_got_it', 'date', 'hour', 'minute', 'duration']
 
-    def __init__(self, id: int, id_gym: int, name: str, qty_max_attendes: int, qty_got_it: int, schedule: list[str]):
+    def __init__(self, id: int, id_gym: int, name: str, qty_max_attendes: int, qty_got_it: int, date: str, hour: int,
+                 minute: int, duration: int):
         self.__id = id
         self.__id_gym = id_gym
         self.__name = name
         self.__qty_max_attendes = qty_max_attendes
         self.__qty_got_it = qty_got_it
-        self.__schedule = schedule
+        self.__date = date
+        self.__hour = hour
+        self.__minute = minute
+        self.__duration = duration
 
     # GETTERS
     @property
@@ -261,8 +288,20 @@ class Activity:
         return self.__qty_got_it
 
     @property
-    def schedule(self):
-        return self.__schedule
+    def date(self):
+        return self.__date
+
+    @property
+    def hour(self):
+        return self.__hour
+
+    @property
+    def minute(self):
+        return self.__minute
+
+    @property
+    def duration(self):
+        return self.__duration
 
     # SETTERS
     @name.setter
@@ -280,7 +319,101 @@ class Activity:
         self.__qty_got_it = new_qty
         return self.__qty_got_it
 
-    @schedule.setter
-    def schedule(self, new_schedule):
-        self.__schedule = new_schedule
-        return self.__schedule
+    @date.setter
+    def date(self, new_date):
+        self.__date = new_date
+        return self.__date
+
+    @hour.setter
+    def hour(self, new_hour):
+        self.__hour = new_hour
+        return self.__hour
+
+    @minute.setter
+    def minute(self, new_minute):
+        self.__minute = new_minute
+        return new_minute
+
+    @duration.setter
+    def duration(self, new_duration):
+        self.__duration = new_duration
+        return self.__duration
+
+
+class List_user_activities:
+    __table_name__ = "list_user_activities_registration"
+    __keys_list_activities__ = ['id_gym', 'id_user', 'id_activity', 'count_attende']
+
+    def __init__(self, id_gym: int, id_user: int, id_activity: int, count_attende: int):
+        self.__id_gym = id_gym
+        self.__id_user = id_user
+        self.__id_activity = id_activity
+        self.__count_attende = count_attende
+
+    @property
+    def id_gym(self):
+        return self.__id_gym
+
+    @property
+    def id_user(self):
+        return self.__id_user
+
+    @property
+    def id_activity(self):
+        return self.__id_activity
+
+    @property
+    def count_attende(self):
+        return self.__count_attende
+
+    @count_attende.setter
+    def count_attende(self, new_result):
+        self.__count_attende = new_result
+        return self.__count_attende
+
+
+class List_user_events:
+    __table_name__ = "list_user_events_registration"
+    __keys_list_events__ = ['id_gym', 'id_user', 'id_event', 'rating_event']
+
+    def __init__(self, id_gym: int, id_user: int, id_event: int, rating_event: int):
+        self.__id_gym = id_gym
+        self.__id_user = id_user
+        self.__id_event = id_event
+        self.__rating_event = rating_event
+
+    @property
+    def id_gym(self):
+        return self.__id_gym
+
+    @property
+    def id_user(self):
+        return self.__id_user
+
+    @property
+    def id_event(self):
+        return self.__id_event
+
+    @property
+    def rating_event(self):
+        return self.__rating_event
+
+    @id_gym.setter
+    def id_gym(self, new_id):
+        self.__id_gym = new_id
+        return self.__id_gym
+
+    @id_user.setter
+    def id_user(self, new_id_user):
+        self.__id_user = new_id_user
+        return self.__id_user
+
+    @id_event.setter
+    def id_event(self, new_event_id):
+        self.__id_event = new_event_id
+        return self.__id_event
+
+    @rating_event.setter
+    def rating_event(self, new_result):
+        self.__rating_event = new_result
+        return self.__rating_event

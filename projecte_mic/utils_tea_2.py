@@ -45,4 +45,3 @@ class Connexion:
     def get_elements_of_token(self, token):
         payload = jwt.decode(token, os.getenv("SK"), algorithms=['HS256'])
         return jsonify(payload)
-
