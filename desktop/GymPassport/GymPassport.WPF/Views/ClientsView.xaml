@@ -1,0 +1,183 @@
+﻿<UserControl
+    x:Class="GymPassport.WPF.Views.ClientsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GymPassport.WPF.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="540"
+    d:DesignWidth="970"
+    mc:Ignorable="d">
+
+    <behaviours:Interaction.Triggers>
+        <behaviours:EventTrigger EventName="Loaded">
+            <behaviours:InvokeCommandAction Command="{Binding GetAllClientsCommand}" />
+        </behaviours:EventTrigger>
+    </behaviours:Interaction.Triggers>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="0"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="0,0,20,0"
+                FontSize="28"
+                Text="Clients del gimnàs" />
+
+            <Button
+                Margin="10,0,0,0"
+                Padding="10,5"
+                VerticalAlignment="Center"
+                Command="{Binding ShowAddClientViewCommand}"
+                Content="Afegir client" />
+
+            <Button
+                Margin="10,0,0,0"
+                Padding="10,5"
+                VerticalAlignment="Center"
+                Command="{Binding ShowDeleteClientViewCommand}"
+                Content="Esborrar client" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="1"
+            FlowDirection="RightToLeft"
+            Orientation="Horizontal">
+
+            <Button
+                x:Name="btnToggleModification"
+                Width="195"
+                Margin="15,0,0,0"
+                d:Content="Desbloquejar modificació"
+                Command="{Binding EnableClientModificationCommand}"
+                Content="{Binding btnToggleModificationText}" />
+
+            <Button
+                Margin="10,0,0,0"
+                Padding="10,5"
+                VerticalAlignment="Center"
+                Command="{Binding GetAllClientsCommand}"
+                Content="Actualitzar llista" />
+
+        </StackPanel>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <materialDesign:Card MinHeight="476" Margin="0,15,5,15">
+                    <ListView
+                        x:Name="clientListView"
+                        Width="709"
+                        MaxHeight="500"
+                        ItemsSource="{Binding Clients}">
+
+                        <behaviours:Interaction.Triggers>
+                            <behaviours:EventTrigger EventName="SelectionChanged">
+                                <behaviours:InvokeCommandAction Command="{Binding GetClientCommand}" CommandParameter="{Binding ElementName=clientListView, Path=SelectedItem}" />
+                            </behaviours:EventTrigger>
+                        </behaviours:Interaction.Triggers>
+
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Nom" />
+                                <GridViewColumn DisplayMemberBinding="{Binding Username}" Header="Nom d'usuari" />
+                                <GridViewColumn DisplayMemberBinding="{Binding Role}" Header="Rol" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </materialDesign:Card>
+            </StackPanel>
+
+
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <materialDesign:Card
+                    MinHeight="476"
+                    Margin="5,15,15,15"
+                    Padding="10,5,10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="150" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <TextBlock
+                                Margin="10,10,10,20"
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Text="Dades client"
+                                TextAlignment="Center" />
+                            <TextBox
+                                Width="200"
+                                VerticalAlignment="Center"
+                                materialDesign:HintAssist.Hint="Nom d'usuari"
+                                materialDesign:TextFieldAssist.HasClearButton="False"
+                                FontSize="16"
+                                IsEnabled="{Binding IsEnabled}"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Text="{Binding CurrentClient.Username}" />
+                            <TextBox
+                                Width="200"
+                                VerticalAlignment="Center"
+                                materialDesign:HintAssist.Hint="Nom"
+                                materialDesign:TextFieldAssist.HasClearButton="False"
+                                FontSize="16"
+                                IsEnabled="{Binding IsEnabled}"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Text="{Binding CurrentClient.Name}" />
+                            <ComboBox
+                                Width="200"
+                                materialDesign:HintAssist.Hint="Rol"
+                                FontSize="16"
+                                IsEnabled="{Binding IsEnabled}"
+                                ItemsSource="{Binding Roles}"
+                                SelectedValue="{Binding Path=Roles_SelectedValue}"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+                            <TextBox
+                                Width="200"
+                                VerticalAlignment="Center"
+                                materialDesign:HintAssist.Hint="Contrasenya"
+                                materialDesign:TextFieldAssist.HasClearButton="False"
+                                FontSize="16"
+                                IsEnabled="{Binding IsEnabled}"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Text="{Binding CurrentClient.Password}" />
+                        </StackPanel>
+                        <StackPanel
+                            Grid.Row="1"
+                            Margin="0,20,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Button
+                                Width="auto"
+                                Margin="10"
+                                Command="{Binding UpdateClientCommand}"
+                                Content="Modificar" />
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:Card>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,20 @@
+﻿GymPassport.WPF
+1.0.0.0
+
+winexe
+C#
+.cs
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\obj\Debug\net8.0-windows\
+GymPassport.WPF
+none
+false
+TRACE;DEBUG;NET;NET8_0;NETCOREAPP
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\App.xaml
+15382554893
+
+751487045527
+2201481814248
+Components\BindablePasswordBox.xaml;Components\Layout.xaml;Components\NavigationBar.xaml;MainWindow.xaml;Styles\ButtonStyles.xaml;Styles\UIColors.xaml;Views\ActivitiesView.xaml;Views\AddClientView.xaml;Views\ClientsView.xaml;Views\DeleteClientView.xaml;Views\GymEventsView.xaml;Views\LoginView.xaml;Views\ProfileView.xaml;Views\ReservationsView.xaml;Views\RoomsView.xaml;
+
+True
+
