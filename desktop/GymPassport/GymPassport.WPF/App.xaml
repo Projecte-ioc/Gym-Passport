@@ -2,8 +2,7 @@
     x:Class="GymPassport.WPF.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:GymPassport.WPF"
-    Startup="ApplicationStart">
+    xmlns:local="clr-namespace:GymPassport.WPF">
 
     <Application.Resources>
         <ResourceDictionary>
