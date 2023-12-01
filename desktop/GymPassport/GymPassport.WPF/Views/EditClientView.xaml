@@ -5,11 +5,17 @@
     xmlns:components="clr-namespace:GymPassport.WPF.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GymPassport.WPF.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="400"
-    d:DesignHeight="450"
+    d:DesignHeight="380"
     d:DesignWidth="300"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
     <Grid>
 
         <Grid.RowDefinitions>
@@ -19,17 +25,77 @@
 
         <TextBlock
             Grid.Row="0"
-            Margin="0,30,0,30"
+            Margin="0,40,0,30"
             VerticalAlignment="Center"
             FontSize="20"
             FontWeight="Bold"
             Text="Noves dades del client"
             TextAlignment="Center" />
 
-        <components:ClientsDetailsForm
-            Grid.Row="1"
-            Margin="0,30,0,0"
-            DataContext="{Binding ClientDetailsFormViewModel}" />
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <TextBox
+                        Width="200"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Nom"
+                        materialDesign:TextFieldAssist.HasClearButton="False"
+                        FontSize="16"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Name}" />
+                    <TextBox
+                        Width="200"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Nom d'usuari"
+                        materialDesign:TextFieldAssist.HasClearButton="False"
+                        FontSize="16"
+                        IsEnabled="False"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Username}" />
+                    <TextBox
+                        Width="200"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Rol"
+                        materialDesign:TextFieldAssist.HasClearButton="False"
+                        FontSize="16"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Role}" />
+                    <TextBox
+                        Width="200"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Contrasenya"
+                        materialDesign:TextFieldAssist.HasClearButton="False"
+                        FontSize="16"
+                        IsEnabled="{Binding IsEnabled}"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Password}" />
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="0,30,0,30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="104"
+                        Margin="10"
+                        Command="{Binding SubmitCommand}"
+                        Content="MODIFICAR" />
+                    <Button
+                        Width="104"
+                        Margin="10"
+                        Command="{Binding CancelCommand}"
+                        Content="CANCELAR" />
+                </StackPanel>
+            </Grid>
+        </StackPanel>
 
     </Grid>
 </UserControl>

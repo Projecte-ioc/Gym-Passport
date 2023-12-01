@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\App.xaml
-211953059320
+201507892967
 
-762057985813
+74-909241602
 249-1486100208
-Components\BindablePasswordBox.xaml;Components\ClientsDetails.xaml;Components\ClientsDetailsForm.xaml;Components\ClientsListing.xaml;Components\ClientsListingItem.xaml;Components\Layout.xaml;Components\NavigationBar.xaml;MainWindow.xaml;Styles\ButtonStyles.xaml;Styles\TextBlockStyles.xaml;Styles\UIColors.xaml;Views\ActivitiesView.xaml;Views\AddClientView.xaml;Views\ClientsView.xaml;Views\DeleteClientView.xaml;Views\EditClientView.xaml;Views\GymEventsView.xaml;Views\LoginView.xaml;Views\ProfileView.xaml;Views\ReservationsView.xaml;Views\RoomsView.xaml;
+Components\BindablePasswordBox.xaml;Components\ClientsDetails.xaml;Components\ClientsListing.xaml;Components\ClientsListingItem.xaml;Components\Layout.xaml;Components\NavigationBar.xaml;MainWindow.xaml;Styles\ButtonStyles.xaml;Styles\TextBlockStyles.xaml;Styles\UIColors.xaml;Views\ActivitiesView.xaml;Views\AddClientView.xaml;Views\ClientsView.xaml;Views\DeleteClientView.xaml;Views\EditClientView.xaml;Views\GymEventsView.xaml;Views\LoginView.xaml;Views\ProfileView.xaml;Views\ReservationsView.xaml;Views\RoomsView.xaml;
 
-True
+False
 

@@ -20,16 +20,14 @@ namespace GymPassport.WPF.Commands
 
         public override async Task ExecuteAsync(object parameter)
         {
-            ClientDetailsFormViewModel formViewModel = _editClientViewModel.ClientDetailsFormViewModel;
-
-            formViewModel.ErrorMessage = null;
-            formViewModel.IsSubmitting = true;
+            _editClientViewModel.ErrorMessage = null;
+            _editClientViewModel.IsSubmitting = true;
 
             Client client = new Client(
-                formViewModel.Name,
-                formViewModel.Role,
+                _editClientViewModel.Name,
+                _editClientViewModel.Role,
                 _editClientViewModel.ClientUsername,
-                formViewModel.Password);
+                _editClientViewModel.Password);
 
             try
             {
@@ -39,11 +37,11 @@ namespace GymPassport.WPF.Commands
             }
             catch (Exception)
             {
-                formViewModel.ErrorMessage = "Error al actualizar el cliente. Por favor, vuelva a intentarlo.";
+                _editClientViewModel.ErrorMessage = "Error al actualizar el cliente. Por favor, vuelva a intentarlo.";
             }
             finally
             {
-                formViewModel.IsSubmitting = false;
+                _editClientViewModel.IsSubmitting = false;
             }
         }
     }

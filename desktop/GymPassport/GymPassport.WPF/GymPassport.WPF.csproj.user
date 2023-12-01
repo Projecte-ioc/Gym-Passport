@@ -13,9 +13,6 @@
     <Compile Update="Components\ClientsDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\ClientsDetailsForm.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Components\ClientsListing.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -64,9 +61,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\ClientsDetails.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Components\ClientsDetailsForm.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\ClientsListing.xaml">

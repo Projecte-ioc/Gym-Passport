@@ -20,16 +20,14 @@ namespace GymPassport.WPF.Commands
 
         public override async Task ExecuteAsync(object parameter)
         {
-            ClientDetailsFormViewModel formViewModel = _addClientViewModel.ClientDetailsFormViewModel;
-
-            formViewModel.ErrorMessage = null;
-            formViewModel.IsSubmitting = true;
+            _addClientViewModel.ErrorMessage = null;
+            _addClientViewModel.IsSubmitting = true;
 
             Client client = new Client(
-                formViewModel.Name,
-                formViewModel.Role,
-                formViewModel.Username,
-                formViewModel.Password);
+                _addClientViewModel.Name,
+                _addClientViewModel.Role,
+                _addClientViewModel.Username,
+                _addClientViewModel.Password);
 
             try
             {
@@ -39,11 +37,11 @@ namespace GymPassport.WPF.Commands
             }
             catch (Exception)
             {
-                formViewModel.ErrorMessage = "Error al añadir al cliente. Por favor, intentelo de nuevo.";
+                _addClientViewModel.ErrorMessage = "Error al añadir al cliente. Por favor, intentelo de nuevo.";
             }
             finally
             {
-                formViewModel.IsSubmitting = false;
+                _addClientViewModel.IsSubmitting = false;
             }
         }
     }
