@@ -22,14 +22,6 @@
           }
         }
       },
-      "LoadingSpinner.WPF/1.0.0": {
-        "runtime": {
-          "lib/netcoreapp3.1/LoadingSpinnerControl.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "MaterialDesignColors/2.1.4": {
         "runtime": {
           "lib/net7.0/MaterialDesignColors.dll": {
@@ -563,13 +555,6 @@
       "sha512": "sha512-3/Fb0N04yYK8An07oox5ISlUyNgsnWildHfoP69uqTEOsemQemRyciphMkXZOcdBupjUD+lVsRE3FqG41/dzPA==",
       "path": "fontawesome.sharp/6.3.0",
       "hashPath": "fontawesome.sharp.6.3.0.nupkg.sha512"
-    },
-    "LoadingSpinner.WPF/1.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-szXy14LPJMKOG51LfOP4nLx9CtqsODA52LzUHHN+N8WXTIxu99289aTZMHRywomsVPiOtA4RKgWqPm/uffOUmw==",
-      "path": "loadingspinner.wpf/1.0.0",
-      "hashPath": "loadingspinner.wpf.1.0.0.nupkg.sha512"
     },
     "MaterialDesignColors/2.1.4": {
       "type": "package",

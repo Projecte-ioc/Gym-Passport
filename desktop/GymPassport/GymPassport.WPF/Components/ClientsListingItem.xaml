@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:custom="clr-namespace:DropdownMenuControl;assembly=DropdownMenuControl"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:loadingspinner="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
     xmlns:local="clr-namespace:GymPassport.WPF.Components"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
@@ -45,10 +44,10 @@
                         </Style>
                     </Grid.Style>
 
-                    <loadingspinner:LoadingSpinner
-                        Diameter="20"
-                        IsLoading="True"
-                        Thickness="2" />
+                    <ProgressBar
+                        IsIndeterminate="True"
+                        Style="{StaticResource MaterialDesignCircularProgressBar}"
+                        Value="75" />
                 </Grid>
 
                 <Grid>

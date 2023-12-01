@@ -26,18 +26,6 @@
           "Microsoft.WindowsDesktop.App"
         ]
       },
-      "LoadingSpinner.WPF/1.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/netcoreapp3.1/LoadingSpinnerControl.dll": {}
-        },
-        "runtime": {
-          "lib/netcoreapp3.1/LoadingSpinnerControl.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.WindowsDesktop.App.WPF"
-        ]
-      },
       "MaterialDesignColors/2.1.4": {
         "type": "package",
         "compile": {
@@ -908,18 +896,6 @@
         "lib/net48/FontAwesome.Sharp.dll",
         "lib/net6.0-windows7.0/FontAwesome.Sharp.dll",
         "lib/netcoreapp3.1/FontAwesome.Sharp.dll"
-      ]
-    },
-    "LoadingSpinner.WPF/1.0.0": {
-      "sha512": "szXy14LPJMKOG51LfOP4nLx9CtqsODA52LzUHHN+N8WXTIxu99289aTZMHRywomsVPiOtA4RKgWqPm/uffOUmw==",
-      "type": "package",
-      "path": "loadingspinner.wpf/1.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netcoreapp3.1/LoadingSpinnerControl.dll",
-        "loadingspinner.wpf.1.0.0.nupkg.sha512",
-        "loadingspinner.wpf.nuspec"
       ]
     },
     "MaterialDesignColors/2.1.4": {
@@ -2252,7 +2228,6 @@
       "FontAwesome.Sharp >= 6.3.0",
       "GymPassport.Domain >= 1.0.0",
       "GymPassport.GymPassportAPI >= 1.0.0",
-      "LoadingSpinner.WPF >= 1.0.0",
       "MaterialDesignThemes >= 4.9.0",
       "Microsoft.Extensions.DependencyInjection >= 8.0.0",
       "Microsoft.Extensions.Hosting >= 8.0.0",
@@ -2314,10 +2289,6 @@
           "FontAwesome.Sharp": {
             "target": "Package",
             "version": "[6.3.0, )"
-          },
-          "LoadingSpinner.WPF": {
-            "target": "Package",
-            "version": "[1.0.0, )"
           },
           "MaterialDesignThemes": {
             "target": "Package",

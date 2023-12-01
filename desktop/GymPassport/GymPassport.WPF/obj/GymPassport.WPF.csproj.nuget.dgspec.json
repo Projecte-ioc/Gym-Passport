@@ -181,10 +181,6 @@
               "target": "Package",
               "version": "[6.3.0, )"
             },
-            "LoadingSpinner.WPF": {
-              "target": "Package",
-              "version": "[1.0.0, )"
-            },
             "MaterialDesignThemes": {
               "target": "Package",
               "version": "[4.9.0, )"

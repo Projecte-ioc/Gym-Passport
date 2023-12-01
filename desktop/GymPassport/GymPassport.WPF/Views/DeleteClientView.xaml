@@ -5,53 +5,39 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GymPassport.WPF.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
+    d:DesignHeight="165"
     d:DesignWidth="300"
     mc:Ignorable="d">
-    <StackPanel Grid.Row="1" Grid.Column="1">
-        <Grid
-            MinWidth="280"
-            Margin="5,15,15,15"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Margin="10,20,10,0"
+            FontSize="20"
+            FontWeight="Bold"
+            Text="¿Estàs segur que vols esborrar aquest client?"
+            TextAlignment="Center"
+            TextWrapping="WrapWithOverflow" />
+
+        <StackPanel
+            Grid.Row="1"
+            Margin="0,20,0,10"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <StackPanel
-                Grid.Row="0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <TextBlock
-                    Margin="10,10,10,0"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    Text="¿Estàs segur que vols"
-                    TextAlignment="Center" />
-                <TextBlock
-                    Margin="10,0,10,20"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    Text="esborrar aquest client?"
-                    TextAlignment="Center" />
-            </StackPanel>
-            <StackPanel
-                Grid.Row="1"
-                Margin="0,20,0,10"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <Button
-                    Width="105"
-                    Margin="10"
-                    Command="{Binding SubmitCommand}"
-                    Content="ESBORRAR" />
-                <Button
-                    Width="105"
-                    Margin="10"
-                    Command="{Binding CancelCommand}"
-                    Content="CANCELAR" />
-            </StackPanel>
-        </Grid>
-    </StackPanel>
+            Orientation="Horizontal">
+            <Button
+                Width="105"
+                Margin="10"
+                Command="{Binding SubmitCommand}"
+                Content="ESBORRAR" />
+            <Button
+                Width="105"
+                Margin="10"
+                Command="{Binding CancelCommand}"
+                Content="CANCELAR" />
+        </StackPanel>
+    </Grid>
 </UserControl>

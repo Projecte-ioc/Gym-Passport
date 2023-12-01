@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:components="clr-namespace:GymPassport.WPF.Components"
-    xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GymPassport.WPF.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -16,22 +15,28 @@
         <StackPanel VerticalAlignment="Center">
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
-                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                            <Setter Property="Visibility" Value="Visible" />
+                        <DataTrigger Binding="{Binding IsLoading}"
+                                     Value="True">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </StackPanel.Style>
 
-            <custom:LoadingSpinner
-                Diameter="100"
-                IsLoading="True"
-                Thickness="3" />
+            <ProgressBar
+                Width="50"
+                Height="50"
+                IsIndeterminate="True"
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Value="75" />
 
             <TextBlock
                 Margin="0,10,0,0"
+                FontSize="24"
                 Text="Carregant clients..."
                 TextAlignment="Center" />
         </StackPanel>
