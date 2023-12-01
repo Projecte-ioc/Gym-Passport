@@ -24,7 +24,7 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    
+
     <Border
         Grid.Column="0"
         Background="SlateBlue"
@@ -46,14 +46,6 @@
                     <views:ClientsView />
                 </DataTemplate>
 
-                <DataTemplate DataType="{x:Type viewModels:AddClientViewModel}">
-                    <views:AddClientView />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModels:DeleteClientViewModel}">
-                    <views:DeleteClientView />
-                </DataTemplate>
-
                 <DataTemplate DataType="{x:Type viewModels:ActivitiesViewModel}">
                     <views:ActivitiesView />
                 </DataTemplate>
@@ -68,6 +60,14 @@
 
                 <DataTemplate DataType="{x:Type viewModels:RoomsViewModel}">
                     <views:RoomsView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:AddClientViewModel}">
+                    <views:AddClientView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:EditClientViewModel}">
+                    <views:EditClientView />
                 </DataTemplate>
 
             </Grid.Resources>

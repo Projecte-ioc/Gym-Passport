@@ -1,4 +1,4 @@
-﻿using GymPassport.WPF.Models;
+﻿using GymPassport.Domain.Models;
 
 namespace GymPassport.WPF.State.Accounts
 {

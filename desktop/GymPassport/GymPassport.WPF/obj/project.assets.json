@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     "net8.0-windows7.0": {
+      "DropdownMenu.WPF/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/DropdownMenuControl.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/DropdownMenuControl.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
+        ]
+      },
       "FontAwesome.Sharp/6.3.0": {
         "type": "package",
         "compile": {
@@ -12,6 +24,18 @@
         },
         "frameworkReferences": [
           "Microsoft.WindowsDesktop.App"
+        ]
+      },
+      "LoadingSpinner.WPF/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/LoadingSpinnerControl.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/LoadingSpinnerControl.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
         ]
       },
       "MaterialDesignColors/2.1.4": {
@@ -828,10 +852,49 @@
         "build": {
           "buildTransitive/net6.0/System.Text.Json.targets": {}
         }
+      },
+      "GymPassport.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "compile": {
+          "bin/placeholder/GymPassport.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GymPassport.Domain.dll": {}
+        }
+      },
+      "GymPassport.GymPassportAPI/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "GymPassport.Domain": "1.0.0",
+          "System.IdentityModel.Tokens.Jwt": "7.0.3"
+        },
+        "compile": {
+          "bin/placeholder/GymPassport.GymPassportAPI.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GymPassport.GymPassportAPI.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "DropdownMenu.WPF/1.0.0": {
+      "sha512": "7S90a70go9Cko9y5Ugs3YEev+EboKs8uicIw5clxa2uTho+/pAHAx7NRq0HbAsVAKAobAqL9goAlI/elRbNsxA==",
+      "type": "package",
+      "path": "dropdownmenu.wpf/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dropdownmenu.wpf.1.0.0.nupkg.sha512",
+        "dropdownmenu.wpf.nuspec",
+        "lib/netcoreapp3.1/DropdownMenuControl.dll"
+      ]
+    },
     "FontAwesome.Sharp/6.3.0": {
       "sha512": "3/Fb0N04yYK8An07oox5ISlUyNgsnWildHfoP69uqTEOsemQemRyciphMkXZOcdBupjUD+lVsRE3FqG41/dzPA==",
       "type": "package",
@@ -845,6 +908,18 @@
         "lib/net48/FontAwesome.Sharp.dll",
         "lib/net6.0-windows7.0/FontAwesome.Sharp.dll",
         "lib/netcoreapp3.1/FontAwesome.Sharp.dll"
+      ]
+    },
+    "LoadingSpinner.WPF/1.0.0": {
+      "sha512": "szXy14LPJMKOG51LfOP4nLx9CtqsODA52LzUHHN+N8WXTIxu99289aTZMHRywomsVPiOtA4RKgWqPm/uffOUmw==",
+      "type": "package",
+      "path": "loadingspinner.wpf/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.1/LoadingSpinnerControl.dll",
+        "loadingspinner.wpf.1.0.0.nupkg.sha512",
+        "loadingspinner.wpf.nuspec"
       ]
     },
     "MaterialDesignColors/2.1.4": {
@@ -2159,11 +2234,25 @@
         "system.text.json.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "GymPassport.Domain/1.0.0": {
+      "type": "project",
+      "path": "../GymPassport.Domain/GymPassport.Domain.csproj",
+      "msbuildProject": "../GymPassport.Domain/GymPassport.Domain.csproj"
+    },
+    "GymPassport.GymPassportAPI/1.0.0": {
+      "type": "project",
+      "path": "../GymPassport.GymPassportAPI/GymPassport.GymPassportAPI.csproj",
+      "msbuildProject": "../GymPassport.GymPassportAPI/GymPassport.GymPassportAPI.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
+      "DropdownMenu.WPF >= 1.0.0",
       "FontAwesome.Sharp >= 6.3.0",
+      "GymPassport.Domain >= 1.0.0",
+      "GymPassport.GymPassportAPI >= 1.0.0",
+      "LoadingSpinner.WPF >= 1.0.0",
       "MaterialDesignThemes >= 4.9.0",
       "Microsoft.Extensions.DependencyInjection >= 8.0.0",
       "Microsoft.Extensions.Hosting >= 8.0.0",
@@ -2198,7 +2287,14 @@
       "frameworks": {
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.Domain\\GymPassport.Domain.csproj": {
+              "projectPath": "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.Domain\\GymPassport.Domain.csproj"
+            },
+            "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.GymPassportAPI\\GymPassport.GymPassportAPI.csproj": {
+              "projectPath": "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.GymPassportAPI\\GymPassport.GymPassportAPI.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -2211,9 +2307,17 @@
       "net8.0-windows7.0": {
         "targetAlias": "net8.0-windows",
         "dependencies": {
+          "DropdownMenu.WPF": {
+            "target": "Package",
+            "version": "[1.0.0, )"
+          },
           "FontAwesome.Sharp": {
             "target": "Package",
             "version": "[6.3.0, )"
+          },
+          "LoadingSpinner.WPF": {
+            "target": "Package",
+            "version": "[1.0.0, )"
           },
           "MaterialDesignThemes": {
             "target": "Package",

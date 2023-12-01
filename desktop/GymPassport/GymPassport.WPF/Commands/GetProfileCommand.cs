@@ -1,4 +1,4 @@
-﻿using GymPassport.WPF.Services.ProfileServices;
+﻿using GymPassport.GymPassportAPI.Services.ProfileServices;
 using GymPassport.WPF.State.Accounts;
 using GymPassport.WPF.ViewModels;
 

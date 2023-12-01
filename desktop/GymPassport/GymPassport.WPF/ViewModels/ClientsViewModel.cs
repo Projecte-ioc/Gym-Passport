@@ -1,162 +1,63 @@
 ﻿using GymPassport.WPF.Commands;
-using GymPassport.WPF.Services;
-using GymPassport.WPF.Services.ClientServices;
-using GymPassport.WPF.Services.GymServices;
-using GymPassport.WPF.State.Accounts;
-using GymPassport.WPF.Stores;
-using System.Collections.ObjectModel;
+using GymPassport.WPF.State;
+using GymPassport.WPF.State.Navigators;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace GymPassport.WPF.ViewModels
 {
     public class ClientsViewModel : ViewModelBase
     {
-        private readonly ClientsStore _clientsStore;
+        public ClientsListingViewModel ClientsListingViewModel { get; }
+        public ClientsDetailsViewModel ClientsDetailsViewModel { get; }
 
-        private string _btnToggleModificationText;
-        public string btnToggleModificationText
+        private bool _isLoading;
+        public bool IsLoading
         {
             get
             {
-                return _btnToggleModificationText;
+                return _isLoading;
             }
             set
             {
-                _btnToggleModificationText = value;
-                OnPropertyChanged(nameof(btnToggleModificationText));
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
             }
         }
 
-        private bool _isEnabled;
-        public bool IsEnabled
+        private string _errorMessage;
+        public string ErrorMessage
         {
             get
             {
-                return _isEnabled;
+                return _errorMessage;
             }
             set
             {
-                _isEnabled = value;
-                OnPropertyChanged(nameof(IsEnabled));
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+                OnPropertyChanged(nameof(HasErrorMessage));
             }
         }
 
-        private ObservableCollection<ClientViewModel> _clients;
-        public ObservableCollection<ClientViewModel> Clients
+        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
+
+        public ICommand LoadClientsCommand { get; }
+        public ICommand AddClientsCommand { get; }
+
+        public ClientsViewModel(ClientsStore clientsStore, SelectedClientStore _selectedClientStore, ModalNavigationStore modalNavigationStore)
         {
-            get
-            {
-                return _clients;
-            }
-            set
-            {
-                _clients = value;
-                OnPropertyChanged(nameof(Clients));
-            }
+            ClientsListingViewModel = new ClientsListingViewModel(clientsStore, _selectedClientStore, modalNavigationStore);
+            ClientsDetailsViewModel = new ClientsDetailsViewModel(_selectedClientStore);
+
+            LoadClientsCommand = new LoadClientsCommand(this, clientsStore);
+            AddClientsCommand = new OpenAddClientCommand(clientsStore, modalNavigationStore);
         }
 
-        //private readonly ObservableCollection<ClientViewModel> _clients;
-        //public ObservableCollection<ClientViewModel> Clients => _clients;
-
-        //private Client _currentClient;
-        //public Client CurrentClient
-        //{
-        //    get
-        //    {
-        //        return _currentClient;
-        //    }
-        //    set
-        //    {
-        //        _currentClient = value;
-        //        OnPropertyChanged(nameof(CurrentClient));
-        //        if (this._currentClient != null)
-        //        {
-        //            this.Roles_SelectedValue = _currentClient.Role;
-        //        }
-        //    }
-        //}
-
-        private ClientViewModel _currentClient;
-        public ClientViewModel CurrentClient
+        public static ClientsViewModel LoadViewModel(ClientsStore clientsStore, SelectedClientStore selectedClientStore, ModalNavigationStore modalNavigationStore)
         {
-            get
-            {
-                return _currentClient;
-            }
-            set
-            {
-                _currentClient = value;
-                OnPropertyChanged(nameof(CurrentClient));
-                if (this._currentClient != null)
-                {
-                    this.Roles_SelectedValue = _currentClient.Role;
-                }
-            }
-        }
-
-        private ObservableCollection<string> _roles = new ObservableCollection<string>();
-
-        public ObservableCollection<string> Roles
-        {
-            get { return _roles; }
-        }
-
-        private string _roles_SelectedValue;
-        public string Roles_SelectedValue
-        {
-            get
-            {
-                return _roles_SelectedValue;
-            }
-            set
-            {
-                _roles_SelectedValue = value;
-                OnPropertyChanged(nameof(Roles_SelectedValue));
-            }
-        }
-
-        public ICommand GetAllClientsCommand { get; }
-        public ICommand GetClientCommand { get; }
-        public ICommand EnableClientModificationCommand { get; }
-        public ICommand UpdateClientCommand { get; }
-        public ICommand DeleteClientCommand { get; }
-        public ICommand ShowAddClientViewCommand { get; }
-        public ICommand ShowDeleteClientViewCommand { get; }
-
-        public ClientsViewModel(
-            ClientsStore clientsStore,
-            IAccountStore accountStore,
-            IGymService gymService,
-        IClientService clientService,
-            INavigationService addClientNavigationService,
-            INavigationService deleteClientNavigationService)
-        {
-            _clientsStore = clientsStore;
-            _clients = new ObservableCollection<ClientViewModel>();
-
-            _clientsStore.ClientAdded += OnClientAdded;
-            _clientsStore.ClientRemoved += OnClientRemoved;
-
-            btnToggleModificationText = "Desbloquejar modificació";
-            IsEnabled = false;
-
-            EnableClientModificationCommand = new EnableClientModificationCommand(this);
-            GetAllClientsCommand = new GetAllClientsCommand(this, gymService, accountStore);
-            GetClientCommand = new GetClientCommand(this);
-            //UpdateClientCommand = new UpdateClientCommand(this);
-            ShowAddClientViewCommand = new NavigateCommand(addClientNavigationService);
-            ShowDeleteClientViewCommand = new NavigateCommand(deleteClientNavigationService);
-        }
-
-        private void OnClientAdded(ClientViewModel client)
-        {
-            _clients.Add(client);
-        }
-
-        private void OnClientRemoved(ClientViewModel client)
-        {
-            _clients.Remove(client);
+            ClientsViewModel viewModel = new ClientsViewModel(clientsStore, selectedClientStore, modalNavigationStore);
+            viewModel.LoadClientsCommand.Execute(null);
+            return viewModel;
         }
     }
 }

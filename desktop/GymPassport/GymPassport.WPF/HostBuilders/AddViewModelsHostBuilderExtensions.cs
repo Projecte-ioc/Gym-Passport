@@ -1,10 +1,9 @@
-﻿using GymPassport.WPF.Services;
-using GymPassport.WPF.Services.ClientServices;
-using GymPassport.WPF.Services.GymServices;
-using GymPassport.WPF.Services.ProfileServices;
+﻿using GymPassport.GymPassportAPI.Services.ProfileServices;
+using GymPassport.WPF.Services;
+using GymPassport.WPF.State;
 using GymPassport.WPF.State.Accounts;
 using GymPassport.WPF.State.Authenticators;
-using GymPassport.WPF.Stores;
+using GymPassport.WPF.State.Navigators;
 using GymPassport.WPF.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,25 +23,7 @@ namespace GymPassport.WPF.HostBuilders
                 services.AddSingleton<LoginViewModel>(s => new LoginViewModel(
                     s.GetRequiredService<IAuthenticator>()));
 
-                services.AddTransient<ClientsViewModel>(s => new ClientsViewModel(
-                    s.GetRequiredService<ClientsStore>(),
-                    s.GetRequiredService<IAccountStore>(),
-                    s.GetRequiredService<IGymService>(),
-                    s.GetRequiredService<IClientService>(),
-                    CreateAddClientNavigationService(s),
-                    CreateDeleteClientNavigationService(s)));
-
-                services.AddTransient<AddClientViewModel>(s => new AddClientViewModel(
-                    s.GetRequiredService<CloseModalNavigationService>(),
-                    s.GetRequiredService<ClientsStore>(),
-                    s.GetRequiredService<IAccountStore>(),
-                    s.GetRequiredService<IClientService>()));
-
-                services.AddTransient<DeleteClientViewModel>(s => new DeleteClientViewModel(
-                    s.GetRequiredService<CloseModalNavigationService>(),
-                    s.GetRequiredService<ClientsStore>(),
-                    s.GetRequiredService<IAccountStore>(),
-                    s.GetRequiredService<IClientService>()));
+                services.AddTransient<ClientsViewModel>(CreateClientsViewModel);
 
                 services.AddTransient<ActivitiesViewModel>(s => new ActivitiesViewModel());
 
@@ -59,6 +40,15 @@ namespace GymPassport.WPF.HostBuilders
             return host;
         }
 
+        private static ClientsViewModel CreateClientsViewModel(IServiceProvider services)
+        {
+            return ClientsViewModel.LoadViewModel(
+                services.GetRequiredService<ClientsStore>(),
+                services.GetRequiredService<SelectedClientStore>(),
+                services.GetRequiredService<ModalNavigationStore>()
+                );
+        }
+
         private static NavigationBarViewModel CreateNavigationBarViewModel(IServiceProvider services)
         {
             return new NavigationBarViewModel(services.GetRequiredService<IAccountStore>(),
@@ -68,21 +58,6 @@ namespace GymPassport.WPF.HostBuilders
                             CreateGymEventsNavigationService(services),
                             CreateReservationsNavigationService(services),
                             CreateRoomsNavigationService(services));
-        }
-
-        // Crea un INavigationService para poder navegar a AddClientView
-        private static INavigationService CreateAddClientNavigationService(IServiceProvider services)
-        {
-            return new ModalNavigationService<AddClientViewModel>(
-                services.GetRequiredService<ModalNavigationStore>(),
-            () => services.GetRequiredService<AddClientViewModel>());
-        }
-
-        private static INavigationService CreateDeleteClientNavigationService(IServiceProvider services)
-        {
-            return new ModalNavigationService<DeleteClientViewModel>(
-                services.GetRequiredService<ModalNavigationStore>(),
-                () => services.GetRequiredService<DeleteClientViewModel>());
         }
 
         private static INavigationService CreateProfileNavigationService(IServiceProvider services)

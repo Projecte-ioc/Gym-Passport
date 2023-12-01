@@ -10,6 +10,18 @@
     <Compile Update="Components\BindablePasswordBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\ClientsDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\ClientsDetailsForm.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\ClientsListing.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\ClientsListingItem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\Layout.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -26,6 +38,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\DeleteClientView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EditClientView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\GymEventsView.xaml.cs">
@@ -48,6 +63,18 @@
     <Page Update="Components\BindablePasswordBox.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Components\ClientsDetails.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\ClientsDetailsForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\ClientsListing.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\ClientsListingItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Components\Layout.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -58,6 +85,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\TextBlockStyles.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\UIColors.xaml">
@@ -73,6 +103,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DeleteClientView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EditClientView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\GymEventsView.xaml">

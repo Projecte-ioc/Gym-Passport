@@ -1,6 +1,7 @@
-﻿using GymPassport.WPF.State.Accounts;
+﻿using GymPassport.WPF.State;
+using GymPassport.WPF.State.Accounts;
 using GymPassport.WPF.State.Authenticators;
-using GymPassport.WPF.Stores;
+using GymPassport.WPF.State.Navigators;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -17,6 +18,8 @@ namespace GymPassport.WPF.HostBuilders
                 services.AddSingleton<IAccountStore, AccountStore>();
 
                 services.AddSingleton<ClientsStore>();
+                services.AddSingleton<SelectedClientStore>();
+
                 services.AddSingleton<NavigationStore>();
                 services.AddSingleton<ModalNavigationStore>();
             });

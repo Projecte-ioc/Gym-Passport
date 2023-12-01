@@ -1,4 +1,4 @@
-﻿using GymPassport.WPF.Stores;
+﻿using GymPassport.WPF.State.Navigators;
 
 namespace GymPassport.WPF.Services
 {

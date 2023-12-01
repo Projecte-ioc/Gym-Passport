@@ -1,6 +1,6 @@
-﻿using GymPassport.WPF.Commands;
-using GymPassport.WPF.Models;
-using GymPassport.WPF.Services.ProfileServices;
+﻿using GymPassport.Domain.Models;
+using GymPassport.GymPassportAPI.Services.ProfileServices;
+using GymPassport.WPF.Commands;
 using GymPassport.WPF.State.Accounts;
 using System.Windows.Input;
 

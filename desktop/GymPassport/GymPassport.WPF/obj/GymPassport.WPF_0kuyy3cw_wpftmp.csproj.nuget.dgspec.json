@@ -1,0 +1,169 @@
+{
+  "format": 1,
+  "restore": {
+    "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.WPF\\GymPassport.WPF.csproj": {}
+  },
+  "projects": {
+    "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.Domain\\GymPassport.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.Domain\\GymPassport.Domain.csproj",
+        "projectName": "GymPassport.Domain",
+        "projectPath": "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.Domain\\GymPassport.Domain.csproj",
+        "packagesPath": "C:\\Users\\Dante\\.nuget\\packages\\",
+        "outputPath": "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Dante\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.WPF\\GymPassport.WPF.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.WPF\\GymPassport.WPF.csproj",
+        "projectName": "GymPassport.WPF",
+        "projectPath": "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.WPF\\GymPassport.WPF.csproj",
+        "packagesPath": "C:\\Users\\Dante\\.nuget\\packages\\",
+        "outputPath": "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.WPF\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Dante\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {
+              "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.Domain\\GymPassport.Domain.csproj": {
+                "projectPath": "Y:\\Dev\\Gym Passport EXPERIMENTAL\\desktop\\GymPassport\\GymPassport.Domain\\GymPassport.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
+          "dependencies": {
+            "DropdownMenu.WPF": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "FontAwesome.Sharp": {
+              "target": "Package",
+              "version": "[6.3.0, )"
+            },
+            "LoadingSpinner.WPF": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "MaterialDesignThemes": {
+              "target": "Package",
+              "version": "[4.9.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "SimpleModal.WPF": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

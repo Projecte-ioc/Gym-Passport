@@ -23,6 +23,7 @@ namespace GymPassport.WPF
         {
             return Host.CreateDefaultBuilder(args)
                 .AddConfiguration()
+                .AddGymPassportAPI()
                 .AddServices()
                 .AddStores()
                 .AddViewModels()

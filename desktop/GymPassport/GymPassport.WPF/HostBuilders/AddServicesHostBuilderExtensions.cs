@@ -1,13 +1,13 @@
-﻿using GymPassport.WPF.Services.AuthenticationServices;
-using GymPassport.WPF.Services.ClientServices;
-using GymPassport.WPF.Services.GymServices;
-using GymPassport.WPF.Services.ProfileServices;
-using GymPassport.WPF.Services;
+﻿using GymPassport.WPF.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using GymPassport.WPF.State.Accounts;
-using GymPassport.WPF.Stores;
 using GymPassport.WPF.ViewModels;
+using GymPassport.WPF.State.Navigators;
+using GymPassport.GymPassportAPI.Services.AuthenticationServices;
+using GymPassport.GymPassportAPI.Services.ProfileServices;
+using GymPassport.GymPassportAPI.Services.GymServices;
+using GymPassport.GymPassportAPI.Services.ClientServices;
 
 namespace GymPassport.WPF.HostBuilders
 {

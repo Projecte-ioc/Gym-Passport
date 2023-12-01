@@ -1,47 +1,40 @@
-﻿using GymPassport.WPF.Services.ClientServices;
-using GymPassport.WPF.Services;
-using GymPassport.WPF.State.Accounts;
-using GymPassport.WPF.Stores;
+﻿using GymPassport.Domain.Models;
+using GymPassport.WPF.State;
 using GymPassport.WPF.ViewModels;
 
 namespace GymPassport.WPF.Commands
 {
     public class DeleteClientCommand : AsyncCommandBase
     {
-        private readonly DeleteClientViewModel _deleteClientViewModel;
+        private readonly ClientsListingItemViewModel _clientsListingItemViewModel;
         private readonly ClientsStore _clientsStore;
-        private readonly IAccountStore _accountStore;
-        private readonly IClientService _clientService;
-        private readonly INavigationService _navigationService;
 
-        public DeleteClientCommand(
-            DeleteClientViewModel deleteClientViewModel,
-            ClientsStore clientsStore,
-            IAccountStore accountStore,
-            IClientService clientService,
-            INavigationService navigationService)
+        public DeleteClientCommand(ClientsListingItemViewModel clientsListingItemViewModel,
+            ClientsStore clientsStore)
         {
-            _deleteClientViewModel = deleteClientViewModel;
+            _clientsListingItemViewModel = clientsListingItemViewModel;
             _clientsStore = clientsStore;
-            _accountStore = accountStore;
-            _clientService = clientService;
-            _navigationService = navigationService;
         }
 
         public override async Task ExecuteAsync(object parameter)
         {
-            //ClientViewModel client = new ClientViewModel(
-            //    _deleteClientViewModel.Name,
-            //    _deleteClientViewModel.Role,
-            //    _deleteClientViewModel.Username,
-            //    _deleteClientViewModel.Password);
+            _clientsListingItemViewModel.ErrorMessage = null;
+            _clientsListingItemViewModel.IsDeleting = true;
 
-            //await _clientService.DeleteClient(_accountStore.CurrentAccount.Token, _deleteClientViewModel.Username);
+            Client client = _clientsListingItemViewModel.Client;
 
-            //_clientsStore.RemoveClient(client);
-
-            _navigationService.Navigate();
-
+            try
+            {
+                await _clientsStore.Delete(client.Username);
+            }
+            catch (Exception)
+            {
+                _clientsListingItemViewModel.ErrorMessage = "Error al eliminar al cliente. Por favor, intentelo de nuevo.";
+            }
+            finally
+            {
+                _clientsListingItemViewModel.IsDeleting = false;
+            }
         }
     }
 }

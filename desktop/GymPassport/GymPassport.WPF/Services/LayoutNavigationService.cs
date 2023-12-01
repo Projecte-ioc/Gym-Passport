@@ -1,5 +1,5 @@
 ﻿using GymPassport.WPF.State.Accounts;
-using GymPassport.WPF.Stores;
+using GymPassport.WPF.State.Navigators;
 using GymPassport.WPF.ViewModels;
 
 namespace GymPassport.WPF.Services

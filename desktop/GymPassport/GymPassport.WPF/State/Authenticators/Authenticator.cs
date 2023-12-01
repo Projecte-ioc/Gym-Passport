@@ -1,5 +1,5 @@
-﻿using GymPassport.WPF.Models;
-using GymPassport.WPF.Services.AuthenticationServices;
+﻿using GymPassport.Domain.Models;
+using GymPassport.GymPassportAPI.Services.AuthenticationServices;
 using GymPassport.WPF.State.Accounts;
 
 namespace GymPassport.WPF.State.Authenticators

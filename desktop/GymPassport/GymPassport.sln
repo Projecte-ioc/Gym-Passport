@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymPassport.WPF", "GymPassport.WPF\GymPassport.WPF.csproj", "{D6389040-60DB-4D1D-914A-6E5BFDB71AC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymPassport.WPF", "GymPassport.WPF\GymPassport.WPF.csproj", "{D6389040-60DB-4D1D-914A-6E5BFDB71AC0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymPassport.Domain", "GymPassport.Domain\GymPassport.Domain.csproj", "{BC37ACDF-7FD0-420C-8158-F3294E02D6E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymPassport.GymPassportAPI", "GymPassport.GymPassportAPI\GymPassport.GymPassportAPI.csproj", "{A27306F6-A7D3-4D61-92B8-04EA7B5FF923}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{D6389040-60DB-4D1D-914A-6E5BFDB71AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6389040-60DB-4D1D-914A-6E5BFDB71AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6389040-60DB-4D1D-914A-6E5BFDB71AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC37ACDF-7FD0-420C-8158-F3294E02D6E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC37ACDF-7FD0-420C-8158-F3294E02D6E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC37ACDF-7FD0-420C-8158-F3294E02D6E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC37ACDF-7FD0-420C-8158-F3294E02D6E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A27306F6-A7D3-4D61-92B8-04EA7B5FF923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A27306F6-A7D3-4D61-92B8-04EA7B5FF923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A27306F6-A7D3-4D61-92B8-04EA7B5FF923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A27306F6-A7D3-4D61-92B8-04EA7B5FF923}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

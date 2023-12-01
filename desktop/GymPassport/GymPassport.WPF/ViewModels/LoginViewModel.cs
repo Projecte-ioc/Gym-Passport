@@ -87,11 +87,11 @@ namespace GymPassport.WPF.ViewModels
             LoginCommand = new LoginCommand(this, authenticator);
         }
 
-        public override void Dispose()
-        {
-            ErrorMessageViewModel.Dispose();
+        //public override void Dispose()
+        //{
+        //    ErrorMessageViewModel.Dispose();
 
-            base.Dispose();
-        }
+        //    base.Dispose();
+        //}
     }
 }
