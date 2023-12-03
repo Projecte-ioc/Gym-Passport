@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash
 from database_models_tea2 import User, Gym
 from utils_tea_2 import Connexion
-
+from jose import jwe
 app = Flask(__name__)
 db = Connexion()
 load_dotenv()
@@ -59,7 +59,7 @@ def select_a_user_info_and_gym():
             return jsonify({'error': 'No ha estat possible recuperar els registres pel usuari'}), 404
 
     else:
-
+        nl_token =
         return jsonify({'nl-token': f'{token}'}), 200
 
 
