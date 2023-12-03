@@ -9,7 +9,7 @@ import jwt
 app = Flask(__name__)
 db = Connexion()
 
-SK = db.cipher_pswd()
+SK = db.convert_password_base64()
 
 
 @app.route('/consultar_clientes_gym', methods=['GET'])

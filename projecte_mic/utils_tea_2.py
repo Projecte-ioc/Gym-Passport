@@ -1,5 +1,7 @@
 import base64
 import hashlib
+import json
+
 from jwcrypto import jwk, jwe
 from jwcrypto.common import json_encode
 import jwt
@@ -50,21 +52,28 @@ class Connexion:
         payload = jwt.decode(token, os.getenv("SK"), algorithms=['HS256'])
         return jsonify(payload)
 
-    def cipher_pswd(self):
-        # Derivación de clave usando PBKDF2
-        salt = os.urandom(16)  # Genera un salt aleatorio de 16 bytes
+    def convert_password_base64(self):
+        salt = os.urandom(16)
         key_hash = hashlib.pbkdf2_hmac('sha256', os.getenv('SK').encode('utf-8'), salt,
-                                       100000)  # 100000 es el número de iteraciones
+                                       100000)
 
-        # Base64 encoding de la clave derivada
         base64_key = base64.urlsafe_b64encode(key_hash).decode('utf-8')
         clave_dict = {"k": base64_key, "kty": "oct"}
 
-        PW_CRYPT = jwk.JWK(k=clave_dict.get("k"), kty=clave_dict.get("kty"))
-        return PW_CRYPT
+        pswd = jwk.JWK(k=clave_dict.get("k"), kty=clave_dict.get("kty"))
+        return pswd
 
     def cipher_content(self, token, SK):
         ready_token = jwe.JWE(token, json_encode({"alg": "A256KW", "enc": "A256CBC-HS512"}))
         ready_token.add_recipient(SK)
-        ready_token_rt = ready_token.serialize()
-        return ready_token_rt
+        return ready_token.serialize()
+
+    def descipher_content(self, content, SK):
+        print(content)
+        jwe_token = jwe.JWE()
+        json_text = json.dumps(content)
+        print(json_text)
+        jwe_token.deserialize(json_text)
+        jwe_token.decrypt(SK.export())
+        payload = jwe_token.payload
+        return payload

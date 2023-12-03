@@ -15,7 +15,7 @@ app = Flask(__name__)
 db = Connexion()
 load_dotenv()
 
-SK = db.cipher_pswd()
+SK = db.convert_password_base64()
 
 def register(userObj, cursor):
     '''

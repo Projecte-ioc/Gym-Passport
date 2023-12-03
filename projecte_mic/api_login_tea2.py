@@ -18,7 +18,7 @@ db = Connexion()
 
 # Clave secreta para JWT
 app.config['SECRET_KEY'] = os.getenv("SK")
-SK = db.cipher_pswd()
+SK = db.convert_password_base64()
 
 
 # Ruta para la autenticación
