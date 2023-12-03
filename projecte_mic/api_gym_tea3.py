@@ -1,32 +1,39 @@
+import os
 
 from flask import Flask, request, jsonify
 
 from database_models_tea2 import User, Gym
 from utils_tea_2 import Connexion
+import jwt
 
 app = Flask(__name__)
 db = Connexion()
+
+SK = db.cipher_pswd()
 
 
 @app.route('/consultar_clientes_gym', methods=['GET'])
 def select_all_clients_gym():
     connection, cursor = db.get_connection_to_db()
-    token = request.headers.get('Authorization')
-    rol_user, id, _, _ = db.validate_rol_user(token)
+    token_result = request.headers.get('Authorization')
+    rol_user, id, _, _ = db.validate_rol_user(token_result)
     if rol_user == "admin":
         clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = {id}"
         cursor.execute(clients_of_my_gym)
         results = cursor.fetchall()
         results_dict = [dict(zip(User.__keys_user__, row)) for row in results]
         connection.close()
-        return jsonify(results_dict), 200
+        token_result = jwt.encode(results_dict, os.getenv('SK'), algorithm='HS256')
+        token_jwe = db.cipher_content(token=token_result, SK=SK)
+        return token_jwe, 200
     return jsonify({'message': 'No tens permisos per a consultar aquestes dades'}), 401
 
 
 @app.route('/update_gym', methods=['PATCH'])
 def update_gym_data():
     '''
-    ESTRUCTURA JSON amb les dades a actualitzar, sino estan es perque es va quedar que no es poden modificar:
+    ESTRUCTURA JSON amb les dades a actualitzar, sino estan es
+     perque es va quedar que no es poden modificar:
     {
         address: ,
         phone_number: ,

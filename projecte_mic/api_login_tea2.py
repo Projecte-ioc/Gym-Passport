@@ -2,6 +2,8 @@ import os
 import jwt
 import psycopg2
 from flask import Flask, request, jsonify
+from jwcrypto import jwe
+from jwcrypto.common import json_encode
 from werkzeug.security import check_password_hash
 from utils_tea_2 import Connexion
 from database_models_tea2 import User, Gym
@@ -16,6 +18,7 @@ db = Connexion()
 
 # Clave secreta para JWT
 app.config['SECRET_KEY'] = os.getenv("SK")
+SK = db.cipher_pswd()
 
 
 # Ruta para la autenticación
@@ -64,8 +67,8 @@ def login():
             cursor.execute(f"UPDATE {User.__table_name__} SET log = {user.log} WHERE user_name = '{user.user_name}'")
             connection.commit()
             connection.close()
-
-        return jsonify({'token': token})
+        login_token_jwe = db.cipher_content(token=token, SK=SK)
+        return login_token_jwe, 200
     else:
         return jsonify({'message': 'Credenciales inválidas'}), 401
 
@@ -81,7 +84,8 @@ def logout():
 
     if row:
         # Crear el objeto User utilizando los valores recuperados de la base de datos
-        user = User(id=row[0], name=row[1], rol_user=row[2], pswd_app=row[3], gym_id=row[4], user_name=row[5], log=row[6])
+        user = User(id=row[0], name=row[1], rol_user=row[2], pswd_app=row[3], gym_id=row[4], user_name=row[5],
+                    log=row[6])
 
         # Establecer el log en 0
         user.log = 0
@@ -96,4 +100,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run (host='0.0.0.0', port=4000)
+    app.run(host='0.0.0.0', port=4000)

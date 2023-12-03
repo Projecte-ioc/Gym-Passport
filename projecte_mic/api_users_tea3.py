@@ -6,11 +6,16 @@ from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash
 from database_models_tea2 import User, Gym
 from utils_tea_2 import Connexion
-from jose import jwe
+from jwcrypto import jwe, jwk
+from jwcrypto.common import json_encode
+import hashlib
+import base64
+
 app = Flask(__name__)
 db = Connexion()
 load_dotenv()
 
+SK = db.cipher_pswd()
 
 def register(userObj, cursor):
     '''
@@ -40,7 +45,8 @@ def select_a_user_info_and_gym():
     rol, id, user_name, _ = db.validate_rol_user(token)
     if rol == 'admin':
         query = f"""
-        SELECT users_data.name as user_name, users_data.rol_user, gym.name as gym_name, gym.address, gym.phone_number, gym.schedule
+        SELECT users_data.name as user_name, users_data.rol_user, gym.name as gym_name, gym.address,
+        gym.phone_number, gym.schedule
         FROM {User.__table_name__}
         JOIN gym ON users_data.gym_id = gym.id
         WHERE users_data.user_name = %s
@@ -54,13 +60,15 @@ def select_a_user_info_and_gym():
             formatted_record = dict(zip(column_names, results))
             token_ad = jwt.encode(formatted_record,
                                   os.getenv("SK"), algorithm='HS256')
-            return jsonify({'ad-token': f'{token_ad}'}), 200
+            token_admin = db.cipher_content(token=token_ad, SK=SK)
+            print(token_admin)
+            return token_admin
         else:
             return jsonify({'error': 'No ha estat possible recuperar els registres pel usuari'}), 404
 
     else:
-        nl_token =
-        return jsonify({'nl-token': f'{token}'}), 200
+        nl_token_jwe = db.cipher_content(token=token, SK=SK)
+        return nl_token_jwe
 
 
 @app.route('/insert_client', methods=['POST'])
@@ -114,7 +122,7 @@ def insert_diferents_clients():
                 user = item['user_name']
                 pswd = generate_password_hash(item['pswd_app'], method='pbkdf2', salt_length=16)
                 # crea un nuevo objeto del tipo usuario
-                user = User(id=_, name=name, rol_user=rol, pswd_app=pswd, gym_id=id, user_name=user,log=_)
+                user = User(id=_, name=name, rol_user=rol, pswd_app=pswd, gym_id=id, user_name=user, log=_)
                 register(user, cursor)
                 connection.commit()
             return jsonify({'message': 'Usuari enregistrat correctament'}), 200
@@ -144,9 +152,7 @@ def update_client_data():
     try:
         if isinstance(data, dict):
             User.name = data.get('name')
-            # new_name = User.set_name
             User.rol_user = data.get('rol_user')
-            # new_rol = User.set_rol_user
             user = data.get('user_name')
             if len(data.get('pswd_app')) < 20:
                 new_pswd = generate_password_hash(data.get('pswd_app'), method='pbkdf2', salt_length=16)
@@ -199,7 +205,9 @@ def update_client_data():
                         "-", " "),
                     'name': User.name
                 }, os.getenv('SK'), algorithm='HS256')
-                return jsonify({'new_token': new_token}), 201
+                new_token_jwe = db.cipher_content(token=new_token, SK=SK)
+                return new_token_jwe, 201
+
             return jsonify({'message': 'dades actualitzades correctament'})
         else:
             return jsonify({'message': 'No es poden actualitzar les dades per falta de permissos'}), 401
