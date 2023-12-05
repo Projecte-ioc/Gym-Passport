@@ -13,6 +13,15 @@ db = Connexion()
 
 # __key_list_events__=['id_gym', 'id_user', 'id_event', 'rating_event']
 def insert_simple(id_gym, id_user, id_event, connection, cursor):
+    """
+    Aquesta funció insereix a un usuari a la llista d'usuaris apuntats al event.
+    :param id_gym:
+    :param id_user:
+    :param id_event:
+    :param connection:
+    :param cursor:
+    :return:
+    """
     List_user_events.id_gym = id_gym
     List_user_events.id_user = id_user
     List_user_events.id_event = id_event
@@ -41,7 +50,6 @@ def delete_simple(id_event, cursor, connection):
     finally:
         cursor.close()
         connection.close()
-
 
 
 @app.route('/obtener_eventos', methods=['GET'])
@@ -80,6 +88,7 @@ def get_events_some_filters():
 @app.route('/insertar_evento', methods=['POST'])
 def insert_event():
     '''
+    Insereix un event nou.
     ESTRUCTURA JSON:
     {
         'date':'',
@@ -148,20 +157,34 @@ def insert_event():
 
 @app.route('/reserva_evento', methods=['PATCH'])
 def got_it_place():
-    event_id = request.args.get()
-    token = request.headers.get()
+    """
+    Reserva plaça a l'event
+    /reserva_evento?event_id=
+    :return:
+    """
+    event_id = request.args.get('event_id')
+    print(type(event_id))
+    token = request.headers.get('Authorization')
+    connex, cursor = db.get_connection_to_db()
     rol_user, id, user_name, gym_name = db.validate_rol_user(token)
-    qty_got_it_now = db.get_elements_filtered(event_id, GymEvent.__table_name__, "id", GymEvent.__keys_events__[4])
-    qty_max = db.get_elements_filtered(event_id, GymEvent.__table_name__, "id", GymEvent.__keys_events__[3])
-    GymEvent.qty_got_it = qty_got_it_now + 1
-    if qty_max[0][0] == qty_got_it_now[0][0]:
-        return jsonify({'message': 'No queden places disponibles'}), 401
-    connection, cursor = db.get_connection_to_db()
+    # get_elements_filtered(self, filter, table, what_filter, selector)
+    # query_sql = f"SELECT {selector} FROM {table} WHERE {what_filter} = filter"
+    query = f"SELECT qty_got_it, qty_max_attendes FROM {GymEvent.__table_name__} WHERE id = %s AND gym_id = %s"
+    cursor.execute(query, (event_id, id))
+    result = cursor.fetchone()
+    qty_got_it_now = result[0]
+    qty_max = result[1]
+    print(str(qty_got_it_now))
+    print(str(qty_max))
+    if result:
+        GymEvent.qty_got_it = qty_got_it_now + 1
+    if qty_max == qty_got_it_now:
+       return jsonify({'message': 'No queden places disponibles'}), 401
     update_query = f"UPDATE {GymEvent.__table_name__} SET qty_got_it = %s WHERE id = %s"
     cursor.execute(update_query, (GymEvent.qty_got_it, event_id))
     user_id = db.get_elements_filtered(user_name, User.__table_name__, "user_name", "id")
     user_id_exact = user_id[0][0]
-    insert_simple(id_gym=id, id_user=user_id_exact, id_event=event_id, connection=connection, cursor=cursor)
+    insert_simple(id_gym=id, id_user=user_id_exact, id_event=event_id, connection=connex, cursor=cursor)
     return jsonify({'message': 'Has reservat plaça correctament!'})
 
 
