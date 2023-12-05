@@ -1,13 +1,13 @@
 from jwcrypto import jwk
 
 from utils_tea_2 import Connexion
+
 con = Connexion()
 contenido = {
-    "ciphertext": "BmuppMFRxsucZ1fTz5F4wDbo1LMNFEbUtngKDZZ1RPrl0qlfNDueXL-bSp3ZFKSMk3gx4hwSlzQ5855buVPYzMvWsHehj3F8vYTzcie2OHiBhgNqMoalOt392AA_sXCVAJcRnOWRqOp725qk6pRpNXcECVVV77uhP1BWVr53TR3b9ClhEc1ZwV5OtFJvh-2_XfLQ1QnpDpzYCIg9E07P1V6KswpNHU2vrZlYGr4Lu-ei0aMTG6cpVuxRJPb0I6iqkzJvVnD2Qb36qSmQxDRviAsCVJY_YvliTn7BlobUq9Z2HSmA0L8hzg2v9p-qBW-JoIjH37bvqidma1qEtjOcQBIUK8AzCmzP6icIE6wdNQmKbwyp6Cxe5xEeHTp87kKl6ZFTS1-0VHyhNWWmWRAVp8r1fCQfcD5X1Gqgoj9Y7l5O1iHeNFNcQ4Xknhf15P6j",
-    "encrypted_key": "PfXf9M_Wy_kDhTgVzN5nGEW8np2zzxhmRwt95oAzHnSFravScoUiM23gs4MyhzDQtIoTOO5Gt29zBHtuoyjhuMNBzXycKamO",
-    "iv": "O2BTnn3TtZk_EO2dH4kJ2g", "protected": "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIn0",
-    "tag": "KxEdrrgxsAOceJDNuJFBvYnGWx311pU704NeH1B76tA"}
+    "ciphertext": "_tQAp5q1FGgis9TEEULA232JE-XWSlU-HW1aNPb1pe0EmednFi6ZzuoaRfKoO8nhFVygC4IuaeI5WBSUyuFns1Y9TyGy2qDxvQyzbx1WaX9qiEv1AukDNJfTCPgZ2ZqyaebqOs-7EvX12zfau0IU5KgdcEOYGMa9Y_OrXH_cLznpHxLSvPtGmnr6tc89APt8qKRA1irfvqbYNYz6Z2pFLfTcLRPYF1JWMuG6XOmDJPUVhvdxbFgYOkCyvsTAGa_XJlQ1KjAa3F0856WEYWW_yqCcL3DBpAQaNVePxA7xnQTsQnrNQR-ilDQKrCbxrUpkYF3nHT4z54hycjrUGHtSIY_pri1R0gK0VUXUUdCmHdmqds7_UlPEOBfDKnTz6hSoOUSZwGNihF38r-pi2HWE7wha2QjdenhLBzURt-TeVKC6k7XrPiFnlVETR6GfwYC5",
+    "encrypted_key": "v68u4RfcUfcozOOZQhBPcRkX5EPghPbZStfCTbRGLv2d8NqnpuNQc5jh9CjWow5jdUp05gUB0pFARJ1gvA68nbKYc7YZmKBR",
+    "iv": "8cwlInMspD_Mekj0rj3nSA", "protected": "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIn0",
+    "tag": "iPozK36-dR8iyagtqxvTflfCo3XIafDZxaTK7nMcZmQ"}
 SK = con.convert_password_base64()
-print(type(SK))
 result = con.descipher_content(content=contenido, SK=SK)
-print(result)
+

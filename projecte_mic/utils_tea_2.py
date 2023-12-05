@@ -53,8 +53,7 @@ class Connexion:
         return jsonify(payload)
 
     def convert_password_base64(self):
-        salt = os.urandom(16)
-        key_hash = hashlib.pbkdf2_hmac('sha256', os.getenv('SK').encode('utf-8'), salt,
+        key_hash = hashlib.pbkdf2_hmac('sha256', os.getenv('SK').encode('utf-8'), os.getenv('SALT').encode('utf-8'),
                                        100000)
 
         base64_key = base64.urlsafe_b64encode(key_hash).decode('utf-8')
@@ -69,11 +68,11 @@ class Connexion:
         return ready_token.serialize()
 
     def descipher_content(self, content, SK):
-        print(content)
         jwe_token = jwe.JWE()
         json_text = json.dumps(content)
-        print(json_text)
         jwe_token.deserialize(json_text)
-        jwe_token.decrypt(SK.export())
+        jwe_token.decrypt(SK)
         payload = jwe_token.payload
-        return payload
+        payload_str = payload.decode('utf-8')
+        print(payload_str)
+        return payload_str
