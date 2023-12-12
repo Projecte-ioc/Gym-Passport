@@ -62,6 +62,21 @@ class Connexion:
         pswd = jwk.JWK(k=clave_dict.get("k"), kty=clave_dict.get("kty"))
         return pswd
 
+    def custom_serialize(self, token, SK):
+        # Obtener los componentes del JWE utilizando claves
+        jwe_token = self.cipher_content(token, SK)
+        jwe_token_txt = json.loads(jwe_token)
+        ciphertext = jwe_token_txt['ciphertext']
+        encrypted_key = jwe_token_txt['encrypted_key']
+        iv = jwe_token_txt['iv']
+        protected = jwe_token_txt['protected']
+        tag = jwe_token_txt['tag']
+
+        # Construir la cadena en el formato deseado
+        serialized_jwe = f"{ciphertext}.{encrypted_key}.{iv}.{protected}.{tag}"
+
+        return serialized_jwe
+
     def cipher_content(self, token, SK):
         ready_token = jwe.JWE(token, json_encode({"alg": "A256KW", "enc": "A256CBC-HS512"}))
         ready_token.add_recipient(SK)
