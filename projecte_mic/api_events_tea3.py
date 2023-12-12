@@ -167,8 +167,6 @@ def got_it_place():
     token = request.headers.get('Authorization')
     connex, cursor = db.get_connection_to_db()
     rol_user, id, user_name, gym_name = db.validate_rol_user(token)
-    # get_elements_filtered(self, filter, table, what_filter, selector)
-    # query_sql = f"SELECT {selector} FROM {table} WHERE {what_filter} = filter"
     query = f"SELECT qty_got_it, qty_max_attendes FROM {GymEvent.__table_name__} WHERE id = %s AND gym_id = %s"
     cursor.execute(query, (event_id, id))
     result = cursor.fetchone()
@@ -179,21 +177,49 @@ def got_it_place():
     if result:
         GymEvent.qty_got_it = qty_got_it_now + 1
     if qty_max == qty_got_it_now:
-       return jsonify({'message': 'No queden places disponibles'}), 401
+        return jsonify({'message': 'No queden places disponibles'}), 401
     update_query = f"UPDATE {GymEvent.__table_name__} SET qty_got_it = %s WHERE id = %s"
     cursor.execute(update_query, (GymEvent.qty_got_it, event_id))
     user_id = db.get_elements_filtered(user_name, User.__table_name__, "user_name", "id")
     user_id_exact = user_id[0][0]
     insert_simple(id_gym=id, id_user=user_id_exact, id_event=event_id, connection=connex, cursor=cursor)
-    return jsonify({'message': 'Has reservat plaça correctament!'})
+    return jsonify({'message': 'Has reservat plaça correctament!'}), 201
 
 
 @app.route('/eliminar_reserva_evento', methods=['PATCH'])
 def delete_reservation():
     """
-    Modifica el contador de got_it en la tabla eventos y elimina el registro de la tabla donde se muestra el listado.
-    """
-    pass
+        Reserva plaça a l'event
+        /eliminar_reserva_evento?event_id=
+        :return:
+        """
+    event_id = request.args.get('event_id')
+    token = request.headers.get('Authorization')
+    connex, cursor = db.get_connection_to_db()
+    rol_user, id, user_name, gym_name = db.validate_rol_user(token)
+    query = f"SELECT qty_got_it, qty_max_attendes FROM {GymEvent.__table_name__} WHERE id = %s AND gym_id = %s"
+    cursor.execute(query, (event_id, id))
+    result = cursor.fetchone()
+    qty_got_it_now = result[0]
+    qty_max = result[1]
+    print(str(qty_got_it_now))
+    print(str(qty_max))
+    if result:
+        if qty_got_it_now == 1:
+            GymEvent.qty_got_it = 0
+        else:
+            GymEvent.qty_got_it = qty_got_it_now - 1
+    if qty_max == qty_got_it_now:
+        return jsonify({'message': 'No queden places disponibles'}), 401
+    update_query = f"UPDATE {GymEvent.__table_name__} SET qty_got_it = %s WHERE id = %s"
+    cursor.execute(update_query, (GymEvent.qty_got_it, event_id))
+    user_id = db.get_elements_filtered(user_name, User.__table_name__, "user_name", "id")
+    user_id_exact = user_id[0][0]
+    delete_query = f"DELETE FROM  {List_user_events.__table_name__} WHERE id_user = %s"
+    cursor.execute(delete_query, (user_id_exact, ))
+    connex.commit()
+    connex.close()
+    return jsonify({'message': 'Has reservat plaça correctament!'}), 201
 
 
 @app.route('/modificar_evento', methods=['PATCH'])
