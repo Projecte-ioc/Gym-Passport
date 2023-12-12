@@ -68,6 +68,8 @@ def login():
             connection.commit()
             connection.close()
         login_token_jwe = db.cipher_content(token=token, SK=SK)
+        print(login_token_jwe)
+        print(type(login_token_jwe))
         return login_token_jwe, 200
     else:
         return jsonify({'message': 'Credenciales inválidas'}), 401
