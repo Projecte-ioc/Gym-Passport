@@ -13,7 +13,7 @@ class Connexion:
     load_dotenv()
 
     def validate_rol_user(self, token: str):
-        data = self.get_elements_of_token(token).get_json(force=True)
+        data = self.get_elements_of_token(token)
         print(data)
         rol_user = data.get('rol_user')
         gym_name = data.get('gym_name')
@@ -48,7 +48,8 @@ class Connexion:
 
     def get_elements_of_token(self, token):
         payload = jwt.decode(token, os.getenv("SK"), algorithms=['HS256'])
-        return jsonify(payload)
+        print(type(payload))
+        return payload
 
     def cipher_content(self, token):
         key_base64 = os.getenv('SK')
@@ -71,4 +72,5 @@ class Connexion:
         ciphertext = encrypted_data[12:]
         decrypted_token = aesgcm.decrypt(nonce, ciphertext, None).decode()
         print(f"decrypted_token = {decrypted_token}")
+        print(type(decrypted_token))
         return decrypted_token

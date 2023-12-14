@@ -6,16 +6,11 @@ from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash
 from database_models_tea2 import User, Gym
 from utils_tea_2 import Connexion
-from jwcrypto import jwe, jwk
-from jwcrypto.common import json_encode
-import hashlib
-import base64
 
 app = Flask(__name__)
 db = Connexion()
 load_dotenv()
 
-SK = db.convert_password_base64()
 
 def register(userObj, cursor):
     '''
@@ -42,7 +37,8 @@ def register(userObj, cursor):
 def select_a_user_info_and_gym():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol, id, user_name, _ = db.validate_rol_user(token)
+    jwe = db.decipher_content(token)
+    rol, id, user_name, _ = db.validate_rol_user(jwe)
     if rol == 'admin':
         query = f"""
         SELECT users_data.name as user_name, users_data.rol_user, gym.name as gym_name, gym.address,
@@ -60,14 +56,14 @@ def select_a_user_info_and_gym():
             formatted_record = dict(zip(column_names, results))
             token_ad = jwt.encode(formatted_record,
                                   os.getenv("SK"), algorithm='HS256')
-            token_admin = db.cipher_content(token=token_ad, SK=SK)
+            token_admin = db.cipher_content(token=token_ad)
             print(token_admin)
             return token_admin
         else:
             return jsonify({'error': 'No ha estat possible recuperar els registres pel usuari'}), 404
 
     else:
-        nl_token_jwe = db.cipher_content(token=token, SK=SK)
+        nl_token_jwe = db.cipher_content(token=token)
         return nl_token_jwe
 
 
@@ -75,16 +71,18 @@ def select_a_user_info_and_gym():
 def insert_individual_client():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, _, _ = db.validate_rol_user(token)
+    jwe = db.decipher_content(token)
+    rol_user, id, _, _ = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
+    data_dsc = db.decipher_content(data)
     try:
-        if isinstance(data, dict):
-            name = data.get('name')
-            rol = data.get('rol_user')
-            user = data.get('user_name')
-            pswd = generate_password_hash(data.get('pswd_app'), method='pbkdf2', salt_length=16)
+        if isinstance(data_dsc, dict):
+            name = data_dsc.get('name')
+            rol = data_dsc.get('rol_user')
+            user = data_dsc.get('user_name')
+            pswd = generate_password_hash(data_dsc.get('pswd_app'), method='pbkdf2', salt_length=16)
         else:
-            for item in data:
+            for item in data_dsc:
                 name = item['name']
                 rol = item['rol_user']
                 user = item['user_name']
@@ -114,9 +112,10 @@ def insert_diferents_clients():
     jwe = db.decipher_content(token)
     rol_user, id, _, _ = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
+    data_dsc = db.decipher_content(data)
     if rol_user == 'admin':
         try:
-            for item in data:
+            for item in data_dsc:
                 # obtiene del json
                 name = item['name']
                 rol = item['rol_user']
@@ -151,22 +150,23 @@ def update_client_data():
     jwe = db.decipher_content(token)
     rol_user, id, user_name, _ = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
+    data_dsc = db.decipher_content(data)
     try:
-        if isinstance(data, dict):
-            User.name = data.get('name')
-            User.rol_user = data.get('rol_user')
-            user = data.get('user_name')
-            if len(data.get('pswd_app')) < 20:
-                new_pswd = generate_password_hash(data.get('pswd_app'), method='pbkdf2', salt_length=16)
+        if isinstance(data_dsc, dict):
+            User.name = data_dsc.get('name')
+            User.rol_user = data_dsc.get('rol_user')
+            user = data_dsc.get('user_name')
+            if len(data_dsc.get('pswd_app')) < 20:
+                new_pswd = generate_password_hash(data_dsc.get('pswd_app'), method='pbkdf2', salt_length=16)
             else:
-                new_pswd = data.get('pswd_app')
+                new_pswd = data_dsc.get('pswd_app')
         else:
-            for item in data:
+            for item in data_dsc:
                 User.name = item['name']
                 User.rol_user = item['rol_user']
                 user = item['user_name']
-                if len(data.item['pswd_app']) < 20:
-                    new_pswd = generate_password_hash(data.item['pswd_app'], method='pbkdf2', salt_length=16)
+                if len(data_dsc.item['pswd_app']) < 20:
+                    new_pswd = generate_password_hash(data_dsc.item['pswd_app'], method='pbkdf2', salt_length=16)
                 else:
                     new_pswd = data.item['pswd_app']
 

@@ -41,7 +41,10 @@ def get_user_by_user_name(user_name, pswd):
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json(force=True)
+    jwe = db.decipher_content(data.get("jwe"))
     connection, cursor = db.get_connection_to_db()
+    data = db.get_elements_of_token(jwe)
+    print(data)
     if isinstance(data, dict):
         user_name = data.get("user_name")
         pswd = data.get("pswd_app")
@@ -66,8 +69,7 @@ def login():
             connection.commit()
             connection.close()
         login_token_jwe = db.cipher_content(token=token)
-        print(login_token_jwe)
-        print(type(login_token_jwe))
+
         return login_token_jwe, 200
     else:
         return jsonify({'message': 'Credenciales inválidas'}), 401
@@ -82,7 +84,6 @@ def logout():
 
     cursor.execute(f"SELECT * FROM {User.__table_name__} WHERE user_name = %s", (user_name,))
     row = cursor.fetchone()
-    print(row)
     if row:
         # Crear el objeto User utilizando los valores recuperados de la base de datos
         user = User(id=row[0], name=row[1], rol_user=row[2], pswd_app=row[3], gym_id=row[4], user_name=row[5],
