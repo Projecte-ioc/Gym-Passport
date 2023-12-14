@@ -55,11 +55,13 @@ def delete_simple(id_event, cursor, connection):
 @app.route('/obtener_eventos', methods=['GET'])
 def get_all_events():
     token = request.headers.get('Authorization')
-    rol_user, id, user_name, gym_name = db.validate_rol_user(token)
+    jwe = db.decipher_content(token)
+    rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     results = db.get_elements_filtered(id, GymEvent.__table_name__, 'gym_id', '*')
     if results:
         results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
-        return jsonify(results_dict), 200
+        results_dict_cipher = db.cipher_content(results_dict)
+        return jsonify(results_dict_cipher), 200
     else:
         return jsonify({'message': 'No es possible recuperar les dades'}), 404
 
@@ -67,7 +69,8 @@ def get_all_events():
 @app.route('/filtrar_eventos', methods=['POST'])
 def get_filtered_events():
     token = request.headers.get('Authorization')
-    rol_user, id, user_name, gym_name = db.validate_rol_user(token)
+    jwe = db.decipher_content(token)
+    rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     user_name_params = request.args.get('user_name')
     id_gym_user_params = db.get_elements_filtered(user_name_params, User.__table_name__, 'user_name', 'gym_id')
     id_user = db.get_elements_filtered(user_name_params, User.__table_name__, 'user_name', 'id')
@@ -104,7 +107,8 @@ def insert_event():
     '''
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, user_name, gym_name = db.validate_rol_user(token)
+    jwe = db.decipher_content(token)
+    rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
     if isinstance(data, dict):
         GymEvent.date = data.get('date')
@@ -165,8 +169,9 @@ def got_it_place():
     event_id = request.args.get('event_id')
     print(type(event_id))
     token = request.headers.get('Authorization')
+    jwe = db.decipher_content(token)
     connex, cursor = db.get_connection_to_db()
-    rol_user, id, user_name, gym_name = db.validate_rol_user(token)
+    rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     query = f"SELECT qty_got_it, qty_max_attendes FROM {GymEvent.__table_name__} WHERE id = %s AND gym_id = %s"
     cursor.execute(query, (event_id, id))
     result = cursor.fetchone()

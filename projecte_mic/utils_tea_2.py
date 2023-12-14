@@ -1,9 +1,7 @@
 import base64
-import hashlib
-import json
-
-from jwcrypto import jwk, jwe
-from jwcrypto.common import json_encode
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 import jwt
 import psycopg2
 from flask import jsonify
@@ -52,42 +50,25 @@ class Connexion:
         payload = jwt.decode(token, os.getenv("SK"), algorithms=['HS256'])
         return jsonify(payload)
 
-    def convert_password_base64(self):
-        key_hash = hashlib.pbkdf2_hmac('sha256', os.getenv('SK').encode('utf-8'), os.getenv('SALT').encode('utf-8'),
-                                       100000)
+    def cipher_content(self, token):
+        key_base64 = os.getenv('SK')
+        key_bytes = base64.urlsafe_b64decode(key_base64.ljust(32, '='))
+        aesgcm = AESGCM(key_bytes)
+        plaintext = token
+        print(f"plaintext = {plaintext}")
+        nonce = os.urandom(12)
+        ciphertext = aesgcm.encrypt(nonce, plaintext.encode(), None)
+        encrypted_token = base64.urlsafe_b64encode(nonce + ciphertext).decode()
+        print(f"encripted_token = {encrypted_token}")
+        return encrypted_token
 
-        base64_key = base64.urlsafe_b64encode(key_hash).decode('utf-8')
-        clave_dict = {"k": base64_key, "kty": "oct"}
-
-        pswd = jwk.JWK(k=clave_dict.get("k"), kty=clave_dict.get("kty"))
-        return pswd
-
-    def custom_serialize(self, token, SK):
-        # Obtener los componentes del JWE utilizando claves
-        jwe_token = self.cipher_content(token, SK)
-        jwe_token_txt = json.loads(jwe_token)
-        ciphertext = jwe_token_txt['ciphertext']
-        encrypted_key = jwe_token_txt['encrypted_key']
-        iv = jwe_token_txt['iv']
-        protected = jwe_token_txt['protected']
-        tag = jwe_token_txt['tag']
-
-        # Construir la cadena en el formato deseado
-        serialized_jwe = f"{ciphertext}.{encrypted_key}.{iv}.{protected}.{tag}"
-
-        return serialized_jwe
-
-    def cipher_content(self, token, SK):
-        ready_token = jwe.JWE(token, json_encode({"alg": "A256KW", "enc": "A256CBC-HS512"}))
-        ready_token.add_recipient(SK)
-        return ready_token.serialize()
-
-    def descipher_content(self, content, SK):
-        jwe_token = jwe.JWE()
-        json_text = json.dumps(content)
-        jwe_token.deserialize(json_text)
-        jwe_token.decrypt(SK)
-        payload = jwe_token.payload
-        payload_str = payload.decode('utf-8')
-        print(payload_str)
-        return payload_str
+    def decipher_content(self, encrypted_token):
+        key_base64 = os.getenv('SK')
+        key_bytes = base64.urlsafe_b64decode(key_base64.ljust(32, '='))
+        aesgcm = AESGCM(key_bytes)
+        encrypted_data = base64.urlsafe_b64decode(encrypted_token)
+        nonce = encrypted_data[:12]
+        ciphertext = encrypted_data[12:]
+        decrypted_token = aesgcm.decrypt(nonce, ciphertext, None).decode()
+        print(f"decrypted_token = {decrypted_token}")
+        return decrypted_token

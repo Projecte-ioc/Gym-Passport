@@ -111,7 +111,8 @@ def insert_individual_client():
 def insert_diferents_clients():
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, _, _ = db.validate_rol_user(token)
+    jwe = db.decipher_content(token)
+    rol_user, id, _, _ = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
     if rol_user == 'admin':
         try:
@@ -147,7 +148,8 @@ def update_client_data():
     """
     connection, cursor = db.get_connection_to_db()
     token = request.headers.get('Authorization')
-    rol_user, id, user_name, _ = db.validate_rol_user(token)
+    jwe = db.decipher_content(token)
+    rol_user, id, user_name, _ = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
     try:
         if isinstance(data, dict):
@@ -205,7 +207,7 @@ def update_client_data():
                         "-", " "),
                     'name': User.name
                 }, os.getenv('SK'), algorithm='HS256')
-                new_token_jwe = db.cipher_content(token=new_token, SK=SK)
+                new_token_jwe = db.cipher_content(token=new_token)
                 return new_token_jwe, 201
 
             return jsonify({'message': 'dades actualitzades correctament'})
@@ -228,7 +230,8 @@ def delete_user():
     """
     username = request.args.get('user_name')
     token = request.headers.get('Authorization')
-    rol_user, id, user_name, _ = db.validate_rol_user(token)
+    jwe = db.decipher_content(token)
+    rol_user, id, user_name, _ = db.validate_rol_user(jwe)
     if not username:
         return "Falta el nombre de usuario", 400
     if rol_user == 'admin':

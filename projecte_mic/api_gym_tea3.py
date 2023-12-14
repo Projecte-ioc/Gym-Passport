@@ -16,7 +16,8 @@ SK = db.convert_password_base64()
 def select_all_clients_gym():
     connection, cursor = db.get_connection_to_db()
     token_result = request.headers.get('Authorization')
-    rol_user, id, _, _ = db.validate_rol_user(token_result)
+    jwe = db.decipher_content(token_result)
+    rol_user, id, _, _ = db.validate_rol_user(jwe)
     if rol_user == "admin":
         clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = {id}"
         cursor.execute(clients_of_my_gym)
@@ -24,7 +25,7 @@ def select_all_clients_gym():
         results_dict = [dict(zip(User.__keys_user__, row)) for row in results]
         connection.close()
         token_result = jwt.encode(results_dict, os.getenv('SK'), algorithm='HS256')
-        token_jwe = db.cipher_content(token=token_result, SK=SK)
+        token_jwe = db.cipher_content(token=token_result)
         return token_jwe, 200
     return jsonify({'message': 'No tens permisos per a consultar aquestes dades'}), 401
 
@@ -42,7 +43,8 @@ def update_gym_data():
     '''
     data = request.get_json(force=True)
     token = request.headers.get('Authorization')
-    rol_user, id, user_name, gym_name = db.validate_rol_user(token)
+    jwe = db.decipher_content(token)
+    rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     connection, cursor = db.get_connection_to_db()
     if rol_user == 'admin':
         name = gym_name.replace(' ', '-')
