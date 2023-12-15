@@ -70,7 +70,7 @@ def login():
             connection.close()
         login_token_jwe = db.cipher_content(token=token)
 
-        return login_token_jwe, 200
+        return jsonify({'jwe': login_token_jwe}), 200
     else:
         return jsonify({'message': 'Credenciales inválidas'}), 401
 

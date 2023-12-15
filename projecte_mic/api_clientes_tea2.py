@@ -10,6 +10,7 @@ db = Connexion()
 API PARA PODER PROBAR YO QUE LOS DATOS SE ACTUALIZAN EN LA TABLA users_data.
 '''
 
+
 def get_clients_with_par(filter):
     connex, cursor = db.get_connection_to_db()
 

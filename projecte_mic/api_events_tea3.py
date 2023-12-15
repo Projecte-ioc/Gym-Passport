@@ -71,13 +71,14 @@ def get_filtered_events():
     token = request.headers.get('Authorization')
     jwe = db.decipher_content(token)
     rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
-    user_name_params = request.args.get('user_name')
+    user_name_params = db.decipher_content(request.args.get('user_name'))
     id_gym_user_params = db.get_elements_filtered(user_name_params, User.__table_name__, 'user_name', 'gym_id')
     id_user = db.get_elements_filtered(user_name_params, User.__table_name__, 'user_name', 'id')
     if id_gym_user_params[0][0] == id:
         results = db.get_elements_filtered(id_user[0][0], GymEvent.__table_name__, 'user_id', '*')
         results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
-        return jsonify(results_dict), 200
+        result_dict_cipher = db.cipher_content(results_dict)
+        return jsonify(result_dict_cipher), 200
     else:
         return jsonify({'message': 'Error al recuperar les dades solicitades'}), 404
 
@@ -110,21 +111,22 @@ def insert_event():
     jwe = db.decipher_content(token)
     rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
-    if isinstance(data, dict):
-        GymEvent.date = data.get('date')
-        GymEvent.done = data.get('done')
+    data_dcf = db.cipher_content(data)
+    if isinstance(data_dcf, dict):
+        GymEvent.date = data_dcf.get('date')
+        GymEvent.done = data_dcf.get('done')
         GymEvent.gym_id = id
-        GymEvent.hour = data.get('hour')
-        GymEvent.minute = data.get('minute')
-        GymEvent.duration = data.get('duration')
-        GymEvent.name = data.get('name')
+        GymEvent.hour = data_dcf.get('hour')
+        GymEvent.minute = data_dcf.get('minute')
+        GymEvent.duration = data_dcf.get('duration')
+        GymEvent.name = data_dcf.get('name')
         GymEvent.qty_got_it = 0
-        GymEvent.qty_max_attendes = data.get('qty_max_attendes')
+        GymEvent.qty_max_attendes = data_dcf.get('qty_max_attendes')
         user_id = db.get_elements_filtered(user_name, User.__table_name__, 'user_name', 'id')
         GymEvent.user_id = user_id[0][0]
-        GymEvent.whereisit = data.get('whereisit')
+        GymEvent.whereisit = data_dcf.get('whereisit')
     else:
-        for item in data:
+        for item in data_dcf:
             GymEvent.date = item['date']
             GymEvent.done = item['done']
             GymEvent.gym_id = id
@@ -199,7 +201,7 @@ def delete_reservation():
         :return:
         """
     event_id = request.args.get('event_id')
-    token = request.headers.get('Authorization')
+    token = db.decipher_content(request.headers.get('Authorization'))
     connex, cursor = db.get_connection_to_db()
     rol_user, id, user_name, gym_name = db.validate_rol_user(token)
     query = f"SELECT qty_got_it, qty_max_attendes FROM {GymEvent.__table_name__} WHERE id = %s AND gym_id = %s"
@@ -224,7 +226,7 @@ def delete_reservation():
     cursor.execute(delete_query, (user_id_exact, ))
     connex.commit()
     connex.close()
-    return jsonify({'message': 'Has reservat plaça correctament!'}), 201
+    return jsonify({'message': 'Has alliberat la plaça correctament!'}), 201
 
 
 @app.route('/modificar_evento', methods=['PATCH'])
