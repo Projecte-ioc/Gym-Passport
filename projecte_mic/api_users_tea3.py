@@ -58,13 +58,13 @@ def select_a_user_info_and_gym():
                                   os.getenv("SK"), algorithm='HS256')
             token_admin = db.cipher_content(token=token_ad)
             print(token_admin)
-            return token_admin
+            return jsonify({"jwe": token_admin})
         else:
             return jsonify({'error': 'No ha estat possible recuperar els registres pel usuari'}), 404
 
     else:
         nl_token_jwe = db.cipher_content(token=token)
-        return nl_token_jwe
+        return jsonify({"jwe": nl_token_jwe})
 
 
 @app.route('/insert_client', methods=['POST'])
@@ -208,7 +208,7 @@ def update_client_data():
                     'name': User.name
                 }, os.getenv('SK'), algorithm='HS256')
                 new_token_jwe = db.cipher_content(token=new_token)
-                return new_token_jwe, 201
+                return jsonify({"jwe": new_token_jwe}), 201
 
             return jsonify({'message': 'dades actualitzades correctament'})
         else:

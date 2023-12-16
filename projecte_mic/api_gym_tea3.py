@@ -9,8 +9,6 @@ import jwt
 app = Flask(__name__)
 db = Connexion()
 
-SK = db.convert_password_base64()
-
 
 @app.route('/consultar_clientes_gym', methods=['GET'])
 def select_all_clients_gym():
@@ -26,7 +24,7 @@ def select_all_clients_gym():
         connection.close()
         token_result = jwt.encode(results_dict, os.getenv('SK'), algorithm='HS256')
         token_jwe = db.cipher_content(token=token_result)
-        return token_jwe, 200
+        return jsonify({"jwe": token_jwe}), 200
     return jsonify({'message': 'No tens permisos per a consultar aquestes dades'}), 401
 
 

@@ -61,7 +61,7 @@ def get_all_events():
     if results:
         results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
         results_dict_cipher = db.cipher_content(results_dict)
-        return jsonify(results_dict_cipher), 200
+        return jsonify({"jwe": results_dict_cipher}), 200
     else:
         return jsonify({'message': 'No es possible recuperar les dades'}), 404
 
@@ -78,7 +78,7 @@ def get_filtered_events():
         results = db.get_elements_filtered(id_user[0][0], GymEvent.__table_name__, 'user_id', '*')
         results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
         result_dict_cipher = db.cipher_content(results_dict)
-        return jsonify(result_dict_cipher), 200
+        return jsonify({"jwe": result_dict_cipher}), 200
     else:
         return jsonify({'message': 'Error al recuperar les dades solicitades'}), 404
 
