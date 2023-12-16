@@ -229,6 +229,44 @@ def delete_reservation():
     return jsonify({'message': 'Has alliberat la plaça correctament!'}), 201
 
 
+@app.route('/eliminar_evento', methods=['DELETE'])
+def delete_event_and_suscriptions():
+    event_id = request.args.get('event_id')
+    token = db.decipher_content(request.headers.get('Authorization'))
+    connex, cursor = db.get_connection_to_db()
+    rol_user, id, user_name, gym_name = db.validate_rol_user(token)
+    query = f"SELECT qty_got_it FROM {GymEvent.__table_name__} WHERE id = %s AND gym_id = %s"
+    cursor.execute(query, (event_id, id))
+    result = cursor.fetchone()
+    qty_got_it_now = result[0]
+    user_id_on_users = f"SELECT id FROM {User.__table_name__} WHERE user_name = %s"
+    cursor.execute(user_id_on_users, (user_name,))
+    userid_users_table = cursor.fetchone()
+    user_id_on_events = f"SELECT user_id FROM {GymEvent.__table_name__} WHERE id = %s"
+    cursor.execute(user_id_on_events, (event_id,))
+    userid_events_table = cursor.fetchone()
+    if result and qty_got_it_now > 0:
+        if rol_user == 'admin' or userid_users_table[0] == userid_events_table[0]:
+            query_delete_reservation = f"DELETE FROM {List_user_events.__table_name__} WHERE id_event = %s"
+            cursor.execute(query_delete_reservation, (event_id, ))
+            query_delete_event = f"DELETE FROM {GymEvent.__table_name__} WHERE id = %s"
+            cursor.execute(query_delete_event, (event_id, ))
+            connex.commit()
+            connex.close()
+            return jsonify({'message': 'Registre esborrat correctament.'})
+        else:
+            return jsonify({'message': 'No tens permissos per esborrar.'})
+    else:
+        if rol_user == 'admin' or userid_users_table == userid_events_table:
+            query_delete_event = f"DELETE FROM {GymEvent.__table_name__} WHERE id = %s"
+            cursor.execute(query_delete_event, (event_id,))
+            connex.commit()
+            connex.close()
+            return jsonify({'message': 'Registre esborrat correctament.'})
+        else:
+            return jsonify({'message': 'No tens permissos per esborrar.'})
+
+
 @app.route('/modificar_evento', methods=['PATCH'])
 def update_event():
     """
