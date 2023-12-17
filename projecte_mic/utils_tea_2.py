@@ -37,11 +37,19 @@ class Connexion:
         cursor = connex.cursor()
         return connex, cursor
 
-    def get_elements_filtered(self, filter, table, what_filter, selector):
+    def get_elements_filtered(self, filter, table, what_filter, selector, start=None, end=None):
         connex, cursor = self.get_connection_to_db()
+
+        # Construye la parte básica de la consulta SQL
         query_sql = f"SELECT {selector} FROM {table} WHERE {what_filter} = %s"
 
-        cursor.execute(query_sql, (filter,))
+        # Si start y end están definidos, aplica paginación
+        if start is not None and end is not None:
+            query_sql += f" LIMIT %s, %s"
+            cursor.execute(query_sql, (filter, start, end - start))
+        else:
+            cursor.execute(query_sql, (filter,))
+
         records = cursor.fetchall()
         connex.close()
         return records

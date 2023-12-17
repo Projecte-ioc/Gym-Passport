@@ -39,17 +39,17 @@ def update_gym_data():
         schedule: ,
     }
     '''
-    data = request.get_json(force=True)
+    data_dcf = db.get_elements_of_token(db.decipher_content(request.get_json(force=True)))
     token = request.headers.get('Authorization')
     jwe = db.decipher_content(token)
     rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     connection, cursor = db.get_connection_to_db()
     if rol_user == 'admin':
         name = gym_name.replace(' ', '-')
-        Gym.address = data.get('address')
-        Gym.phone_number = data.get('phone_number')
+        Gym.address = data_dcf.get('address')
+        Gym.phone_number = data_dcf.get('phone_number')
         new_schedule = []
-        for item in data.get('schedule'):
+        for item in data_dcf.get('schedule'):
             new_schedule.append(item)
         update_query = f"UPDATE {Gym.__table_name__} SET "
         update_values = []

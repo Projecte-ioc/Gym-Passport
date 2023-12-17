@@ -54,16 +54,34 @@ def delete_simple(id_event, cursor, connection):
 
 @app.route('/obtener_eventos', methods=['GET'])
 def get_all_events():
-    token = request.headers.get('Authorization')
-    jwe = db.decipher_content(token)
-    rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
-    results = db.get_elements_filtered(id, GymEvent.__table_name__, 'gym_id', '*')
-    if results:
-        results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
-        results_dict_cipher = db.cipher_content(results_dict)
-        return jsonify({"jwe": results_dict_cipher}), 200
-    else:
-        return jsonify({'message': 'No es possible recuperar les dades'}), 404
+    try:
+        # Obtén los parámetros de paginación de la URL
+        page = request.args.get('page', default=1, type=int)
+        per_page = request.args.get('per_page', default=10, type=int)
+
+        token = request.headers.get('Authorization')
+        jwe = db.decipher_content(token)
+        rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
+
+        # Calcula el índice de inicio y fin para la paginación
+        start_index = (page - 1) * per_page
+        end_index = start_index + per_page
+
+        # Realiza la consulta con paginación
+        results = db.get_elements_filtered(id, GymEvent.__table_name__,
+                                           'gym_id',
+                                           '*',
+                                           start=start_index, end=end_index)
+
+        if results:
+            results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
+            results_dict_cipher = db.cipher_content(results_dict)
+            return jsonify({"jwe": results_dict_cipher}), 200
+        else:
+            return jsonify({'message': 'No es possible recuperar les dades'}), 404
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/filtrar_eventos', methods=['POST'])
@@ -111,7 +129,7 @@ def insert_event():
     jwe = db.decipher_content(token)
     rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
-    data_dcf = db.cipher_content(data)
+    data_dcf = db.get_elements_of_token(db.cipher_content(data))
     if isinstance(data_dcf, dict):
         GymEvent.date = data_dcf.get('date')
         GymEvent.done = data_dcf.get('done')
@@ -223,7 +241,7 @@ def delete_reservation():
     user_id = db.get_elements_filtered(user_name, User.__table_name__, "user_name", "id")
     user_id_exact = user_id[0][0]
     delete_query = f"DELETE FROM  {List_user_events.__table_name__} WHERE id_user = %s"
-    cursor.execute(delete_query, (user_id_exact, ))
+    cursor.execute(delete_query, (user_id_exact,))
     connex.commit()
     connex.close()
     return jsonify({'message': 'Has alliberat la plaça correctament!'}), 201
@@ -248,9 +266,9 @@ def delete_event_and_suscriptions():
     if result and qty_got_it_now > 0:
         if rol_user == 'admin' or userid_users_table[0] == userid_events_table[0]:
             query_delete_reservation = f"DELETE FROM {List_user_events.__table_name__} WHERE id_event = %s"
-            cursor.execute(query_delete_reservation, (event_id, ))
+            cursor.execute(query_delete_reservation, (event_id,))
             query_delete_event = f"DELETE FROM {GymEvent.__table_name__} WHERE id = %s"
-            cursor.execute(query_delete_event, (event_id, ))
+            cursor.execute(query_delete_event, (event_id,))
             connex.commit()
             connex.close()
             return jsonify({'message': 'Registre esborrat correctament.'})
@@ -270,9 +288,64 @@ def delete_event_and_suscriptions():
 @app.route('/modificar_evento', methods=['PATCH'])
 def update_event():
     """
-    OBTENEMOS POR ID DEL EVENTO, POR LO TANTO TIENE QUE IR EN EL BODY, COMO PRIMER VALOR EL ID Y LOS DATOS A MODIFICAR.
+    OBTENEMOS POR ID DEL EVENTO, POR LO TANTO TIENE QUE IR EN EL BODY,
+    COMO PRIMER VALOR EL ID Y LOS DATOS A MODIFICAR.
     """
-    pass
+    event_id = request.args.get("event_id")
+    data = db.get_elements_of_token(db.decipher_content(request.get_json(force=True)))
+    token = request.headers.get('Authorization')
+    jwe = db.decipher_content(token)
+    rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
+    connection, cursor = db.get_connection_to_db()
+    user_id_on_users = f"SELECT id FROM {User.__table_name__} WHERE user_name = %s"
+    cursor.execute(user_id_on_users, (user_name,))
+    userid_users_table = cursor.fetchone()
+    user_id_on_events = f"SELECT user_id FROM {GymEvent.__table_name__} WHERE id = %s"
+    cursor.execute(user_id_on_events, (event_id,))
+    userid_events_table = cursor.fetchone()
+    if rol_user == 'admin' or userid_users_table == userid_events_table:
+        GymEvent.name = data.get('name')
+        GymEvent.whereisit = data.get('whereisit')
+        GymEvent.qty_max_attendes = data.get('qty_max_attendes')
+        GymEvent.date = data.get('date')
+        GymEvent.hour = data.get('hour')
+        GymEvent.minute = data.get('minute')
+
+        update_query = f"UPDATE {GymEvent.__table_name__} SET "
+        update_values = []
+        if GymEvent.name:
+            update_query += " name = %s,"
+            update_values.append(GymEvent.name)
+
+        if GymEvent.whereisit:
+            update_query += " whereisit = %s,"
+            update_values.append(GymEvent.whereisit)
+
+        if GymEvent.qty_max_attendes:
+            update_query += " schedule = %s,"
+            update_values.append(GymEvent.qty_max_attendes)
+
+        if GymEvent.date:
+            update_query += " schedule = %s,"
+            update_values.append(GymEvent.date)
+
+        if GymEvent.hour:
+            update_query += " schedule = %s,"
+            update_values.append(GymEvent.hour)
+
+        if GymEvent.minute:
+            update_query += " schedule = %s,"
+            update_values.append(GymEvent.minute)
+
+        update_query = update_query.rstrip(',') + " WHERE id = %s"
+        update_values.append(event_id)
+
+        cursor.execute(update_query, tuple(update_values))
+        connection.commit()
+        connection.close()
+        return jsonify({'message': 'Datos actualizados correctamente'}), 200
+    else:
+        return jsonify({'message': 'No es poden actualitzar les dades per falta de permisos'}), 401
 
 
 if __name__ == '__main__':
