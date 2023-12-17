@@ -21,7 +21,7 @@ def select_all_clients_gym():
         if rol_user == "admin":
             # Obtén los parámetros de paginación de la URL
             page = request.args.get('page', default=1, type=int)
-            per_page = request.args.get('per_page', default=10, type=int)
+            per_page = request.args.get('per_page', default=5, type=int)
 
             # Calcula el índice de inicio y fin para la paginación
             start_index = (page - 1) * per_page
@@ -29,7 +29,7 @@ def select_all_clients_gym():
 
             # Consulta SQL con paginación
             clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = %s LIMIT %s, %s"
-            cursor.execute(clients_of_my_gym, (id, start_index, per_page))
+            cursor.execute(clients_of_my_gym, (id, start_index, end_index))
 
             results = cursor.fetchall()
             results_dict = [dict(zip(User.__keys_user__, row)) for row in results]

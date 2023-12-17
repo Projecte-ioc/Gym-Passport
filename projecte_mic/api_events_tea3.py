@@ -57,7 +57,7 @@ def get_all_events():
     try:
         # Obtén los parámetros de paginación de la URL
         page = request.args.get('page', default=1, type=int)
-        per_page = request.args.get('per_page', default=10, type=int)
+        per_page = request.args.get('per_page', default=5, type=int)
 
         token = request.headers.get('Authorization')
         jwe = db.decipher_content(token)
