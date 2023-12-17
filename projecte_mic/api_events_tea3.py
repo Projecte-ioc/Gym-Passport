@@ -101,12 +101,6 @@ def get_filtered_events():
         return jsonify({'message': 'Error al recuperar les dades solicitades'}), 404
 
 
-@app.route('/events_with_filters', methods=['POST'])
-def get_events_some_filters():
-    # TODO cogerá el nombre de las llaves del body, que seràn las mismos datos que los nombres de cada columna.
-    pass
-
-
 @app.route('/insertar_evento', methods=['POST'])
 def insert_event():
     '''
