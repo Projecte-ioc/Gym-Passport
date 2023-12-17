@@ -45,8 +45,8 @@ class Connexion:
 
         # Si start y end están definidos, aplica paginación
         if start is not None and end is not None:
-            query_sql += f" LIMIT %s, %s"
-            cursor.execute(query_sql, (filter, start, end - start))
+            query_sql += f" LIMIT %s"
+            cursor.execute(query_sql, (filter, start))
         else:
             cursor.execute(query_sql, (filter,))
 
