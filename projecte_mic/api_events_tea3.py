@@ -123,7 +123,7 @@ def insert_event():
     jwe = db.decipher_content(token)
     rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
-    data_dcf = db.get_elements_of_token(db.cipher_content(data))
+    data_dcf = db.get_elements_of_token(db.decipher_content(data))
     if isinstance(data_dcf, dict):
         GymEvent.date = data_dcf.get('date')
         GymEvent.done = data_dcf.get('done')

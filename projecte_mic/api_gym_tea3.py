@@ -57,10 +57,11 @@ def update_gym_data():
         schedule: ,
     }
     '''
-    data_dcf = db.get_elements_of_token(db.decipher_content(request.get_json(force=True)))
+    data = request.get_json(force=True)
+    data_dcf = db.get_elements_of_token(db.decipher_content(data.get('jwe')))
     token = request.headers.get('Authorization')
-    jwe = db.decipher_content(token)
-    rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
+    jwe_header = db.decipher_content(token)
+    rol_user, id, user_name, gym_name = db.validate_rol_user(jwe_header)
     connection, cursor = db.get_connection_to_db()
     if rol_user == 'admin':
         name = gym_name.replace(' ', '-')

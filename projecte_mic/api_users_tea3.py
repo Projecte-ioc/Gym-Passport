@@ -74,7 +74,7 @@ def insert_individual_client():
     jwe = db.decipher_content(token)
     rol_user, id, _, _ = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
-    data_dsc = db.decipher_content(data)
+    data_dsc = db.decipher_content(data.get('jwe'))
     try:
         if isinstance(data_dsc, dict):
             name = data_dsc.get('name')
@@ -112,7 +112,7 @@ def insert_diferents_clients():
     jwe = db.decipher_content(token)
     rol_user, id, _, _ = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
-    data_dsc = db.decipher_content(data)
+    data_dsc = db.decipher_content(data.get('jwe'))
     if rol_user == 'admin':
         try:
             for item in data_dsc:
@@ -150,7 +150,7 @@ def update_client_data():
     jwe = db.decipher_content(token)
     rol_user, id, user_name, _ = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
-    data_dsc = db.decipher_content(data)
+    data_dsc = db.decipher_content(data.get('jwe'))
     try:
         if isinstance(data_dsc, dict):
             User.name = data_dsc.get('name')
