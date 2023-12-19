@@ -11,12 +11,6 @@ db = Connexion()
 
 
 @app.route('/consultar_clientes_gym', methods=['GET'])
-from flask import request, jsonify
-import jwt
-import os
-from datetime import date
-
-@app.route('/consultar_clientes_gym', methods=['GET'])
 def select_all_clients_gym():
     try:
         connection, cursor = db.get_connection_to_db()
@@ -34,7 +28,7 @@ def select_all_clients_gym():
             end_index = start_index + per_page
 
             # Consulta SQL con paginación
-            clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = %s OFFSET %s LIMIT %s"
+            clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = %s LIMIT %s, %s"
             cursor.execute(clients_of_my_gym, (id, start_index, per_page))
 
             results = cursor.fetchall()
