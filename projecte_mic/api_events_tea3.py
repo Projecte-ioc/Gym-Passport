@@ -75,7 +75,8 @@ def get_all_events():
 
         if results:
             results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
-            results_dict_cipher = db.cipher_content(results_dict)
+            token = jwt.encode({"results": results_dict}, 'tu_clave_secreta', algorithm='HS256')
+            results_dict_cipher = db.cipher_content(token)
             return jsonify({"jwe": results_dict_cipher}), 200
         else:
             return jsonify({'message': 'No es possible recuperar les dades'}), 404
