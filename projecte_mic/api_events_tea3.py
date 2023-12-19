@@ -313,7 +313,7 @@ def update_event():
     user_id_on_events = f"SELECT user_id FROM {GymEvent.__table_name__} WHERE id = %s"
     cursor.execute(user_id_on_events, (event_id,))
     userid_events_table = cursor.fetchone()
-    if rol_user == 'admin' or userid_users_table == userid_events_table:
+    if rol_user == 'admin' or userid_users_table[0] == userid_events_table[0]:
         GymEvent.name = data_dcf.get('name')
         GymEvent.whereisit = data_dcf.get('whereisit')
         GymEvent.qty_max_attendes = data_dcf.get('qty_max_attendes')
@@ -332,19 +332,19 @@ def update_event():
             update_values.append(GymEvent.whereisit)
 
         if GymEvent.qty_max_attendes:
-            update_query += " schedule = %s,"
+            update_query += " qty_max_attendes = %s,"
             update_values.append(GymEvent.qty_max_attendes)
 
         if GymEvent.date:
-            update_query += " schedule = %s,"
+            update_query += " date = %s,"
             update_values.append(GymEvent.date)
 
         if GymEvent.hour:
-            update_query += " schedule = %s,"
+            update_query += " hour = %s,"
             update_values.append(GymEvent.hour)
 
         if GymEvent.minute:
-            update_query += " schedule = %s,"
+            update_query += " minute = %s,"
             update_values.append(GymEvent.minute)
 
         update_query = update_query.rstrip(',') + " WHERE id = %s"
