@@ -1,3 +1,6 @@
+import datetime
+import os
+
 import jwt
 import psycopg2
 from flask import Flask, request, jsonify
@@ -75,8 +78,9 @@ def get_all_events():
                                            start=start_index, end=end_index)
 
         if results:
-            results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
-            token = jwt.encode({"results": results_dict}, 'tu_clave_secreta', algorithm='HS256')
+            results_dict_list = [dict(zip(User.__keys_user__, [str(cell) if isinstance(cell, datetime.date) else cell for cell in row])) for row in results]
+            results_dict = {'results': results_dict_list}
+            token = jwt.encode(results_dict, os.getenv('SK'), algorithm='HS256')
             results_dict_cipher = db.cipher_content(token)
             return jsonify({"jwe": results_dict_cipher}), 200
         else:
@@ -96,8 +100,10 @@ def get_filtered_events():
     id_user = db.get_elements_filtered(user_name_params, User.__table_name__, 'user_name', 'id')
     if id_gym_user_params[0][0] == id:
         results = db.get_elements_filtered(id_user[0][0], GymEvent.__table_name__, 'user_id', '*')
-        results_dict = [dict(zip(GymEvent.__keys_events__, row)) for row in results]
-        result_dict_cipher = db.cipher_content(results_dict)
+        results_dict_list = [dict(zip(GymEvent.__keys_events__, [str(cell) if isinstance(cell, datetime.date) else cell for cell in row])) for row in results]
+        results_dict = {'results': results_dict_list}
+        token_result = jwt.encode(results_dict, os.getenv('SK'), algorithm='HS256')
+        result_dict_cipher = db.cipher_content(token_result)
         return jsonify({"jwe": result_dict_cipher}), 200
     else:
         return jsonify({'message': 'Error al recuperar les dades solicitades'}), 404
@@ -125,7 +131,7 @@ def insert_event():
     jwe = db.decipher_content(token)
     rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
-    data_dcf = db.get_elements_of_token(db.decipher_content(data))
+    data_dcf = db.get_elements_of_token(db.decipher_content(data.get('jwe')))
     if isinstance(data_dcf, dict):
         GymEvent.date = data_dcf.get('date')
         GymEvent.done = data_dcf.get('done')
@@ -191,7 +197,10 @@ def got_it_place():
     query = f"SELECT qty_got_it, qty_max_attendes FROM {GymEvent.__table_name__} WHERE id = %s AND gym_id = %s"
     cursor.execute(query, (event_id, id))
     result = cursor.fetchone()
-    qty_got_it_now = result[0]
+    if result[0] is None:
+        qty_got_it_now = 0
+    else:
+        qty_got_it_now = result[0]
     qty_max = result[1]
     print(str(qty_got_it_now))
     print(str(qty_max))
