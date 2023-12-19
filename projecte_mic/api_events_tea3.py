@@ -276,28 +276,33 @@ def delete_event_and_suscriptions():
             cursor.execute(query_delete_event, (event_id,))
             connex.commit()
             connex.close()
-            return jsonify({'message': 'Registre esborrat correctament.'})
+            return jsonify({'message': 'Registre esborrat correctament.'}), 201
         else:
-            return jsonify({'message': 'No tens permissos per esborrar.'})
+            return jsonify({'message': 'No tens permissos per esborrar.'}), 401
     else:
         if rol_user == 'admin' or userid_users_table == userid_events_table:
             query_delete_event = f"DELETE FROM {GymEvent.__table_name__} WHERE id = %s"
             cursor.execute(query_delete_event, (event_id,))
             connex.commit()
             connex.close()
-            return jsonify({'message': 'Registre esborrat correctament.'})
+            return jsonify({'message': 'Registre esborrat correctament.'}), 201
         else:
-            return jsonify({'message': 'No tens permissos per esborrar.'})
+            return jsonify({'message': 'No tens permissos per esborrar.'}), 401
 
 
 @app.route('/modificar_evento', methods=['PATCH'])
 def update_event():
-    """
-    OBTENEMOS POR ID DEL EVENTO, POR LO TANTO TIENE QUE IR EN EL BODY,
-    COMO PRIMER VALOR EL ID Y LOS DATOS A MODIFICAR.
-    """
+    """{
+    'name': "",
+    'whereisit': "",
+    'qty_max_attendes': "",
+    'date': "",
+    'hour': "",
+    'minute':""
+    }"""
     event_id = request.args.get("event_id")
-    data = db.get_elements_of_token(db.decipher_content(request.get_json(force=True)))
+    data = request.get_json(force=True)
+    data_dcf = db.get_elements_of_token(db.decipher_content(data.get('jwe')))
     token = request.headers.get('Authorization')
     jwe = db.decipher_content(token)
     rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
@@ -309,12 +314,12 @@ def update_event():
     cursor.execute(user_id_on_events, (event_id,))
     userid_events_table = cursor.fetchone()
     if rol_user == 'admin' or userid_users_table == userid_events_table:
-        GymEvent.name = data.get('name')
-        GymEvent.whereisit = data.get('whereisit')
-        GymEvent.qty_max_attendes = data.get('qty_max_attendes')
-        GymEvent.date = data.get('date')
-        GymEvent.hour = data.get('hour')
-        GymEvent.minute = data.get('minute')
+        GymEvent.name = data_dcf.get('name')
+        GymEvent.whereisit = data_dcf.get('whereisit')
+        GymEvent.qty_max_attendes = data_dcf.get('qty_max_attendes')
+        GymEvent.date = data_dcf.get('date')
+        GymEvent.hour = data_dcf.get('hour')
+        GymEvent.minute = data_dcf.get('minute')
 
         update_query = f"UPDATE {GymEvent.__table_name__} SET "
         update_values = []

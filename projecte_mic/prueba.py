@@ -11,12 +11,12 @@ data = {
     "done": False,
     "hour": 10,
     "name": "Zumba",
-    "qty_max_attendes": 30,
+    "qty_max_attendes": 40,
     "whereisit": "Platja el Callao Mataró"
 }
 message = jwt.encode(data, "__PROBANDO__probando__", algorithm='HS256')
 
 mssg = db.cipher_content(message)
-mssg_dsc = db.decipher_content(mssg)
 print(mssg)
+mssg_dsc = db.decipher_content(mssg)
 print(mssg_dsc)
