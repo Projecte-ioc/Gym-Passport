@@ -20,20 +20,24 @@ def select_all_clients_gym():
 
         if rol_user == "admin":
             # Obtén los parámetros de paginación de la URL
-            page = request.args.get('page', default=1, type=int)
-            per_page = request.args.get('per_page', default=5, type=int)
+            page = request.args.get('page', type=int)
+            per_page = request.args.get('per_page', type=int)
+            if page is not None and per_page is not None:
+                # Calcula el índice de inicio y fin para la paginación
+                start_index = (page - 1) * per_page
+                end_index = start_index + per_page
 
-            # Calcula el índice de inicio y fin para la paginación
-            start_index = (page - 1) * per_page
-            end_index = start_index + per_page
-
-            # Consulta SQL con paginación
-            clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = %s LIMIT %s, %s"
-            cursor.execute(clients_of_my_gym, (id, start_index, end_index))
+                # Consulta SQL con paginación
+                clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = %s OFFSET %s LIMIT %s"
+                cursor.execute(clients_of_my_gym, (id, start_index, end_index))
+            else:
+                clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = %s"
+                cursor.execute(clients_of_my_gym, (id,))
 
             results = cursor.fetchall()
             results_dict = [dict(zip(User.__keys_user__, row)) for row in results]
-
+            print("Result_dict = ")
+            print(type(results_dict))
             connection.close()
 
             token_result = jwt.encode(results_dict, os.getenv('SK'), algorithm='HS256')
@@ -43,6 +47,7 @@ def select_all_clients_gym():
         return jsonify({'message': 'No tens permisos per a consultar aquestes dades'}), 401
 
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
 
 
