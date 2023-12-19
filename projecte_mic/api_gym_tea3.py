@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from flask import Flask, request, jsonify
@@ -28,13 +29,13 @@ def select_all_clients_gym():
             end_index = start_index + per_page
 
             # Consulta SQL con paginación
-            clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = %s LIMIT %s, %s"
+            clients_of_my_gym = f"SELECT * FROM {User.__table_name__} WHERE gym_id = %s OFFSET %s LIMIT %s"
             cursor.execute(clients_of_my_gym, (id, start_index, per_page))
 
             results = cursor.fetchall()
 
             # Convertir los objetos date a strings antes de construir el diccionario
-            results_dict_list = [dict(zip(User.__keys_user__, [str(cell) if isinstance(cell, date) else cell for cell in row])) for row in results]
+            results_dict_list = [dict(zip(User.__keys_user__, [str(cell) if isinstance(cell, datetime.date) else cell for cell in row])) for row in results]
 
             # Combina todos los resultados en un solo diccionario
             results_dict = {'results': results_dict_list}
