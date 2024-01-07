@@ -68,7 +68,7 @@ def get_all_events():
         rol_user, id, user_name, gym_name = db.validate_rol_user(jwe)
 
         # Calcula el índice de inicio y fin para la paginación
-        start_index = (page - 1) * per_page
+        start_index = (page + 1) * per_page
         end_index = start_index + per_page
 
         # Realiza la consulta con paginación

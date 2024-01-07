@@ -63,8 +63,7 @@ def select_a_user_info_and_gym():
             return jsonify({'error': 'No ha estat possible recuperar els registres pel usuari'}), 404
 
     else:
-        nl_token_jwe = db.cipher_content(token=token)
-        return jsonify({"jwe": nl_token_jwe})
+        return jsonify({"jwe": token})
 
 
 @app.route('/insert_client', methods=['POST'])
@@ -150,7 +149,7 @@ def update_client_data():
     jwe = db.decipher_content(token)
     rol_user, id, user_name, _ = db.validate_rol_user(jwe)
     data = request.get_json(force=True)
-    data_dsc = db.decipher_content(data.get('jwe'))
+    data_dsc = db.get_elements_of_token(db.decipher_content(data.get('jwe')))
     try:
         if isinstance(data_dsc, dict):
             User.name = data_dsc.get('name')
