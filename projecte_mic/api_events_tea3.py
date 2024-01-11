@@ -78,7 +78,8 @@ def get_all_events():
                                            start=start_index, end=end_index)
 
         if results:
-            results_dict_list = [dict(zip(User.__keys_user__, [str(cell) if isinstance(cell, datetime.date) else cell for cell in row])) for row in results]
+            results_dict_list = [dict(zip(GymEvent.__keys_events__, [str(cell) if isinstance(cell, datetime.date) else cell for cell in row])) for row in results]
+            print(results_dict_list)
             results_dict = {'results': results_dict_list}
             token = jwt.encode(results_dict, os.getenv('SK'), algorithm='HS256')
             results_dict_cipher = db.cipher_content(token)
@@ -101,6 +102,7 @@ def get_filtered_events():
     if id_gym_user_params[0][0] == id:
         results = db.get_elements_filtered(id_user[0][0], GymEvent.__table_name__, 'user_id', '*')
         results_dict_list = [dict(zip(GymEvent.__keys_events__, [str(cell) if isinstance(cell, datetime.date) else cell for cell in row])) for row in results]
+        print(results_dict_list)
         results_dict = {'results': results_dict_list}
         token_result = jwt.encode(results_dict, os.getenv('SK'), algorithm='HS256')
         result_dict_cipher = db.cipher_content(token_result)
