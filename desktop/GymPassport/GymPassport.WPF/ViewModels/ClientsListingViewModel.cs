@@ -1,5 +1,5 @@
 ﻿using GymPassport.Domain.Models;
-using GymPassport.WPF.State;
+using GymPassport.WPF.State.Clients;
 using GymPassport.WPF.State.Navigators;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;

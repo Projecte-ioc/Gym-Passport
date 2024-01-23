@@ -1,5 +1,5 @@
 ﻿using GymPassport.Domain.Models;
-using GymPassport.WPF.State;
+using GymPassport.WPF.State.Clients;
 using GymPassport.WPF.ViewModels;
 
 namespace GymPassport.WPF.Commands

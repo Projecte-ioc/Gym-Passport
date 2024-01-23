@@ -8,6 +8,9 @@ using GymPassport.GymPassportAPI.Services.AuthenticationServices;
 using GymPassport.GymPassportAPI.Services.ProfileServices;
 using GymPassport.GymPassportAPI.Services.GymServices;
 using GymPassport.GymPassportAPI.Services.ClientServices;
+using GymPassport.GymPassportAPI.ApiConnectors;
+using System.ComponentModel.Design.Serialization;
+using GymPassport.GymPassportAPI.Services;
 
 namespace GymPassport.WPF.HostBuilders
 {
@@ -24,6 +27,21 @@ namespace GymPassport.WPF.HostBuilders
                 services.AddSingleton<IClientService, ClientService>();
                 services.AddSingleton<CloseModalNavigationService>();
                 services.AddSingleton<INavigationService>(s => CreateProfileNavigationService(s));
+
+                // Configuración de servicios
+                services.AddHttpClient();
+
+                // Conectores API
+                services.AddTransient<LoginApiConnector>();
+                services.AddTransient<GymApiConnector>();
+                services.AddTransient<ClientApiConnector>();
+                services.AddTransient<GymEventApiConnector>();
+
+                // Servicios API
+                services.AddTransient<AuthenticationService>();
+                services.AddTransient<GymService>();
+                services.AddTransient<ClientService>();
+                services.AddTransient<GymEventService>();
             });
 
             return host;

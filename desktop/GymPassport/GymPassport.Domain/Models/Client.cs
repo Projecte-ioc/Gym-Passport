@@ -21,7 +21,7 @@ namespace GymPassport.Domain.Models
         [JsonProperty("user_name")]
         public string Username { get; set; }
 
-        [JsonProperty("pswd_app")]
+        [JsonProperty("password")]
         public string Password { get; set; }
 
         public override string ToString()
@@ -29,7 +29,8 @@ namespace GymPassport.Domain.Models
             return
                 $"Name:\t  {Name}\n" +
                 $"Username: {Username}\n" +
-                $"Role:\t  {Role}\n";
+                $"Role:\t  {Role}\n" +
+                $"Password: {Password}\n";
         }
     }
 }

@@ -19,7 +19,7 @@ namespace GymPassport.WPF.Commands
 
         public override async Task ExecuteAsync(object parameter)
         {
-            _profileViewModel.UserProfile = await _profileService.GetAllProfileInfo(_accountStore.CurrentAccount.Token);
+            _profileViewModel.UserProfile = await _profileService.GetAllProfileInfo(_accountStore.CurrentAccount.AuthToken);
         }
     }
 }

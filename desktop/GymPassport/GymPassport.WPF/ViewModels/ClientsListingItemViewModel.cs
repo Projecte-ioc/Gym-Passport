@@ -1,6 +1,6 @@
 ﻿using GymPassport.Domain.Models;
 using GymPassport.WPF.Commands;
-using GymPassport.WPF.State;
+using GymPassport.WPF.State.Clients;
 using GymPassport.WPF.State.Navigators;
 using System.Windows.Input;
 

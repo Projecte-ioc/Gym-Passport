@@ -1,6 +1,6 @@
-﻿using GymPassport.WPF.State;
-using GymPassport.WPF.State.Accounts;
+﻿using GymPassport.WPF.State.Accounts;
 using GymPassport.WPF.State.Authenticators;
+using GymPassport.WPF.State.Clients;
 using GymPassport.WPF.State.Navigators;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

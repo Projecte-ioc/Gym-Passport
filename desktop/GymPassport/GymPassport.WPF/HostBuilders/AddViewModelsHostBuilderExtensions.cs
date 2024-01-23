@@ -1,8 +1,8 @@
 ﻿using GymPassport.GymPassportAPI.Services.ProfileServices;
 using GymPassport.WPF.Services;
-using GymPassport.WPF.State;
 using GymPassport.WPF.State.Accounts;
 using GymPassport.WPF.State.Authenticators;
+using GymPassport.WPF.State.Clients;
 using GymPassport.WPF.State.Navigators;
 using GymPassport.WPF.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
