@@ -5,7 +5,7 @@ namespace GymPassport.GymPassportAPI.Services.GymServices
 {
     public interface IGymService
     {
-        Task<ObservableCollection<Client>> GetAllGymClients(string token);
-        Task<string> UpdateGym(string accessToken, Gym gym);
+        Task<ObservableCollection<Client>> GetAllGymClients(string authToken);
+        Task UpdateGym(Gym updatedGym, string authToken);
     }
 }

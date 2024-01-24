@@ -784,6 +784,7 @@
       "GymPassport.GymPassportAPI/1.0.0": {
         "dependencies": {
           "GymPassport.Domain": "1.0.0",
+          "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.Http": "8.0.0",
           "Microsoft.Extensions.Options": "8.0.1",
           "System.IdentityModel.Tokens.Jwt": "7.2.0",

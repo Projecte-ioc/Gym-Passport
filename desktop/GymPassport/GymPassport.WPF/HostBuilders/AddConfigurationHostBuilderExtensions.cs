@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using GymPassport.GymPassportAPI.Services.AuthenticationServices;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace GymPassport.WPF.HostBuilders
@@ -9,8 +11,14 @@ namespace GymPassport.WPF.HostBuilders
         {
             host.ConfigureAppConfiguration(c =>
             {
-                //c.AddJsonFile("appsettings.json");
+                c.SetBasePath(AppDomain.CurrentDomain.BaseDirectory);
+                c.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
                 c.AddEnvironmentVariables();
+            })
+            .ConfigureServices((hostContext, services) =>
+            {
+                // Configuración de servicios
+                services.Configure<AppSettings>(hostContext.Configuration);
             });
 
             return host;

@@ -3293,6 +3293,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "GymPassport.Domain >= 1.0.0",
+      "Microsoft.Extensions.Configuration >= 8.0.0",
       "Microsoft.Extensions.Http >= 8.0.0",
       "Microsoft.Extensions.Options >= 8.0.1",
       "System.IdentityModel.Tokens.Jwt >= 7.0.3",
@@ -3342,6 +3343,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "Microsoft.Extensions.Configuration": {
+            "target": "Package",
+            "version": "[8.0.0, )"
+          },
           "Microsoft.Extensions.Http": {
             "target": "Package",
             "version": "[8.0.0, )"

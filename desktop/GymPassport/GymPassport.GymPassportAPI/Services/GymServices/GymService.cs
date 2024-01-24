@@ -1,58 +1,61 @@
 ﻿using GymPassport.Domain.Models;
+using GymPassport.GymPassportAPI.ApiConnectors;
+using GymPassport.GymPassportAPI.Helpers;
+using Jose;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace GymPassport.GymPassportAPI.Services.GymServices
 {
-    public class GymService : ServiceBase, IGymService
+    public class GymService : IGymService
     {
+        // SECRET KEY ALMACENADA TEMPORALMENTE
+        string secretKey = "__PROBANDO__probando__";
+        // SECRET KEY ALMACENADA TEMPORALMENTE
+        private readonly GymApiConnector _gymApiConnector;
+
+        public GymService(GymApiConnector gymApiConnector)
+        {
+            _gymApiConnector = gymApiConnector;
+        }
+
         /// <summary>
         /// Obtiene los clientes del gimnasio del usuario logueado.
         /// </summary>
         /// <param name="token"></param>
         /// <returns>Los clientes del gimnasio del usuario logueado.</returns>
-        public async Task<ObservableCollection<Client>> GetAllGymClients(string token)
+        public async Task<ObservableCollection<Client>> GetAllGymClients(string authToken)
         {
-            string URL = $"{BaseURL}2000/consultar_clientes_gym";
+            // Envía el token de autorización a la API y espera su respuesta
+            JObject apiResponse = await _gymApiConnector.GetAllGymClients(authToken);
 
-            using (HttpClient = new HttpClient())
-            {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token);
+            // Almacena el JWT encriptado recibido
+            string encryptedResponse = apiResponse["jwe"].ToString();
 
-                HttpResponseMessage httpResponseMessage = await HttpClient.GetAsync(URL);
+            // Desencripta el JWT recibido
+            string decryptedResponse = AesGcmUtils.DecryptWithAESGCM(encryptedResponse, secretKey);
 
-                string json = await httpResponseMessage.Content.ReadAsStringAsync();
+            // Decodificar el JWT recibido
+            JObject jsonToken = JObject.Parse(JWT.Decode(decryptedResponse, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256));
 
-                ObservableCollection<Client> clients = JsonConvert.DeserializeObject<ObservableCollection<Client>>(json);
+            // Mapear los claims del JWT a una colección observable de la clase Client
+            ObservableCollection<Client> clients = JsonConvert.DeserializeObject<ObservableCollection<Client>>(jsonToken["results"].ToString());
 
-                return clients;
-            }
+            return clients;
         }
 
-        public async Task<string> UpdateGym(string accessToken, Gym gym)
+        public async Task UpdateGym(Gym updatedGym, string authToken)
         {
-            string URL = $"{BaseURL}2000/update_gym";
+            // Crea un JObject con los datos del gimnasio actualizado
+            JObject updatedGymAsJObject = JObject.FromObject(updatedGym);
 
-            var updatedGym = new
-            {
-                address = gym.Address,
-                phone_number = gym.PhoneNumber,
-                schedule = gym.Schedule
-            };
+            // Crea un JObject que contiene un JWT firmado y encriptado
+            string encryptedJwt = ApiUtils.CreateSignedAndEncryptedJwt(updatedGymAsJObject, secretKey);
 
-            dynamic json = JObject.FromObject(updatedGym);
-            var httpContent = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
-
-            using (HttpClient = new HttpClient())
-            {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
-                HttpResponseMessage httpResponseMessage = await HttpClient.PatchAsync(URL, httpContent);
-                Console.WriteLine(httpResponseMessage);
-                return await httpResponseMessage.Content.ReadAsStringAsync();
-            }
+            // Envía el token de autorización a la API y espera su respuesta
+            await _gymApiConnector.UpdateGym(encryptedJwt, authToken);
         }
     }
 }

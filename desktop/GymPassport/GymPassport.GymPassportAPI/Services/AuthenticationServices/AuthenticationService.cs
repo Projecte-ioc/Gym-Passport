@@ -3,6 +3,7 @@ using GymPassport.GymPassportAPI.ApiConnectors;
 using GymPassport.GymPassportAPI.Helpers;
 using GymPassport.WPF.Exceptions;
 using Jose;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
@@ -11,10 +12,12 @@ namespace GymPassport.GymPassportAPI.Services.AuthenticationServices
 {
     public class AuthenticationService : IAuthenticationService
     {
+        private readonly AppSettings _appSettings;
         private readonly LoginApiConnector _loginApiConnector;
 
-        public AuthenticationService(LoginApiConnector loginApiConnector)
+        public AuthenticationService(IOptions<AppSettings> appSettings, LoginApiConnector loginApiConnector)
         {
+            _appSettings = appSettings.Value;
             _loginApiConnector = loginApiConnector;
         }
 
