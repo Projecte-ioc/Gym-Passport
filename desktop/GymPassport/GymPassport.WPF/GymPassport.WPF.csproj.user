@@ -19,6 +19,15 @@
     <Compile Update="Components\ClientsListingItem.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\GymEventsDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\GymEventsListing.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\GymEventsListingItem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\Layout.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -31,13 +40,22 @@
     <Compile Update="Views\AddClientView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AddGymEventView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ClientsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\DeleteClientView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\DeleteGymEventView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\EditClientView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EditGymEventView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\GymEventsView.xaml.cs">
@@ -69,6 +87,15 @@
     <Page Update="Components\ClientsListingItem.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Components\GymEventsDetails.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\GymEventsListing.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\GymEventsListingItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Components\Layout.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -93,13 +120,22 @@
     <Page Update="Views\AddClientView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\AddGymEventView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ClientsView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DeleteClientView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\DeleteGymEventView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\EditClientView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EditGymEventView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\GymEventsView.xaml">

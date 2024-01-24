@@ -1,7 +1,26 @@
-﻿
-
+﻿Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.i.cs
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\App.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Components\BindablePasswordBox.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Components\ClientsDetails.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Components\ClientsListing.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Components\ClientsListingItem.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Components\GymEventsDetails.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Components\GymEventsListing.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Components\GymEventsListingItem.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Components\Layout.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Components\NavigationBar.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\MainWindow.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\ActivitiesView.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\AddClientView.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\AddGymEventView.xaml;;
 FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\ClientsView.xaml;;
 FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\DeleteClientView.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\DeleteGymEventView.xaml;;
 FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\EditClientView.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\EditGymEventView.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\GymEventsView.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\LoginView.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\ProfileView.xaml;;
 FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\ReservationsView.xaml;;
+FY:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\Views\RoomsView.xaml;;
 

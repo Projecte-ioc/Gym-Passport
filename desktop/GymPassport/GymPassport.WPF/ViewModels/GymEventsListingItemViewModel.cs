@@ -10,7 +10,7 @@ namespace GymPassport.WPF.ViewModels
     {
         public GymEvent GymEvent { get; private set; }
 
-        public int Id => GymEvent.Id;
+        public string Name => GymEvent.Name;
 
         private bool _isDeleting;
         public bool IsDeleting
@@ -57,7 +57,7 @@ namespace GymPassport.WPF.ViewModels
         public void Update(GymEvent gymEvent)
         {
             GymEvent = gymEvent;
-            OnPropertyChanged(nameof(Id));
+            OnPropertyChanged(nameof(Name));
         }
     }
 }

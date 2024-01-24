@@ -27,7 +27,7 @@
             Grid.Row="0"
             Margin="0,40,0,30"
             VerticalAlignment="Center"
-            FontSize="20"
+            FontSize="22"
             FontWeight="Bold"
             Text="Noves dades del client"
             TextAlignment="Center" />

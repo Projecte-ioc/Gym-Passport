@@ -208,17 +208,17 @@ namespace GymPassport.WPF.ViewModels
             SubmitCommand = new EditGymEventCommand(this, _gymEventsStore, modalNavigationStore);
             CancelCommand = new CloseModalCommand(modalNavigationStore);
 
-            int Id = gymEvent.Id;
-            string Name = gymEvent.Name;
-            string Location = gymEvent.Location;
-            int NumParticipants = gymEvent.NumParticipants;
-            int NumAttendances = gymEvent.NumAttendances;
-            int ClientId = gymEvent.ClientId;
-            int GymId = gymEvent.GymId;
-            bool Done = gymEvent.Done;
-            string Date = gymEvent.Date;
-            int Hour = gymEvent.Hour;
-            int Minute = gymEvent.Minute;
+            Id = gymEvent.Id;
+            Name = gymEvent.Name;
+            Location = gymEvent.Location;
+            NumParticipants = gymEvent.NumParticipants;
+            NumAttendances = gymEvent.NumAttendances;
+            ClientId = gymEvent.ClientId;
+            GymId = gymEvent.GymId;
+            Done = gymEvent.Done;
+            Date = gymEvent.Date;
+            Hour = gymEvent.Hour;
+            Minute = gymEvent.Minute;
         }
     }
 }

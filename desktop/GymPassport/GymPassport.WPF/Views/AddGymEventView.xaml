@@ -1,0 +1,119 @@
+﻿<UserControl
+    x:Class="GymPassport.WPF.Views.AddGymEventView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:components="clr-namespace:GymPassport.WPF.Components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GymPassport.WPF.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Width="440"
+    d:DesignHeight="340"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,40,0,30"
+            VerticalAlignment="Center"
+            FontSize="22"
+            FontWeight="Bold"
+            Text="Dades del nou event"
+            TextAlignment="Center" />
+
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <StackPanel Margin="0,0,20,0">
+                        <TextBox
+                            Width="170"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Nom"
+                            materialDesign:TextFieldAssist.HasClearButton="False"
+                            FontSize="16"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Name}" />
+                        <TextBox
+                            Width="170"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Número de participants"
+                            materialDesign:TextFieldAssist.HasClearButton="False"
+                            FontSize="16"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding NumParticipants}" />
+                        <TextBox
+                            Width="170"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Hora"
+                            materialDesign:TextFieldAssist.HasClearButton="False"
+                            FontSize="16"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Hour}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBox
+                            Width="170"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Lloc"
+                            materialDesign:TextFieldAssist.HasClearButton="False"
+                            FontSize="16"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Location}" />
+                        <TextBox
+                            Width="170"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Data"
+                            materialDesign:TextFieldAssist.HasClearButton="False"
+                            FontSize="16"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Date}" />
+                        <TextBox
+                            Width="170"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Minut"
+                            materialDesign:TextFieldAssist.HasClearButton="False"
+                            FontSize="16"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Minute}" />
+                    </StackPanel>
+
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="0,30,0,30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="110"
+                        Margin="10"
+                        Command="{Binding SubmitCommand}"
+                        Content="AFEGIR" />
+                    <Button
+                        Width="110"
+                        Margin="10"
+                        Command="{Binding CancelCommand}"
+                        Content="CANCELAR" />
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

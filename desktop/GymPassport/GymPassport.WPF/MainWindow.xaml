@@ -34,32 +34,22 @@
 
             <Grid.Resources>
 
+                <!--  DataTemplate del layout  -->
+
                 <DataTemplate DataType="{x:Type viewModels:LayoutViewModel}">
                     <components:Layout />
                 </DataTemplate>
+
+                <!--  DataTemplate del perfil de usuario  -->
 
                 <DataTemplate DataType="{x:Type viewModels:ProfileViewModel}">
                     <views:ProfileView />
                 </DataTemplate>
 
+                <!--  DataTemplates de la gestión de clientes  -->
+
                 <DataTemplate DataType="{x:Type viewModels:ClientsViewModel}">
                     <views:ClientsView />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModels:ActivitiesViewModel}">
-                    <views:ActivitiesView />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModels:GymEventsViewModel}">
-                    <views:GymEventsView />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModels:ReservationsViewModel}">
-                    <views:ReservationsView />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewModels:RoomsViewModel}">
-                    <views:RoomsView />
                 </DataTemplate>
 
                 <DataTemplate DataType="{x:Type viewModels:AddClientViewModel}">
@@ -68,6 +58,38 @@
 
                 <DataTemplate DataType="{x:Type viewModels:EditClientViewModel}">
                     <views:EditClientView />
+                </DataTemplate>
+
+                <!--  DataTemplates de la gestión de eventos  -->
+
+                <DataTemplate DataType="{x:Type viewModels:GymEventsViewModel}">
+                    <views:GymEventsView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:AddGymEventViewModel}">
+                    <views:AddGymEventView />
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:EditGymEventViewModel}">
+                    <views:EditGymEventView />
+                </DataTemplate>
+
+                <!--  DataTemplates de la gestión de actividades  -->
+
+                <DataTemplate DataType="{x:Type viewModels:ActivitiesViewModel}">
+                    <views:ActivitiesView />
+                </DataTemplate>
+
+                <!--  DataTemplates de la gestión de reservas  -->
+
+                <DataTemplate DataType="{x:Type viewModels:ReservationsViewModel}">
+                    <views:ReservationsView />
+                </DataTemplate>
+
+                <!--  DataTemplates de la gestión de espacios  -->
+
+                <DataTemplate DataType="{x:Type viewModels:RoomsViewModel}">
+                    <views:RoomsView />
                 </DataTemplate>
 
             </Grid.Resources>
