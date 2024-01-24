@@ -1416,7 +1416,7 @@
           "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.Http": "8.0.0",
           "Microsoft.Extensions.Options": "8.0.1",
-          "System.IdentityModel.Tokens.Jwt": "7.0.3",
+          "System.IdentityModel.Tokens.Jwt": "7.2.0",
           "jose-jwt": "4.1.0"
         },
         "compile": {
