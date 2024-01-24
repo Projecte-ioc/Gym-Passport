@@ -3,6 +3,7 @@ using GymPassport.WPF.Services;
 using GymPassport.WPF.State.Accounts;
 using GymPassport.WPF.State.Authenticators;
 using GymPassport.WPF.State.Clients;
+using GymPassport.WPF.State.GymEvents;
 using GymPassport.WPF.State.Navigators;
 using GymPassport.WPF.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,7 @@ namespace GymPassport.WPF.HostBuilders
 
                 services.AddTransient<ActivitiesViewModel>(s => new ActivitiesViewModel());
 
-                services.AddTransient<GymEventsViewModel>(s => new GymEventsViewModel());
+                services.AddTransient<GymEventsViewModel>(CreateGymEventsViewModel);
 
                 services.AddTransient<ReservationsViewModel>(s => new ReservationsViewModel());
 
@@ -38,6 +39,15 @@ namespace GymPassport.WPF.HostBuilders
             });
 
             return host;
+        }
+
+        private static GymEventsViewModel CreateGymEventsViewModel(IServiceProvider services)
+        {
+            return GymEventsViewModel.LoadViewModel(
+                services.GetRequiredService<GymEventsStore>(),
+                services.GetRequiredService<SelectedGymEventStore>(),
+                services.GetRequiredService<ModalNavigationStore>()
+                );
         }
 
         private static ClientsViewModel CreateClientsViewModel(IServiceProvider services)

@@ -12,7 +12,7 @@ TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\App.xaml
 201507892967
 
-74-2108903304
+87-875202026
 250-345475238
 Components\BindablePasswordBox.xaml;Components\ClientsDetails.xaml;Components\ClientsListing.xaml;Components\ClientsListingItem.xaml;Components\Layout.xaml;Components\NavigationBar.xaml;MainWindow.xaml;Styles\ButtonStyles.xaml;Styles\TextBlockStyles.xaml;Styles\UIColors.xaml;Views\ActivitiesView.xaml;Views\AddClientView.xaml;Views\ClientsView.xaml;Views\DeleteClientView.xaml;Views\EditClientView.xaml;Views\GymEventsView.xaml;Views\LoginView.xaml;Views\ProfileView.xaml;Views\ReservationsView.xaml;Views\RoomsView.xaml;
 

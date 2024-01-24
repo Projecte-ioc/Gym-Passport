@@ -14,7 +14,7 @@ namespace GymPassport.GymPassportAPI.Queries
             _gymApiConnector = gymApiConnector;
         }
 
-        public async Task<IEnumerable<Client>> Execute(String accessToken)
+        public async Task<IEnumerable<Client>> Execute(string accessToken)
         {
             GymService gymService = new GymService(_gymApiConnector);
             return await gymService.GetAllGymClients(accessToken);
