@@ -21,35 +21,20 @@ namespace GymPassport.GymPassportAPI.ApiConnectors
             const string path = "/login";
             string route = _apiUrl + path;
 
-            try
-            {
-                // Crea el contenido que debe ser enviado en la petición POST
-                StringContent content = new StringContent(dataToSend, Encoding.UTF8, "application/json");
+            // Crea el contenido que debe ser enviado en la petición POST
+            StringContent content = new StringContent(dataToSend, Encoding.UTF8, "application/json");
 
-                // Envía la petición POST a la API usando el cliente _httpClient inyectado
-                HttpResponseMessage response = await _httpClient.PostAsync(route, content);
+            // Envía la petición POST a la API usando el cliente _httpClient inyectado
+            HttpResponseMessage response = await _httpClient.PostAsync(route, content);
 
-                // Comprueba si la petición ha sido exitosa (Códigos 200 a 299)
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync();
+            // Lanza una excepción si la petición no ha sido exitosa
+            response.EnsureSuccessStatusCode();
 
-                    // Devuelve la respuesta en formato JObject
-                    return JObject.Parse(responseContent);
-                }
-                else
-                {
-                    // Gestiona el caso en el que la petición no es exitosa
-                    Console.WriteLine($"La petición a la API ha fallado con código: {response.StatusCode}");
-                    Console.WriteLine(response);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Gestiona excepciones que puedan ocurrir durante la petición
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-            return null;
+            // Almacena el contenido de la respuesta
+            string responseContent = await response.Content.ReadAsStringAsync();
+
+            // Devuelve un JObject a partir de la respuesta
+            return JObject.Parse(responseContent);
         }
 
         public async Task Logout(string dataToSend, string authToken)
@@ -60,7 +45,8 @@ namespace GymPassport.GymPassportAPI.ApiConnectors
             try
             {
                 // Agregar el token de autorización al encabezado
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authToken);
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", authToken);
 
                 // Crea el contenido que debe ser enviado en la petición PATCH
                 StringContent content = new StringContent(dataToSend, Encoding.UTF8, "application/json");

@@ -64,59 +64,6 @@ namespace GymPassport.GymPassportAPI.Services.AuthenticationServices
 
                     // Devuelve la instancia de la clase Account
                     return account;
-
-                    //string content = "";
-
-                    //using (HttpClient = new HttpClient())
-                    //{
-                    //    using var httpResponse = await HttpClient.PostAsJsonAsync(url, loginData);
-                    //    switch (httpResponse.StatusCode)
-                    //    {
-                    //        case System.Net.HttpStatusCode.OK:
-                    //            content = await httpResponse.Content.ReadAsStringAsync();
-                    //            break;
-                    //        default:
-                    //            Console.WriteLine(httpResponse.ToString());
-                    //            break;
-                    //    }
-                    //}
-
-                    //// Envía los datos de login a la API y si son correctos recibe un token
-                    //dynamic r = JObject.Parse(content);
-                    //string jwtToken = r["token"];
-
-                    //// Si el token no es null, extraemos los claims y los convertimos en un obejto Account
-                    //if (jwtToken != null)
-                    //{
-                    //    var token = jwtToken;
-                    //    var jwtSecurityToken = new JwtSecurityToken(token);
-                    //    foreach (var item in jwtSecurityToken.Claims)
-                    //    {
-                    //        switch (item.Type)
-                    //        {
-                    //            case "user_name":
-                    //                account.Username = item.Value;
-                    //                break;
-                    //            case "rol_user":
-                    //                account.Role = item.Value;
-                    //                break;
-                    //            case "gym_name":
-                    //                account.GymName = item.Value;
-                    //                break;
-                    //            case "name":
-                    //                account.Name = item.Value;
-                    //                break;
-                    //            default:
-                    //                break;
-                    //        }
-                    //    }
-
-                    //    account.Token = token;
-
-                    //    return account;
-                    //}
-
-                    //break;
                 }
                 catch (HttpRequestException ex)
                 {

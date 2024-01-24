@@ -1,92 +1,44 @@
 ﻿using GymPassport.Domain.Models;
+using GymPassport.GymPassportAPI.ApiConnectors;
+using GymPassport.GymPassportAPI.Helpers;
+using GymPassport.GymPassportAPI.Services.AuthenticationServices;
+using Jose;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
+using System.Text;
 
 namespace GymPassport.GymPassportAPI.Services.ProfileServices
 {
-    public class ProfileService : ServiceBase, IProfileService
+    public class ProfileService : IProfileService
     {
-        #region /profile_info
-        public async Task<UserProfile> GetAllProfileInfo(string accessToken)
+        private readonly AppSettings _appSettings;
+        private readonly ClientApiConnector _clientApiConnector;
+
+        public ProfileService(IOptions<AppSettings> appSettings, ClientApiConnector clientApiConnector)
         {
-            string httpResponseContent = await GetHttpResponseContent(accessToken);
-            string profileInfoToken = GetProfileInfoToken(httpResponseContent);
-            return GetUserProfile(profileInfoToken);
+            _appSettings = appSettings.Value;
+            _clientApiConnector = clientApiConnector;
         }
 
-        public UserProfile GetUserProfile(string jwtToken)
+        public async Task<UserProfile> GetAllProfileInfo(string authToken)
         {
-            UserProfile userProfileModel = new UserProfile();
+            // Envía el token de autorización a la API y espera su respuesta
+            JObject apiResponse = await _clientApiConnector.GetAllProfileInfo(authToken);
 
-            if (jwtToken != null)
-            {
-                var token = jwtToken;
-                var jwtSecurityToken = new JwtSecurityToken(token);
-                foreach (var item in jwtSecurityToken.Claims)
-                {
-                    switch (item.Type)
-                    {
-                        case "user_name":
-                            userProfileModel.Username = item.Value;
-                            break;
-                        case "rol_user":
-                            userProfileModel.UserRole = item.Value;
-                            break;
-                        case "gym_name":
-                            userProfileModel.GymName = item.Value;
-                            break;
-                        case "address":
-                            userProfileModel.GymAddress = item.Value;
-                            break;
-                        case "phone_number":
-                            userProfileModel.GymPhoneNumber = item.Value;
-                            break;
-                        case "schedule":
-                            userProfileModel.GymSchedules.Add(item.Value);
-                            break;
-                        default:
-                            break;
-                    }
-                }
+            // Almacena el JWT encriptado recibido
+            string encryptedResponse = apiResponse["jwe"].ToString();
 
-                return userProfileModel;
-            }
+            // Desencripta el JWT recibido
+            string decryptedResponse = AesGcmUtils.DecryptWithAESGCM(encryptedResponse, _appSettings.SecretKey);
 
-            return null;
-        }
+            // Decodifica el JWT recibido
+            JObject jsonToken = JObject.Parse(JWT.Decode(decryptedResponse, Encoding.UTF8.GetBytes(_appSettings.SecretKey), JwsAlgorithm.HS256));
 
-        public string GetProfileInfoToken(string httpResponseContent)
-        {
-            dynamic r = JObject.Parse(httpResponseContent);
-            string jwtToken = r["ad-token"];
-            return jwtToken;
-        }
+            // Mapear los claims del JWT a una lista de instancias de la clase Client
+            UserProfile userProfile = JsonConvert.DeserializeObject<UserProfile>(jsonToken.ToString());
 
-        public async Task<string> GetHttpResponseContent(string accessToken)
-        {
-            string URL = $"{BaseURL}3000/profile_info";
-
-            using (HttpClient = new HttpClient())
-            {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
-
-                using HttpResponseMessage httpResponseMessage = await HttpClient.GetAsync(URL);
-                return await httpResponseMessage.Content.ReadAsStringAsync();
-            }
-        }
-        #endregion
-
-        public async Task<string> GetHttpResponseContent(object requestData)
-        {
-            string URL = $"{BaseURL}4000/login";
-
-            using (HttpClient = new HttpClient())
-            {
-                using var httpResponseMessage = await HttpClient.PostAsJsonAsync(URL, requestData);
-                return await httpResponseMessage.Content.ReadAsStringAsync();
-            }
+            return userProfile;
         }
     }
 }

@@ -25,7 +25,8 @@ namespace GymPassport.GymPassportAPI.ApiConnectors
             try
             {
                 // Agregar el token de autorización al encabezado
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authToken);
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", authToken);
 
                 // Envía la petición GET a la API usando el cliente _httpClient inyectado
                 HttpResponseMessage response = await _httpClient.GetAsync(route);
@@ -62,7 +63,8 @@ namespace GymPassport.GymPassportAPI.ApiConnectors
             try
             {
                 // Agregar el token de autorización al encabezado
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authToken);
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", authToken);
 
                 // Crea el contenido que debe ser enviado en la petición POST
                 StringContent content = new StringContent(dataToSend, Encoding.UTF8, "application/json");
@@ -99,7 +101,8 @@ namespace GymPassport.GymPassportAPI.ApiConnectors
             try
             {
                 // Agregar el token de autorización al encabezado
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authToken);
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", authToken);
 
                 // Crea el contenido que debe ser enviado en la petición PUT
                 StringContent content = new StringContent(dataToSend, Encoding.UTF8, "application/json");
@@ -137,7 +140,8 @@ namespace GymPassport.GymPassportAPI.ApiConnectors
             try
             {
                 // Agregar el token de autorización al encabezado
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authToken);
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", authToken);
 
                 // Envía la petición DELETE a la API usando el cliente _httpClient inyectado
                 HttpResponseMessage response = await _httpClient.DeleteAsync(route);
