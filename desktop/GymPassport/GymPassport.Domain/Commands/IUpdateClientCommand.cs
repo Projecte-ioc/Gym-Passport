@@ -4,6 +4,6 @@ namespace GymPassport.Domain.Commands
 {
     public interface IUpdateClientCommand
     {
-        Task Execute(string accessToken, Client client);
+        Task Execute(string authToken, Client client);
     }
 }

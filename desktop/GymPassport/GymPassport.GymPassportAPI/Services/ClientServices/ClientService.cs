@@ -1,140 +1,73 @@
 ﻿using GymPassport.Domain.Models;
+using GymPassport.GymPassportAPI.ApiConnectors;
+using GymPassport.GymPassportAPI.Helpers;
+using Jose;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace GymPassport.GymPassportAPI.Services.ClientServices
 {
-    public class ClientService : ServiceBase, IClientService
+    public class ClientService : IClientService
     {
-        public async Task<UserProfile> GetAllProfileInfo(string accessToken)
+        // SECRET KEY ALMACENADA TEMPORALMENTE
+        string secretKey = "__PROBANDO__probando__";
+        // SECRET KEY ALMACENADA TEMPORALMENTE
+        private readonly ClientApiConnector _clientApiConnector;
+
+        public ClientService(ClientApiConnector clientApiConnector)
         {
-            string httpResponseContent = await GetHttpResponseContent(accessToken);
-            string profileInfoToken = GetProfileInfoToken(httpResponseContent);
-            return GetUserProfile(profileInfoToken);
+            _clientApiConnector = clientApiConnector;
         }
 
-        public UserProfile GetUserProfile(string jwtToken)
+        public async Task<UserProfile> GetAllProfileInfo(string authToken)
         {
-            UserProfile userProfileModel = new UserProfile();
+            // Envía el token de autorización a la API y espera su respuesta
+            JObject apiResponse = await _clientApiConnector.GetAllProfileInfo(authToken);
 
-            if (jwtToken != null)
-            {
-                var token = jwtToken;
-                var jwtSecurityToken = new JwtSecurityToken(token);
-                foreach (var item in jwtSecurityToken.Claims)
-                {
-                    switch (item.Type)
-                    {
-                        case "user_name":
-                            userProfileModel.Username = item.Value;
-                            break;
-                        case "rol_user":
-                            userProfileModel.UserRole = item.Value;
-                            break;
-                        case "gym_name":
-                            userProfileModel.GymName = item.Value;
-                            break;
-                        case "address":
-                            userProfileModel.GymAddress = item.Value;
-                            break;
-                        case "phone_number":
-                            userProfileModel.GymPhoneNumber = item.Value;
-                            break;
-                        case "schedule":
-                            userProfileModel.GymSchedules.Add(item.Value);
-                            break;
-                        default:
-                            break;
-                    }
-                }
+            // Almacena el JWT encriptado recibido
+            string encryptedResponse = apiResponse["jwe"].ToString();
 
-                return userProfileModel;
-            }
+            // Desencripta el JWT recibido
+            string decryptedResponse = AesGcmUtils.DecryptWithAESGCM(encryptedResponse, secretKey);
 
-            return null;
+            // Decodifica el JWT recibido
+            JObject jsonToken = JObject.Parse(JWT.Decode(decryptedResponse, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256));
+
+            // Mapear los claims del JWT a una lista de instancias de la clase Client
+            UserProfile userProfile = JsonConvert.DeserializeObject<UserProfile>(jsonToken.ToString());
+
+            return userProfile;
         }
 
-        public string GetProfileInfoToken(string httpResponseContent)
+        public async Task InsertClient(string authToken, Client newClient)
         {
-            dynamic r = JObject.Parse(httpResponseContent);
-            string jwtToken = r["ad-token"];
-            return jwtToken;
+            // Crea un JObject con los datos del nuevo cliente
+            JObject newClientAsJObject = JObject.FromObject(newClient);
+
+            // Crea un JObject que contiene un JWT firmado y encriptado
+            string encryptedJwt = ApiUtils.CreateSignedAndEncryptedJwt(newClientAsJObject, secretKey);
+
+            // Envía el token de autorización a la API y espera su respuesta
+            await _clientApiConnector.InsertClient(encryptedJwt, authToken);
         }
 
-        public async Task<string> GetHttpResponseContent(string accessToken)
+        public async Task UpdateClient(string authToken, Client updatedClient)
         {
-            string URL = $"{BaseURL}3000/profile_info";
+            // Crea un JObject con los datos del cliente actualizado
+            JObject updatedClientAsJObject = JObject.FromObject(updatedClient);
 
-            using (HttpClient = new HttpClient())
-            {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
+            // Crea un JObject que contiene un JWT firmado y encriptado
+            string encryptedJwt = ApiUtils.CreateSignedAndEncryptedJwt(updatedClientAsJObject, secretKey);
 
-                using HttpResponseMessage httpResponseMessage = await HttpClient.GetAsync(URL);
-                return await httpResponseMessage.Content.ReadAsStringAsync();
-            }
+            // Envía el token de autorización a la API y espera su respuesta
+            await _clientApiConnector.UpdateClient(encryptedJwt, authToken);
         }
 
-        public async Task<string> InsertClient(string accessToken, Client client)
+        public async Task DeleteClient(string authToken, string deletedClient)
         {
-            string URL = $"{BaseURL}3000/insert_client";
-
-            var newClient = new
-            {
-                name = client.Name,
-                pswd_app = client.Password,
-                rol_user = client.Role,
-                user_name = client.Username
-            };
-
-            dynamic json = JObject.FromObject(newClient);
-            var httpContent = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
-
-            using (HttpClient = new HttpClient())
-            {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
-                HttpResponseMessage httpResponseMessage = await HttpClient.PostAsync(URL, httpContent);
-                return await httpResponseMessage.Content.ReadAsStringAsync();
-            }
-        }
-
-        public async Task<string> UpdateClient(string accessToken, Client client)
-        {
-            string URL = $"{BaseURL}3000/update_data_client";
-
-            dynamic json = JObject.FromObject(client);
-            var httpContent = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
-
-            using (HttpClient = new HttpClient())
-            {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
-                HttpResponseMessage httpResponseMessage = await HttpClient.PutAsync(URL, httpContent);
-                return await httpResponseMessage.Content.ReadAsStringAsync();
-            }
-        }
-
-        public async Task<bool> DeleteClient(string accessToken, string username)
-        {
-            string URL = $"{BaseURL}3000/delete_client?user_name={username}";
-
-            using (HttpClient = new HttpClient())
-            {
-                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
-
-                HttpResponseMessage httpResponseMessage = await HttpClient.DeleteAsync(URL);
-
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    string httpResponseContent = await httpResponseMessage.Content.ReadAsStringAsync();
-
-                    dynamic r = JObject.Parse(httpResponseContent);
-                    string json = r["message"];
-                    Console.WriteLine(r.ToString());
-                    return true;
-                }
-            }
-            return false;
+            // Envía el token de autorización a la API y espera su respuesta
+            await _clientApiConnector.DeleteClient(deletedClient, authToken);
         }
     }
 }
