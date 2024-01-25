@@ -27,4 +27,10 @@
     <ProjectReference Include="..\GymPassport.GymPassportAPI\GymPassport.GymPassportAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\GymEventServices\" />
+    <Folder Include="Services\GymServices\" />
+    <Folder Include="Services\ProfileServices\" />
+  </ItemGroup>
+
 </Project>

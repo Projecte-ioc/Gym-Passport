@@ -5,6 +5,7 @@ using Jose;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace GymPassport.GymPassportAPI.Services.GymEventServices
 {
@@ -20,7 +21,7 @@ namespace GymPassport.GymPassportAPI.Services.GymEventServices
             _gymEventApiConnector = gymEventApiConnector;
         }
 
-        public async Task<List<GymEvent>> GetAllGymEvents(string authToken)
+        public async Task<ObservableCollection<GymEvent>> GetAllGymEvents(string authToken)
         {
             // Envía el token de autorización a la API y espera su respuesta
             JObject apiResponse = await _gymEventApiConnector.GetAllGymEvents(authToken);
@@ -35,7 +36,7 @@ namespace GymPassport.GymPassportAPI.Services.GymEventServices
             JObject jsonToken = JObject.Parse(JWT.Decode(decryptedResponse, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256));
 
             // Mapear los claims del JWT a una lista de instancias de la clase Client
-            List<GymEvent> gymEvents = JsonConvert.DeserializeObject<List<GymEvent>>(jsonToken["results"].ToString());
+            ObservableCollection<GymEvent> gymEvents = JsonConvert.DeserializeObject<ObservableCollection<GymEvent>>(jsonToken["results"].ToString());
 
             return gymEvents;
         }

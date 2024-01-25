@@ -35,12 +35,6 @@ namespace GymPassport.WPF.HostBuilders
                 services.AddTransient<IGymApiConnector, GymApiConnector>();
                 services.AddTransient<IClientApiConnector, ClientApiConnector>();
                 services.AddTransient<IGymEventApiConnector, GymEventApiConnector>();
-
-                // Servicios API
-                services.AddTransient<AuthenticationService>();
-                services.AddTransient<GymService>();
-                services.AddTransient<ClientService>();
-                services.AddTransient<GymEventService>();
             });
 
             return host;

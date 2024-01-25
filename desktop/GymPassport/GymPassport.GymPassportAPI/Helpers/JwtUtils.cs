@@ -1,5 +1,4 @@
-﻿using GymPassport.Domain.Models;
-using Jose;
+﻿using Jose;
 using Newtonsoft.Json.Linq;
 using System.Text;
 
