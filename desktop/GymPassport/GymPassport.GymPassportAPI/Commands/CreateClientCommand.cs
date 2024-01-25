@@ -7,9 +7,9 @@ namespace GymPassport.GymPassportAPI.Commands
 {
     public class CreateClientCommand : ICreateClientCommand
     {
-        private readonly ClientApiConnector _clientApiConnector;
+        private readonly IClientApiConnector _clientApiConnector;
 
-        public CreateClientCommand(ClientApiConnector clientApiConnector)
+        public CreateClientCommand(IClientApiConnector clientApiConnector)
         {
             _clientApiConnector = clientApiConnector;
         }

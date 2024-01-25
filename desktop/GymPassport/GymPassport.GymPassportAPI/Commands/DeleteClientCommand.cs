@@ -6,9 +6,9 @@ namespace GymPassport.GymPassportAPI.Commands
 {
     public class DeleteClientCommand : IDeleteClientCommand
     {
-        private readonly ClientApiConnector _clientApiConnector;
+        private readonly IClientApiConnector _clientApiConnector;
 
-        public DeleteClientCommand(ClientApiConnector clientApiConnector)
+        public DeleteClientCommand(IClientApiConnector clientApiConnector)
         {
             _clientApiConnector = clientApiConnector;
         }

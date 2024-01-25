@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace GymPassport.GymPassportAPI.ApiConnectors
 {
-    public class GymApiConnector
+    public class GymApiConnector : IGymApiConnector
     {
         private const string port = "2000";
         private readonly HttpClient _httpClient;

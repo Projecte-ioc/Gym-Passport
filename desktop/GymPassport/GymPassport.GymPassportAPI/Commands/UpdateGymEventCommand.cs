@@ -7,9 +7,9 @@ namespace GymPassport.GymPassportAPI.Commands
 {
     public class UpdateGymEventCommand : IUpdateGymEventCommand
     {
-        private readonly GymEventApiConnector _gymEventApiConnector;
+        private readonly IGymEventApiConnector _gymEventApiConnector;
 
-        public UpdateGymEventCommand(GymEventApiConnector gymEventApiConnector)
+        public UpdateGymEventCommand(IGymEventApiConnector gymEventApiConnector)
         {
             _gymEventApiConnector = gymEventApiConnector;
         }

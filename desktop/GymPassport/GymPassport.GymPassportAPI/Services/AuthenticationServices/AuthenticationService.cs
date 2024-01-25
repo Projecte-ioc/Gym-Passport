@@ -13,9 +13,9 @@ namespace GymPassport.GymPassportAPI.Services.AuthenticationServices
     public class AuthenticationService : IAuthenticationService
     {
         private readonly AppSettings _appSettings;
-        private readonly LoginApiConnector _loginApiConnector;
+        private readonly ILoginApiConnector _loginApiConnector;
 
-        public AuthenticationService(IOptions<AppSettings> appSettings, LoginApiConnector loginApiConnector)
+        public AuthenticationService(IOptions<AppSettings> appSettings, ILoginApiConnector loginApiConnector)
         {
             _appSettings = appSettings.Value;
             _loginApiConnector = loginApiConnector;

@@ -9,7 +9,6 @@ using GymPassport.GymPassportAPI.Services.ProfileServices;
 using GymPassport.GymPassportAPI.Services.GymServices;
 using GymPassport.GymPassportAPI.Services.ClientServices;
 using GymPassport.GymPassportAPI.ApiConnectors;
-using System.ComponentModel.Design.Serialization;
 using GymPassport.GymPassportAPI.Services;
 
 namespace GymPassport.WPF.HostBuilders
@@ -32,10 +31,10 @@ namespace GymPassport.WPF.HostBuilders
                 services.AddHttpClient();
 
                 // Conectores API
-                services.AddTransient<LoginApiConnector>();
-                services.AddTransient<GymApiConnector>();
-                services.AddTransient<ClientApiConnector>();
-                services.AddTransient<GymEventApiConnector>();
+                services.AddTransient<ILoginApiConnector, LoginApiConnector>();
+                services.AddTransient<IGymApiConnector, GymApiConnector>();
+                services.AddTransient<IClientApiConnector, ClientApiConnector>();
+                services.AddTransient<IGymEventApiConnector, GymEventApiConnector>();
 
                 // Servicios API
                 services.AddTransient<AuthenticationService>();

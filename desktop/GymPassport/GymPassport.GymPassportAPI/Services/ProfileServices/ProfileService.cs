@@ -13,9 +13,9 @@ namespace GymPassport.GymPassportAPI.Services.ProfileServices
     public class ProfileService : IProfileService
     {
         private readonly AppSettings _appSettings;
-        private readonly ClientApiConnector _clientApiConnector;
+        private readonly IClientApiConnector _clientApiConnector;
 
-        public ProfileService(IOptions<AppSettings> appSettings, ClientApiConnector clientApiConnector)
+        public ProfileService(IOptions<AppSettings> appSettings, IClientApiConnector clientApiConnector)
         {
             _appSettings = appSettings.Value;
             _clientApiConnector = clientApiConnector;

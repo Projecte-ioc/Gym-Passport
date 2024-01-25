@@ -6,9 +6,9 @@ namespace GymPassport.GymPassportAPI.Commands
 {
     public class DeleteGymEventCommand : IDeleteGymEventCommand
     {
-        private readonly GymEventApiConnector _gymEventApiConnector;
+        private readonly IGymEventApiConnector _gymEventApiConnector;
 
-        public DeleteGymEventCommand(GymEventApiConnector gymEventApiConnector)
+        public DeleteGymEventCommand(IGymEventApiConnector gymEventApiConnector)
         {
             _gymEventApiConnector = gymEventApiConnector;
         }

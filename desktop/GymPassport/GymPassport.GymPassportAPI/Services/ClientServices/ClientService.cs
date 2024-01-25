@@ -13,9 +13,9 @@ namespace GymPassport.GymPassportAPI.Services.ClientServices
         // SECRET KEY ALMACENADA TEMPORALMENTE
         string secretKey = "__PROBANDO__probando__";
         // SECRET KEY ALMACENADA TEMPORALMENTE
-        private readonly ClientApiConnector _clientApiConnector;
+        private readonly IClientApiConnector _clientApiConnector;
 
-        public ClientService(ClientApiConnector clientApiConnector)
+        public ClientService(IClientApiConnector clientApiConnector)
         {
             _clientApiConnector = clientApiConnector;
         }

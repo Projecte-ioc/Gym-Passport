@@ -7,9 +7,9 @@ namespace GymPassport.GymPassportAPI.Queries
 {
     public class GetAllGymEventsQuery : IGetAllGymEventsQuery
     {
-        private readonly GymEventApiConnector _gymEventApiConnector;
+        private readonly IGymEventApiConnector _gymEventApiConnector;
 
-        public GetAllGymEventsQuery(GymEventApiConnector gymEventApiConnector)
+        public GetAllGymEventsQuery(IGymEventApiConnector gymEventApiConnector)
         {
             _gymEventApiConnector = gymEventApiConnector;
         }
