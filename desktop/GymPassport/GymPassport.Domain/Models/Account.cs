@@ -19,15 +19,6 @@ namespace GymPassport.Domain.Models
         [JsonIgnore] // Exclude AuthToken from JSON serialization
         public string AuthToken { get; set; }
 
-        public Account(string Username, string Role, string GymName, string Name, string AuthToken)
-        {
-            this.Username = Username;
-            this.Role = Role;
-            this.GymName = GymName;
-            this.Name = Name;
-            this.AuthToken = AuthToken;
-        }
-
         public override string ToString()
         {
             return

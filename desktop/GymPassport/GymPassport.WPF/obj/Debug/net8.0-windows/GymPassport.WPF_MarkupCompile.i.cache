@@ -16,5 +16,5 @@ Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.WPF\App.xaml
 250-345475238
 Components\BindablePasswordBox.xaml;Components\ClientsDetails.xaml;Components\ClientsListing.xaml;Components\ClientsListingItem.xaml;Components\GymEventsDetails.xaml;Components\GymEventsListing.xaml;Components\GymEventsListingItem.xaml;Components\Layout.xaml;Components\NavigationBar.xaml;MainWindow.xaml;Styles\ButtonStyles.xaml;Styles\TextBlockStyles.xaml;Styles\UIColors.xaml;Views\ActivitiesView.xaml;Views\AddClientView.xaml;Views\AddGymEventView.xaml;Views\ClientsView.xaml;Views\DeleteClientView.xaml;Views\DeleteGymEventView.xaml;Views\EditClientView.xaml;Views\EditGymEventView.xaml;Views\GymEventsView.xaml;Views\LoginView.xaml;Views\ProfileView.xaml;Views\ReservationsView.xaml;Views\RoomsView.xaml;
 
-True
+False
 

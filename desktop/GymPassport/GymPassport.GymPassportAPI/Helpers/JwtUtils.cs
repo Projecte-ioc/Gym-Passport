@@ -25,33 +25,5 @@ namespace GymPassport.GymPassportAPI.Helpers
 
             return JWT.Encode(claimsDictionary, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256);*/
         }
-
-        /// <summary>
-        /// Mapea los JWT claims a un objeto Account a partir de los claims.
-        /// </summary>
-        /// <param name="claims">Los claims del JWT.</param>
-        /// <returns>Un objeto Account con los datos de los claims.</returns>
-        public static Account MapJwtClaimsToAccount(JObject claims)
-        {
-            // Extract values from claims
-            string username = claims.GetValue("user_name")?.ToString();
-            string userRole = claims.GetValue("rol_user")?.ToString();
-            string gymName = claims.GetValue("gym_name")?.ToString();
-            string name = claims.GetValue("name")?.ToString();
-
-            // Create an instance of the Account class
-            return new Account(username, userRole, gymName, name, null); // You may replace null with the actual token value
-        }
-
-        /*static IEnumerable<Claim> ConvertJObjectToClaims(JObject jObject)
-        {
-            var claims = new List<Claim>();
-            foreach (var property in jObject.Properties())
-            {
-                claims.Add(new Claim(property.Name, property.Value.ToString()));
-            }
-
-            return claims;
-        }*/
     }
 }
