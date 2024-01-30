@@ -18,8 +18,20 @@ namespace GymPassport.WPF.HostBuilders
             .ConfigureServices((hostContext, services) =>
             {
                 // Configuración de servicios
-                services.Configure<AppSettings>(hostContext.Configuration);
+                services.Configure<AppSettings>(hostContext.Configuration.GetSection(AppSettings.ApiSettingsSection));
             });
+
+            //host.ConfigureServices((hostContext, services) =>
+            //{
+            //    // Configuración de opciones
+            //    services.AddOptions<AppSettings>()
+            //        .BindConfiguration(AppSettings.ApiSettingsSection)
+            //        .ValidateDataAnnotations()
+            //        .ValidateOnStart();
+
+            //    // Configuración de servicios
+            //    services.Configure<AppSettings>(hostContext.Configuration);
+            //});
 
             return host;
         }

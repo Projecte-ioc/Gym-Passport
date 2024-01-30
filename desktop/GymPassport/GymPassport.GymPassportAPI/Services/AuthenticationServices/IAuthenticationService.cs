@@ -4,6 +4,7 @@ namespace GymPassport.GymPassportAPI.Services.AuthenticationServices
 {
     public interface IAuthenticationService
     {
-        Task<Account> Login(string loginUsername, string loginPassword);
+        Task<Account> Login(LoginData loginData);
+        Task Logout(string authToken);
     }
 }

@@ -5,11 +5,10 @@ using GymPassport.WPF.State.Accounts;
 using GymPassport.WPF.ViewModels;
 using GymPassport.WPF.State.Navigators;
 using GymPassport.GymPassportAPI.Services.AuthenticationServices;
-using GymPassport.GymPassportAPI.Services.ProfileServices;
 using GymPassport.GymPassportAPI.Services.GymServices;
 using GymPassport.GymPassportAPI.Services.ClientServices;
-using GymPassport.GymPassportAPI.ApiConnectors;
-using GymPassport.GymPassportAPI.Services;
+using Microsoft.Extensions.Options;
+using GymPassport.GymPassportAPI.Services.GymEventServices;
 
 namespace GymPassport.WPF.HostBuilders
 {
@@ -21,20 +20,19 @@ namespace GymPassport.WPF.HostBuilders
             {
                 // AddServices
                 services.AddSingleton<IAuthenticationService, AuthenticationService>();
-                services.AddSingleton<IProfileService, ProfileService>();
                 services.AddSingleton<IGymService, GymService>();
                 services.AddSingleton<IClientService, ClientService>();
+                services.AddSingleton<IGymEventService, GymEventService>();
                 services.AddSingleton<CloseModalNavigationService>();
                 services.AddSingleton<INavigationService>(s => CreateProfileNavigationService(s));
 
                 // Configuración de servicios
-                services.AddHttpClient();
+                services.AddHttpClient("GymPassportApiHttpClient", (serviceProvider, httpClient) =>
+                {
+                    AppSettings appSettings = serviceProvider.GetRequiredService<IOptions<AppSettings>>().Value;
 
-                // Conectores API
-                services.AddTransient<ILoginApiConnector, LoginApiConnector>();
-                services.AddTransient<IGymApiConnector, GymApiConnector>();
-                services.AddTransient<IClientApiConnector, ClientApiConnector>();
-                services.AddTransient<IGymEventApiConnector, GymEventApiConnector>();
+                    httpClient.BaseAddress = new Uri(appSettings.BaseAddress);
+                });
             });
 
             return host;

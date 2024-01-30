@@ -1,22 +1,20 @@
 ﻿using GymPassport.Domain.Commands;
-using GymPassport.GymPassportAPI.ApiConnectors;
 using GymPassport.GymPassportAPI.Services.GymEventServices;
 
 namespace GymPassport.GymPassportAPI.Commands
 {
     public class DeleteGymEventCommand : IDeleteGymEventCommand
     {
-        private readonly IGymEventApiConnector _gymEventApiConnector;
+        private readonly IGymEventService _gymEventService;
 
-        public DeleteGymEventCommand(IGymEventApiConnector gymEventApiConnector)
+        public DeleteGymEventCommand(IGymEventService gymEventService)
         {
-            _gymEventApiConnector = gymEventApiConnector;
+            _gymEventService = gymEventService;
         }
 
-        public async Task Execute(string authToken, int id)
+        public async Task Execute(string accessToken, int id)
         {
-            GymEventService gymEventService = new GymEventService(_gymEventApiConnector);
-            await gymEventService.DeleteGymEvent(authToken, id);
+            await _gymEventService.DeleteGymEvent(accessToken, id);
         }
     }
 }

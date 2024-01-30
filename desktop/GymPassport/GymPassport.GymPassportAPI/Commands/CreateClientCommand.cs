@@ -1,23 +1,21 @@
 ﻿using GymPassport.Domain.Commands;
 using GymPassport.Domain.Models;
-using GymPassport.GymPassportAPI.ApiConnectors;
 using GymPassport.GymPassportAPI.Services.ClientServices;
 
 namespace GymPassport.GymPassportAPI.Commands
 {
     public class CreateClientCommand : ICreateClientCommand
     {
-        private readonly IClientApiConnector _clientApiConnector;
+        private readonly IClientService _clientService;
 
-        public CreateClientCommand(IClientApiConnector clientApiConnector)
+        public CreateClientCommand(IClientService clientService)
         {
-            _clientApiConnector = clientApiConnector;
+            _clientService = clientService;
         }
 
-        public async Task Execute(string authToken, Client newClient)
+        public async Task Execute(string accessToken, Client newClient)
         {
-            ClientService clientService = new ClientService(_clientApiConnector);
-            await clientService.InsertClient(authToken, newClient);
+            await _clientService.InsertClient(accessToken, newClient);
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IDeleteClientCommand
     {
-        Task Execute(string authToken, string username);
+        Task Execute(string accessToken, string username);
     }
 }

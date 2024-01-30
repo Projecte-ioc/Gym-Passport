@@ -1,23 +1,21 @@
 ﻿using GymPassport.Domain.Models;
 using GymPassport.Domain.Queries;
-using GymPassport.GymPassportAPI.ApiConnectors;
 using GymPassport.GymPassportAPI.Services.GymServices;
 
 namespace GymPassport.GymPassportAPI.Queries
 {
     public class GetAllClientsQuery : IGetAllClientsQuery
     {
-        private readonly IGymApiConnector _gymApiConnector;
+        private readonly IGymService _gymService;
 
-        public GetAllClientsQuery(IGymApiConnector gymApiConnector)
+        public GetAllClientsQuery(IGymService gymService)
         {
-            _gymApiConnector = gymApiConnector;
+            _gymService = gymService;
         }
 
         public async Task<IEnumerable<Client>> Execute(string accessToken)
         {
-            GymService gymService = new GymService(_gymApiConnector);
-            return await gymService.GetAllGymClients(accessToken);
+            return await _gymService.GetAllGymClients(accessToken);
         }
     }
 }

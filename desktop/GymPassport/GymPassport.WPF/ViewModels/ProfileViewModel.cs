@@ -1,5 +1,5 @@
 ﻿using GymPassport.Domain.Models;
-using GymPassport.GymPassportAPI.Services.ProfileServices;
+using GymPassport.GymPassportAPI.Services.ClientServices;
 using GymPassport.WPF.Commands;
 using GymPassport.WPF.State.Accounts;
 using System.Windows.Input;
@@ -53,12 +53,12 @@ namespace GymPassport.WPF.ViewModels
         public ICommand GetUserProfileCommand { get; }
         public ICommand EnableProfileModificationCommand { get; }
 
-        public ProfileViewModel(IAccountStore accountStore, IProfileService profileService)
+        public ProfileViewModel(IAccountStore accountStore, IClientService clientService)
         {
             btnToggleModificationText = "Desbloquejar modificació";
             IsEnabled = false;
 
-            GetUserProfileCommand = new GetProfileCommand(this, profileService, accountStore);
+            GetUserProfileCommand = new GetProfileCommand(this, clientService, accountStore);
             GetUserProfileCommand.Execute(null);
             EnableProfileModificationCommand = new EnableProfileModificationCommand(this);
         }

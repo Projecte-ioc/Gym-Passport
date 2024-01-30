@@ -4,6 +4,6 @@ namespace GymPassport.Domain.Commands
 {
     public interface ICreateGymEventCommand
     {
-        Task Execute(string authToken, GymEvent newGymEvent);
+        Task Execute(string accessToken, GymEvent newGymEvent);
     }
 }

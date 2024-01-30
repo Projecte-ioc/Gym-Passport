@@ -34,7 +34,13 @@ namespace GymPassport.WPF.State.Authenticators
 
         public async Task Login(string username, string password)
         {
-            CurrentAccount = await _authenticationService.Login(username, password);
+            LoginData loginData = new LoginData
+            {
+                Username = username,
+                Password = password
+            };
+
+            CurrentAccount = await _authenticationService.Login(loginData);
             //MOCK TEMPORAL
 
             //Account account = new Account()

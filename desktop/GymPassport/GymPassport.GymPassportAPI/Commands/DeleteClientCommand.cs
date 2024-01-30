@@ -1,22 +1,20 @@
 ﻿using GymPassport.Domain.Commands;
-using GymPassport.GymPassportAPI.ApiConnectors;
 using GymPassport.GymPassportAPI.Services.ClientServices;
 
 namespace GymPassport.GymPassportAPI.Commands
 {
     public class DeleteClientCommand : IDeleteClientCommand
     {
-        private readonly IClientApiConnector _clientApiConnector;
+        private readonly IClientService _clientService;
 
-        public DeleteClientCommand(IClientApiConnector clientApiConnector)
+        public DeleteClientCommand(IClientService clientService)
         {
-            _clientApiConnector = clientApiConnector;
+            _clientService = clientService;
         }
 
-        public async Task Execute(string authToken, string username)
+        public async Task Execute(string accessToken, string username)
         {
-            ClientService clientService = new ClientService(_clientApiConnector);
-            await clientService.DeleteClient(authToken, username);
+            await _clientService.DeleteClient(accessToken, username);
         }
     }
 }

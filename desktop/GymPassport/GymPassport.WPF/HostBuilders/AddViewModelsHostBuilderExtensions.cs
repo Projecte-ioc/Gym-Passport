@@ -1,4 +1,4 @@
-﻿using GymPassport.GymPassportAPI.Services.ProfileServices;
+﻿using GymPassport.GymPassportAPI.Services.ClientServices;
 using GymPassport.WPF.Services;
 using GymPassport.WPF.State.Accounts;
 using GymPassport.WPF.State.Authenticators;
@@ -19,7 +19,7 @@ namespace GymPassport.WPF.HostBuilders
             {
                 services.AddTransient<ProfileViewModel>(s => new ProfileViewModel(
                         s.GetRequiredService<IAccountStore>(),
-                        s.GetRequiredService<IProfileService>()));
+                        s.GetRequiredService<IClientService>()));
 
                 services.AddSingleton<LoginViewModel>(s => new LoginViewModel(
                     s.GetRequiredService<IAuthenticator>()));

@@ -1,4 +1,5 @@
-﻿namespace GymPassport.Domain.Commands
+﻿
+namespace GymPassport.Domain.Commands
 {
     public interface IDeleteGymEventCommand
     {
