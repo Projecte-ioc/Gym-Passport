@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GymPassport.GymPassportAPI.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d172b3624ca16922247f8c315fe736d9937ce11b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0de9812e1cfb994ec84e314295761a94d672cf7a")]
 [assembly: System.Reflection.AssemblyProductAttribute("GymPassport.GymPassportAPI.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GymPassport.GymPassportAPI.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

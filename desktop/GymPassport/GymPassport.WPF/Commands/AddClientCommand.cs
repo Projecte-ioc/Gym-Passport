@@ -23,11 +23,13 @@ namespace GymPassport.WPF.Commands
             _addClientViewModel.ErrorMessage = null;
             _addClientViewModel.IsSubmitting = true;
 
-            Client client = new Client(
-                _addClientViewModel.Name,
-                _addClientViewModel.Role,
-                _addClientViewModel.Username,
-                _addClientViewModel.Password);
+            Client client = new Client
+            {
+                Name = _addClientViewModel.Name,
+                Role = _addClientViewModel.Role,
+                Username = _addClientViewModel.Username,
+                Password = _addClientViewModel.Password,
+            };
 
             try
             {

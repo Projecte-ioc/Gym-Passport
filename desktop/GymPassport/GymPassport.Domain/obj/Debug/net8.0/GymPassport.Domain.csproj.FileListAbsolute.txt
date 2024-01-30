@@ -1,0 +1,13 @@
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\bin\Debug\net8.0\GymPassport.Domain.deps.json
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\bin\Debug\net8.0\GymPassport.Domain.dll
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\bin\Debug\net8.0\GymPassport.Domain.pdb
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\GymPassport.Domain.csproj.AssemblyReference.cache
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\GymPassport.Domain.GeneratedMSBuildEditorConfig.editorconfig
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\GymPassport.Domain.AssemblyInfoInputs.cache
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\GymPassport.Domain.AssemblyInfo.cs
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\GymPassport.Domain.csproj.CoreCompileInputs.cache
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\GymPassport.Domain.sourcelink.json
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\GymPassport.Domain.dll
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\refint\GymPassport.Domain.dll
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\GymPassport.Domain.pdb
+Y:\Dev\Gym Passport EXPERIMENTAL\desktop\GymPassport\GymPassport.Domain\obj\Debug\net8.0\ref\GymPassport.Domain.dll

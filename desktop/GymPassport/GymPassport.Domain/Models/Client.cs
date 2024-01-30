@@ -4,14 +4,6 @@ namespace GymPassport.Domain.Models
 {
     public class Client
     {
-        public Client(string name, string role, string username, string password)
-        {
-            Name = name;
-            Role = role;
-            Username = username;
-            Password = password;
-        }
-
         [JsonProperty("name")]
         public string Name { get; set; }
 
